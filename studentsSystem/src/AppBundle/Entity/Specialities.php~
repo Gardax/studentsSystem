@@ -1,0 +1,40 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Specialities
+ *
+ * @ORM\Table(name="specialities", uniqueConstraints={@ORM\UniqueConstraint(name="speciality_name_long_UNIQUE", columns={"speciality_name_long"}), @ORM\UniqueConstraint(name="speciality_name_short_UNIQUE", columns={"speciality_name_short"})})
+ * @ORM\Entity
+ */
+class Specialities
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="speciality_name_long", type="string", length=255, nullable=true)
+     */
+    private $specialityNameLong;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="speciality_name_short", type="string", length=16, nullable=true)
+     */
+    private $specialityNameShort;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="speciality_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $specialityId;
+
+
+}
+

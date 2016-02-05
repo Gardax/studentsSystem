@@ -1,0 +1,61 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Users
+ *
+ * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="user_email_UNIQUE", columns={"user_email"}), @ORM\UniqueConstraint(name="user_name_UNIQUE", columns={"user_name"})})
+ * @ORM\Entity
+ */
+class Users
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_name", type="string", length=30, nullable=true)
+     */
+    private $userName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_fname", type="string", length=20, nullable=true)
+     */
+    private $userFname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_lname", type="string", length=20, nullable=true)
+     */
+    private $userLname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_email", type="string", length=64, nullable=true)
+     */
+    private $userEmail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_password", type="string", length=40, nullable=true)
+     */
+    private $userPassword;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="user_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $userId;
+
+
+}
+

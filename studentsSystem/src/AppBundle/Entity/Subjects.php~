@@ -1,0 +1,47 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Subjects
+ *
+ * @ORM\Table(name="subjects", uniqueConstraints={@ORM\UniqueConstraint(name="subject_name_UNIQUE", columns={"subject_name"})})
+ * @ORM\Entity
+ */
+class Subjects
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="subject_name", type="string", length=45, nullable=true)
+     */
+    private $subjectName;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subject_workload_lectures", type="smallint", nullable=false)
+     */
+    private $subjectWorkloadLectures = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subject_workload_exercises", type="smallint", nullable=false)
+     */
+    private $subjectWorkloadExercises = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subject_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $subjectId;
+
+
+}
+

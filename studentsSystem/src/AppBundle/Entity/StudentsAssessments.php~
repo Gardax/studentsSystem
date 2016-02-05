@@ -1,0 +1,61 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * StudentsAssessments
+ *
+ * @ORM\Table(name="students_assessments", uniqueConstraints={@ORM\UniqueConstraint(name="sa_student_subject_UNIQUE", columns={"sa_student_id", "sa_subject_id"})}, indexes={@ORM\Index(name="sa_student_id", columns={"sa_student_id"}), @ORM\Index(name="sa_subject_id", columns={"sa_subject_id"})})
+ * @ORM\Entity
+ */
+class StudentsAssessments
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="sa_student_id", type="integer", nullable=false)
+     */
+    private $saStudentId = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="sa_subject_id", type="integer", nullable=false)
+     */
+    private $saSubjectId = '0';
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="sa_workload_lectures", type="boolean", nullable=false)
+     */
+    private $saWorkloadLectures = '0';
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="sa_workload_exercises", type="boolean", nullable=false)
+     */
+    private $saWorkloadExercises = '0';
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="sa_assesment", type="boolean", nullable=false)
+     */
+    private $saAssesment = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="sa_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $saId;
+
+
+}
+

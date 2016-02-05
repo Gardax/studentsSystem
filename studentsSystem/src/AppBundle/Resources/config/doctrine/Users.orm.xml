@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Users" table="users">
+    <unique-constraints>
+      <unique-constraint name="user_email_UNIQUE" columns="user_email"/>
+      <unique-constraint name="user_name_UNIQUE" columns="user_name"/>
+    </unique-constraints>
+    <id name="userId" type="integer" column="user_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="userName" type="string" column="user_name" length="30" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Потребителско име</option>
+      </options>
+    </field>
+    <field name="userFname" type="string" column="user_fname" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Собствено име на потребителя</option>
+      </options>
+    </field>
+    <field name="userLname" type="string" column="user_lname" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Фамиля на потребителя</option>
+      </options>
+    </field>
+    <field name="userEmail" type="string" column="user_email" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">E-mail адрес на потребителя</option>
+      </options>
+    </field>
+    <field name="userPassword" type="string" column="user_password" length="40" nullable="true">
+      <options>
+        <option name="fixed">1</option>
+        <option name="comment">SHA-1 hash на паролата</option>
+      </options>
+    </field>
+  </entity>
+</doctrine-mapping>

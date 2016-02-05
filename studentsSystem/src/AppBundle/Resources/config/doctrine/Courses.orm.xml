@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Courses" table="courses">
+    <unique-constraints>
+      <unique-constraint name="course_name_unique" columns="course_name"/>
+    </unique-constraints>
+    <id name="courseId" type="integer" column="course_id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="courseName" type="string" column="course_name" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+        <option name="comment">Име на курса (Пример: Първи курс, Информатика задочно)</option>
+      </options>
+    </field>
+  </entity>
+</doctrine-mapping>

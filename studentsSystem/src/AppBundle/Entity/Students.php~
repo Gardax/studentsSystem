@@ -1,0 +1,75 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Students
+ *
+ * @ORM\Table(name="students", uniqueConstraints={@ORM\UniqueConstraint(name="student_email_UNIQUE", columns={"student_email"}), @ORM\UniqueConstraint(name="student_name_fn_UNIQUE", columns={"student_fname", "student_lname", "student_fnumber"})}, indexes={@ORM\Index(name="student_course_id", columns={"student_course_id"}), @ORM\Index(name="student_speciality_id", columns={"student_speciality_id"})})
+ * @ORM\Entity
+ */
+class Students
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="student_course_id", type="integer", nullable=false)
+     */
+    private $studentCourseId = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="student_speciality_id", type="integer", nullable=false)
+     */
+    private $studentSpecialityId = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="student_fname", type="string", length=45, nullable=true)
+     */
+    private $studentFname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="student_lname", type="string", length=45, nullable=true)
+     */
+    private $studentLname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="student_email", type="string", length=64, nullable=true)
+     */
+    private $studentEmail;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="student_fnumber", type="integer", nullable=true)
+     */
+    private $studentFnumber = '0000000000';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="student_education_form", type="string", nullable=false)
+     */
+    private $studentEducationForm = '';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="student_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $studentId;
+
+
+}
+
