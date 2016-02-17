@@ -11,8 +11,8 @@ services:
 services:
     user_service:
         class: AppBundle\Services\UserService
-        arguments: [@user_manager,@user_service]
+        arguments: ['@user_manager']
 
     user_manager:
             class: AppBundle\Managers\UserManager
-            arguments: [@doctrine.orm.default_entity_manager]
+            arguments: ['@doctrine.orm.default_entity_manager']

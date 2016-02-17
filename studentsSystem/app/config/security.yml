@@ -6,24 +6,16 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_API, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        fos_userbundle:
-            id: fos_user.user_provider.username
+        in_memory:
+            memory: ~
 
     firewalls:
 
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        default:
+            anonymous: ~
 
-        wsse_secured:
-            pattern:      (.*)/(role)(.*)
-            context:      user
-            stateless:    true
-            wsse:
-                nonce_dir: null
-                provider: fos_userbundle
-                lifetime: 600
-            anonymous:    false
-            
     access_control:
         - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
