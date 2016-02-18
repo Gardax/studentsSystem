@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Студентска система</title>
+    <script src="{{ asset('scripts/jquery-2.2.0.js') }}"></script>
+    <script src="{{ asset('scripts/http-requester.js') }}"></script>
+    <script src="{{ asset('scripts/homePageService.js') }}"></script>
+    <script src="{{ asset('scripts/homePageController.js') }}"></script>
+    <script src="{{ asset('scripts/main.js') }}"></script>
 </head>
 <body>
 <nav>
@@ -10,8 +15,8 @@
         <li>
             <a href="">Вход</a>
         </li>
-        <li>
-            <a href="">Начало</a>
+        <li id="homeButton">
+            Начало
         </li>
         <li>
             <a href="">Курсове</a>
@@ -44,7 +49,7 @@
         </li>
     </ul>
 </nav>
-<main>
+<main id="mainContainer">
 
 </main>
 </body>

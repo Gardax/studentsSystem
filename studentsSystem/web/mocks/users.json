@@ -1,0 +1,110 @@
+{
+  "students": [
+    {
+      "id": "1",
+      "firstName": "Georgi",
+      "lastName": "Georgiev",
+      "facultyNumber": "1401181004",
+      "course": "1",
+      "shortSpecialtyName": "STD",
+      "subjects": [
+        {
+          "lectureAttended": "80",
+          "lectureTotal":120,
+          "exerciseAttended": "120",
+          "exerciseTotal":"120",
+          "mark": "6"
+        },
+        {
+          "lectureAttended": "80",
+          "lectureTotal":120,
+          "exerciseAttended": "120",
+          "exerciseTotal":"120",
+          "mark": "6"
+        },
+        {
+          "lectureAttended": "80",
+          "lectureTotal":120,
+          "exerciseAttended": "120",
+          "exerciseTotal":"120",
+          "mark": "6"
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "firstName": "Mario",
+      "lastName": "Hristev",
+      "facultyNumber": "1401181008",
+      "course": "1",
+      "shortSpecialtyName": "STD",
+      "subjects": [
+        {
+          "lectureAttended": "80",
+          "lectureTotal":120,
+          "exerciseAttended": "120",
+          "exerciseTotal":"120",
+          "mark": "6"
+        },
+        {
+          "lectureAttended": "80",
+          "lectureTotal":120,
+          "exerciseAttended": "120",
+          "exerciseTotal":"120",
+          "mark": "6"
+        },
+        {
+          "lectureAttended": "80",
+          "lectureTotal":120,
+          "exerciseAttended": "120",
+          "exerciseTotal":"120",
+          "mark": "6"
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "firstName": "Kristian",
+      "lastName": "Bashev",
+      "facultyNumber": "1401181004",
+      "course": "3",
+      "shortSpecialtyName": "STD",
+      "subjects": [
+        {
+          "lectureAttended": "80",
+          "lectureTotal":120,
+          "exerciseAttended": "120",
+          "exerciseTotal":"120",
+          "mark": "6"
+        },
+        {
+          "lectureAttended": "80",
+          "lectureTotal":120,
+          "exerciseAttended": "120",
+          "exerciseTotal":"120",
+          "mark": "6"
+        },
+        {
+          "lectureAttended": "80",
+          "lectureTotal":120,
+          "exerciseAttended": "120",
+          "exerciseTotal":"120",
+          "mark": "6"
+        }
+      ]
+    }
+  ],
+  "subjects": [
+    {
+      "name":"Математика"
+    },
+    {
+      "name":"Информатика"
+    },
+    {
+      "name":"Физика"
+    }
+  ],
+  "pageCount":"3",
+  "totalCount":"5"
+}
