@@ -65,6 +65,17 @@ class StudentManager
     }
 
     /**
+     * @param Student $studentEntity
+     * @return Student
+     */
+    public function addStudent(Student $studentEntity) {
+        $this->entityManager->persist($studentEntity);
+        $this->entityManager->flush();
+
+        return $studentEntity;
+    }
+
+    /**
      * Flushes all entities.
      */
     public function saveChanges(){

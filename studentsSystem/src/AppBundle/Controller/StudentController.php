@@ -52,4 +52,29 @@ class StudentController extends Controller
         }
         return new JsonResponse($studentModels);
     }
+
+    /**
+     * @Route("/add/student" , name="addStudent")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function addStudentAction(Request $request)
+    {
+        $studentService = $this->get('student_service');
+
+        $studentData = [
+            'firstName' => $request->request->get('firstName'),
+            'lastName' => $request->request->get('lastName'),
+            'email' => $request->request->get('email'),
+            'facultyNumber' => $request->request->get('facultyNumber'),
+            'educationForm' => $request->request->get('educationForm'),
+        ];
+
+        $studentEntity = $studentService->addStudent($studentData);
+        $studentModel = new StudentModel($studentEntity);
+
+        return new JsonResponse($studentModel);
+    }
 }

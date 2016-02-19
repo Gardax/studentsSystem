@@ -57,4 +57,23 @@ class StudentService
         return $students;
     }
 
+    /**
+     * @param $studentData
+     * @return Student
+     */
+    public function addStudent($studentData){
+
+        $studentEntity = new Student();
+        $studentEntity->setFirstName($studentData['firstName']);
+        $studentEntity->setLastName($studentData['lastName']);
+        $studentEntity->setEmail($studentData['email']);
+        $studentEntity->setFacultyNumber($studentData['facultyNumber']);
+        $studentEntity->setEducationForm($studentData['educationForm']);
+
+        $this->studentManager->addStudent($studentEntity);
+        $this->studentManager->saveChanges();
+
+        return $studentEntity;
+
+    }
 }

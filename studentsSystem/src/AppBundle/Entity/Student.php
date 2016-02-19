@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Students
@@ -30,12 +31,28 @@ class Student
     protected $studentSpecialityId = '0';
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\Column(type="string", length=45, nullable=false)
+     *
+     * @Assert\NotBlank(message="First name cannot be blank.")
+     * @Assert\Length(
+     *     min=3,
+     *     max=45,
+     *     minMessage="Last name should be between 3 and 45 characters.",
+     *     maxMessage="Last name should be between 3 and 45 characters."
+     * )
      */
     protected $firstName;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
+     * @ORM\Column(type="string", length=45, nullable=false)
+     *
+     * @Assert\NotBlank(message="Last name cannot be blank.")
+     * @Assert\Length(
+     *     min=3,
+     *     max=45,
+     *     minMessage="Last name should be between 3 and 45 characters.",
+     *     maxMessage="Last name should be between 3 and 45 characters."
+     * )
      */
     protected $lastName;
 

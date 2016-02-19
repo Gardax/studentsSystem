@@ -20,3 +20,17 @@ services:
     student_manager:
         class: AppBundle\Managers\StudentManager
         arguments: ['@doctrine.orm.default_entity_manager']
+
+    course_service:
+            class: AppBundle\Services\CourseService
+            arguments: ['@course_manager']
+    course_manager:
+            class: AppBundle\Managers\CourseManager
+            arguments: ['@doctrine.orm.default_entity_manager']
+
+    speciality_service:
+            class: AppBundle\Services\SpecialityService
+            arguments: ['@speciality_manager']
+    speciality_manager:
+            class: AppBundle\Managers\SpecialityManager
+            arguments: ['@doctrine.orm.default_entity_manager']
