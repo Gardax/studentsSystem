@@ -24,36 +24,12 @@ class Course
      */
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Student")
-     * @ORM\JoinColumn(name="student_id", referencedColumnName="student_id")
-     */
-    protected $student;
-
-
     public function __construct()
     {
-        $this->student = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * @return mixed
-     */
-    public function getStudent()
-    {
-        return $this->student;
-    }
-
-    /**
-     * @param mixed $student
-     */
-    public function setStudent($student)
-    {
-        $this->student = $student;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -61,7 +37,7 @@ class Course
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -69,7 +45,7 @@ class Course
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -77,7 +53,7 @@ class Course
     }
 
     /**
-     * @param mixed $id
+     * @param integer $id
      */
     public function setId($id)
     {

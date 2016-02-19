@@ -77,25 +77,24 @@ class Student
         $this->specialities = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-
     /**
-     * @return mixed
+     * @return integer
      */
-    public function getStudentId()
+    public function getId()
     {
-        return $this->studentId;
+        return $this->id;
     }
 
     /**
-     * @param mixed $studentId
+     * @param integer $id
      */
-    public function setStudentId($studentId)
+    public function setId($id)
     {
-        $this->studentId = $studentId;
+        $this->id = $id;
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getStudentCourseId()
     {
@@ -103,7 +102,7 @@ class Student
     }
 
     /**
-     * @param mixed $studentCourseId
+     * @param integer $studentCourseId
      */
     public function setStudentCourseId($studentCourseId)
     {
@@ -111,7 +110,7 @@ class Student
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getStudentSpecialityId()
     {
@@ -119,7 +118,7 @@ class Student
     }
 
     /**
-     * @param mixed $studentSpecialityId
+     * @param integer $studentSpecialityId
      */
     public function setStudentSpecialityId($studentSpecialityId)
     {
@@ -127,7 +126,7 @@ class Student
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFirstName()
     {
@@ -135,7 +134,7 @@ class Student
     }
 
     /**
-     * @param mixed $firstName
+     * @param string $firstName
      */
     public function setFirstName($firstName)
     {
@@ -143,7 +142,7 @@ class Student
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastName()
     {
@@ -151,7 +150,7 @@ class Student
     }
 
     /**
-     * @param mixed $lastName
+     * @param string $lastName
      */
     public function setLastName($lastName)
     {
@@ -159,7 +158,7 @@ class Student
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -167,7 +166,7 @@ class Student
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
     public function setEmail($email)
     {
@@ -175,7 +174,7 @@ class Student
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFacultyNumber()
     {
@@ -183,7 +182,7 @@ class Student
     }
 
     /**
-     * @param mixed $facultyNumber
+     * @param string $facultyNumber
      */
     public function setFacultyNumber($facultyNumber)
     {
@@ -191,7 +190,7 @@ class Student
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEducationForm()
     {
@@ -199,7 +198,7 @@ class Student
     }
 
     /**
-     * @param mixed $educationForm
+     * @param string $educationForm
      */
     public function setEducationForm($educationForm)
     {

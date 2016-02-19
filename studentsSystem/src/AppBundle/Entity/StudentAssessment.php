@@ -54,7 +54,7 @@ class StudentAssessment
     protected $student;
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getSaId()
     {
@@ -62,7 +62,7 @@ class StudentAssessment
     }
 
     /**
-     * @param mixed $saId
+     * @param integer $saId
      */
     public function setSaId($saId)
     {
@@ -118,7 +118,7 @@ class StudentAssessment
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSubject()
     {
@@ -126,7 +126,7 @@ class StudentAssessment
     }
 
     /**
-     * @param mixed $subject
+     * @param string $subject
      */
     public function setSubject($subject)
     {

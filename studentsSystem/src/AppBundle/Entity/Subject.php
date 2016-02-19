@@ -41,7 +41,7 @@ class Subject
     public $workloadExercises = '0';
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -49,7 +49,7 @@ class Subject
     }
 
     /**
-     * @param mixed $id
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -57,7 +57,7 @@ class Subject
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -65,7 +65,7 @@ class Subject
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -73,7 +73,7 @@ class Subject
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getWorkloadLectures()
     {
@@ -81,7 +81,7 @@ class Subject
     }
 
     /**
-     * @param mixed $workloadLectures
+     * @param integer $workloadLectures
      */
     public function setWorkloadLectures($workloadLectures)
     {

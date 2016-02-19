@@ -45,7 +45,7 @@ class Role implements RoleInterface
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -53,7 +53,7 @@ class Role implements RoleInterface
     }
 
     /**
-     * @param mixed $id
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -61,7 +61,7 @@ class Role implements RoleInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getRole()
     {
@@ -69,7 +69,7 @@ class Role implements RoleInterface
     }
 
     /**
-     * @param mixed $role
+     * @param string $role
      */
     public function setRole($role)
     {

@@ -2,16 +2,21 @@ services:
     user_service:
         class: AppBundle\Services\UserService
         arguments: ['@user_manager','@security.password_encoder']
-
     user_manager:
-            class: AppBundle\Managers\UserManager
-            arguments: ['@doctrine.orm.default_entity_manager']
-
+          class: AppBundle\Managers\UserManager
+          arguments: ['@doctrine.orm.default_entity_manager']
 
     apikey_authenticator:
         class:  AppBundle\Security\ApiKeyAuthenticator
         public: false
     app.exception_listener:
-            class: AppBundle\Security\ExceptionListener
-            tags:
-                - { name: kernel.event_listener, event: kernel.exception }
+          class: AppBundle\Security\ExceptionListener
+          tags:
+              - { name: kernel.event_listener, event: kernel.exception }
+
+    student_service:
+        class: AppBundle\Services\StudentService
+        arguments: ['@student_manager']
+    student_manager:
+        class: AppBundle\Managers\StudentManager
+        arguments: ['@doctrine.orm.default_entity_manager']

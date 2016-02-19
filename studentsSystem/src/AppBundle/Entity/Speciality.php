@@ -29,35 +29,12 @@ class Speciality
      */
     protected $specialityShortName;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Student")
-     * @ORM\JoinColumn(name="student_id", referencedColumnName="student_id")
-     */
-    protected $student;
-
     public function __construct()
     {
-        $this->student = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * @return mixed
-     */
-    public function getStudent()
-    {
-        return $this->student;
-    }
-
-    /**
-     * @param mixed $student
-     */
-    public function setStudent($student)
-    {
-        $this->student = $student;
-    }
-
-    /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -65,7 +42,7 @@ class Speciality
     }
 
     /**
-     * @param mixed $id
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -73,7 +50,7 @@ class Speciality
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSpecialityLongName()
     {
@@ -81,7 +58,7 @@ class Speciality
     }
 
     /**
-     * @param mixed $specialityLongName
+     * @param string $specialityLongName
      */
     public function setSpecialityLongName($specialityLongName)
     {
@@ -89,7 +66,7 @@ class Speciality
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSpecialityShortName()
     {
@@ -97,7 +74,7 @@ class Speciality
     }
 
     /**
-     * @param mixed $specialityShortName
+     * @param string $specialityShortName
      */
     public function setSpecialityShortName($specialityShortName)
     {

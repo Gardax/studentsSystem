@@ -97,7 +97,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -105,7 +105,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $id
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -113,7 +113,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUsername()
     {
@@ -121,7 +121,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $username
+     * @param string $username
      */
     public function setUsername($username)
     {
@@ -129,7 +129,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUserFirstName()
     {
@@ -137,7 +137,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $userFirstName
+     * @param string $userFirstName
      */
     public function setUserFirstName($userFirstName)
     {
@@ -145,7 +145,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUserLastName()
     {
@@ -153,7 +153,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $userLastName
+     * @param string $userLastName
      */
     public function setUserLastName($userLastName)
     {
@@ -161,7 +161,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -169,7 +169,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
     public function setEmail($email)
     {
@@ -177,7 +177,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPassword()
     {
@@ -185,7 +185,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $password
+     * @param string $password
      */
     public function setPassword($password)
     {
@@ -193,7 +193,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getApiKey()
     {
@@ -201,7 +201,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $apiKey
+     * @param string $apiKey
      */
     public function setApiKey($apiKey)
     {
@@ -209,12 +209,13 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSalt()
     {
         return $this->salt;
     }
+
 
     public function setSalt() {
         $this->salt = $this->generateSalt();
