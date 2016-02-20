@@ -3,52 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>Студентска система</title>
+    {#<link rel="stylesheet" href="../../../../../web/bundles/framework/css/style.css">#}
+    <link rel="stylesheet" href="{{ asset('bundles/framework/css/style.css') }}" />
     <script src="{{ asset('scripts/jquery-2.2.0.js') }}"></script>
     <script src="{{ asset('scripts/http-requester.js') }}"></script>
     <script src="{{ asset('scripts/homePageService.js') }}"></script>
     <script src="{{ asset('scripts/homePageController.js') }}"></script>
+    <script src="{{ asset('scripts/coursePageService.js') }}"></script>
+    <script src="{{ asset('scripts/coursePageController.js') }}"></script>
+    <script src="{{ asset('scripts/disciplinesPageService.js') }}"></script>
+    <script src="{{ asset('scripts/disciplinesPageController.js') }}"></script>
+    <script src="{{ asset('scripts/specialitiesPageService.js') }}"></script>
+    <script src="{{ asset('scripts/specialitiesPageController.js') }}"></script>
+    <script src="{{ asset('scripts/studentsPageService.js') }}"></script>
+    <script src="{{ asset('scripts/studentsPageController.js') }}"></script>
+    <script src="{{ asset('scripts/userPageService.js') }}"></script>
+    <script src="{{ asset('scripts/userPageController.js') }}"></script>
     <script src="{{ asset('scripts/main.js') }}"></script>
+
 </head>
 <body>
 <nav>
     <ul>
-        <li>
-            <a href="">Вход</a>
+        <li id="loginButton">
+            Вход
         </li>
         <li id="homeButton">
             Начало
         </li>
-        <li>
-            <a href="">Курсове</a>
+        <li id="coursesButton">
+            Курсове
         </li>
-        <li>
-            <a href="">Специалности</a>
+        <li id="subjectsButton">
+            Специалности
         </li>
-        <li>
-            <a href="">Дисциплини</a>
+        <li id="specialitiesButton">
+            Дисциплини
         </li>
-        <li>
-            <a href="">Студенти</a>
+        <li id="students">
+            Студенти
         </li>
-        <li>
-            <a href="">Оценки</a>
+        <li id="grades">
+            Оценки
         </li>
-        <li>
-            <a href="">Потребители</a>
+        <li id="users">
+            Потребители
         </li>
     </ul>
     <ul>
         <li>
             <span>Potrebitelsko Ime</span>
         </li>
-        <li>
-            <a href="">Профил</a>
+        <li id="profileButton">
+            Профил
         </li>
-        <li>
-            <a href="">Изход</a>
+        <li id="exitButton">
+            Изход
         </li>
     </ul>
 </nav>
+<div class="clear"></div>
 <main id="mainContainer">
 
 </main>

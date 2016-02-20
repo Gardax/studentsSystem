@@ -1,0 +1,24 @@
+{
+  "students" : [
+    {
+      "student_id" : "1",
+      "first_name" : "Марио",
+      "last_name" : "Христев",
+      "email" : "hristevmario@gmail.com",
+      "faculty_number" : "1401181006"
+    },
+    {
+      "student_id" : "2",
+      "first_name" : "Георги",
+      "last_name" : "Георгиев",
+      "email" : "gardax@gmail.com",
+      "faculty_number" : "1401181030"
+    },{
+      "student_id" : "3",
+      "first_name" : "Кристиан",
+      "last_name" : "Бащев",
+      "email" : "dahacka@gmail.com",
+      "faculty_number" : "1401181025"
+    }
+  ]
+}

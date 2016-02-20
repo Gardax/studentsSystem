@@ -1,0 +1,19 @@
+{
+  "specialities" : [
+    {
+      "id" : "1",
+      "fullName" : "Математика",
+      "shortName" : "M"
+    },
+    {
+      "id" : "2",
+      "fullName" : "Информатика",
+      "shortName" : "И"
+    },
+    {
+      "id" : "3",
+      "fullName" : "Бизнес Информационни Технологии",
+      "shortName" : "БИТ"
+    }
+  ]
+}
