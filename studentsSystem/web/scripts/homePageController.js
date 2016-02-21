@@ -15,7 +15,7 @@ var homePageController = (function(){
          var table = "<table border='1'>" +
              "<thead>" +
              "<tr>" +
-             "  <th>" +
+             "<th>" +
              "</th>" +
              "<th colspan='2'>" +
              "</th>" +
