@@ -1,68 +1,72 @@
-Symfony Standard Edition
-========================
+<h1>Setup:</h1>
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony
-application that you can use as the skeleton for your new applications.
 
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
+<h3>Install php</h3>
 
-What's inside?
---------------
+```
+#!python
 
-The Symfony Standard Edition is configured with the following defaults:
+sudo apt-get install php5-cli
 
-  * An AppBundle you can use to start coding;
+```
+<h3>Install curl</h3>
+```
+#!python
 
-  * Twig as the only configured template engine;
+sudo apt-get install curl
+sudo apt-get install php5-curl
 
-  * Doctrine ORM/DBAL;
+```
+<h3>Install Composer</h3>
+To install Composer on Linux or Mac OS X, execute the following two commands:
+```
+#!python
 
-  * Swiftmailer;
+$ curl -sS https://getcomposer.org/installer | php
+$ sudo mv composer.phar /usr/local/bin/composer
 
-  * Annotations enabled for everything.
+```
 
-It comes pre-configured with the following bundles:
+<h3>Install symfony</h3>
+```
+#!python
 
-  * **FrameworkBundle** - The core Symfony framework bundle
+sudo curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony
+sudo chmod a+x /usr/local/bin/symfony
+```
 
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
+<h3>Clone the repository</h3>
+```
+#!python
+composer update
 
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
+```
 
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
+<h3>Create database</h3>
+```
+#!python
+$ php bin/console doctrine:database:create
+```
 
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
+<h3>Update database schema</h3>
+```
+#!python
+$ php bin/console doctrine:schema:update --force
+```
 
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
+<h3>Load fixtures</h3>
+```
+#!python
+$ php bin/console doctrine:fixtures:load
+```
 
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
+<h1>Running the Symfony Application</h1>
 
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
+Then, open your browser and access the http://localhost:8000 URL to see the Welcome page of Symfony
+```
+#!python
 
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
+$ cd my_project_name/
+$ php bin/console server:run <optional IP>
+```
 
-  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
-    capabilities
-
-  * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
-    integration
-
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  https://symfony.com/doc/3.0/book/installation.html
-[6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  https://symfony.com/doc/3.0/book/doctrine.html
-[8]:  https://symfony.com/doc/3.0/book/templating.html
-[9]:  https://symfony.com/doc/3.0/book/security.html
-[10]: https://symfony.com/doc/3.0/cookbook/email.html
-[11]: https://symfony.com/doc/3.0/cookbook/logging/monolog.html
-[13]: https://symfony.com/doc/3.0/bundles/SensioGeneratorBundle/index.html
