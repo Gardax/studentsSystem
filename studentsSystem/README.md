@@ -38,8 +38,13 @@ sudo chmod a+x /usr/local/bin/symfony
 <h3>Clone the repository</h3>
 ```
 #!python
-composer update
+git clone <url-to-the-repo>
+```
 
+<h3>Install depending packages</h3>
+```
+#!python
+composer update
 ```
 
 <h3>Create database</h3>
