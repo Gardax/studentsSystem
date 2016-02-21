@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Студентска система</title>
-    {#<link rel="stylesheet" href="../../../../../web/bundles/framework/css/style.css">#}
     <link rel="stylesheet" href="{{ asset('bundles/framework/css/style.css') }}" />
     <script src="{{ asset('scripts/jquery-2.2.0.js') }}"></script>
+    <script src="{{ asset('scripts/config.js') }}"></script>
     <script src="{{ asset('scripts/http-requester.js') }}"></script>
     <script src="{{ asset('scripts/homePageService.js') }}"></script>
     <script src="{{ asset('scripts/homePageController.js') }}"></script>
@@ -50,6 +50,7 @@
             Потребители
         </li>
     </ul>
+    <div class="clear"></div>
     <ul>
         <li>
             <span>Potrebitelsko Ime</span>
@@ -66,8 +67,5 @@
 <main id="mainContainer">
 
 </main>
-<footer>
-    made by :ME
-</footer>
 </body>
 </html>
