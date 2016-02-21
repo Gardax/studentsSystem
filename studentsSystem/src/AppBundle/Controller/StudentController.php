@@ -11,6 +11,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Student;
 use AppBundle\Exceptions\InvalidFormException;
 use AppBundle\Models\StudentModel;
+use AppBundle\Entity\Course;
+use AppBundle\Entity\Speciality;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -39,11 +41,16 @@ class StudentController extends Controller
 
         $service = $this->get('student_service');
 
-        $username  = $request->query->get('username');
-        $speciality = $request->query->get('speciality');
-        $course = $request->query->get('course');
+        $filters = [
+            'username'  => $request->query->get('username'),
+            'speciality' => $request->query->get('speciality'),
+            'course' => $request->query->get('course'),
+            'email' => $request->query->get('email'),
+            'facultyNumber' => $request->query->get('facultyNumber'),
 
-        $studentEntities = $service->getStudents($page, self::PAGE_SIZE, $username,$speciality,$course);
+        ];
+
+        $studentEntities = $service->getStudents($page, self::PAGE_SIZE, $filters);
 
         $studentModels = array();
         foreach ($studentEntities as $student) {
@@ -51,7 +58,7 @@ class StudentController extends Controller
             $studentModels[] = $model;
         }
 
-        $totalCount = $service->getStudents($page, self::PAGE_SIZE, $username,$speciality,$course, true);
+        $totalCount = $service->getStudents($page, self::PAGE_SIZE, $filters, true);
         $data = [
             'students' => $studentModels,
             'totalCount' => $totalCount,
@@ -71,6 +78,14 @@ class StudentController extends Controller
     public function addStudentAction(Request $request)
     {
         $studentService = $this->get('student_service');
+        $courseService = $this->get('course_service');
+        $specialityService = $this->get('speciality_service');
+
+        //TODO: Before you add the student you should first check if the email is free.
+
+        //TODO: Check if the IDs are passed.
+        $courseEntity = $courseService->getCourseById($request->request->get('courseId'));
+        $specialityEntity = $specialityService->getSpecialityById($request->request->get('specialityId'));
 
         $studentData = [
             'firstName' => $request->request->get('firstName'),
@@ -80,7 +95,7 @@ class StudentController extends Controller
             'educationForm' => $request->request->get('educationForm'),
         ];
 
-        $studentEntity = $studentService->addStudent($studentData);
+        $studentEntity = $studentService->addStudent($studentData, $courseEntity, $specialityEntity);
         $studentModel = new StudentModel($studentEntity);
 
         return new JsonResponse($studentModel);

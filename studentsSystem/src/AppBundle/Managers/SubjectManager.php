@@ -53,14 +53,20 @@ class SubjectManager
         return true;
     }
 
-    public function getSubjects($start,$end,$name = null){
+    public function getSubjects($start,$end,$name = null,$getCount=false){
 
         $em = $this->entityManager;
 
         $parameters = [];
 
-        $queryString = "SELECT s
+        if(!$getCount) {
+            $queryString = "SELECT s
                   FROM AppBundle:Subject s";
+        }
+        else {
+            $queryString = "SELECT count(s.id)
+                  FROM AppBundle:Subject s";
+        }
 
         $queryString .= " WHERE 1=1 ";
 
@@ -70,12 +76,14 @@ class SubjectManager
         }
 
         $query = $em->createQuery($queryString)
-            ->setParameters($parameters)
-            ->setFirstResult($start)
-            ->setMaxResults($end);
+            ->setParameters($parameters);
 
-        $subjects = $query->getResult();
+        if(!$getCount) {
+            $query->setFirstResult($start)
+                ->setMaxResults($end);
+        }
 
+        $subjects = $getCount ? $query->getSingleScalarResult() : $query->getResult();
         return $subjects;
     }
 

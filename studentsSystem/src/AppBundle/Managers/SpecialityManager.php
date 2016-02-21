@@ -41,6 +41,17 @@ class SpecialityManager
     }
 
     /**
+     * @param $id
+     * @return Speciality|null|object
+     */
+    public function getSpecialityById($id)
+    {
+        $speciality = $this->entityManager->getRepository("AppBundle:Speciality")->find($id);
+
+        return $speciality;
+    }
+
+    /**
      * Flushes all entities.
      */
     public function saveChanges(){

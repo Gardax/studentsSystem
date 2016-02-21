@@ -41,6 +41,17 @@ class CourseManager
     }
 
     /**
+     * @param $id
+     * @return Course|null|object
+     */
+    public function getCourseById($id)
+    {
+        $course = $this->entityManager->getRepository("AppBundle:Course")->find($id);
+
+        return $course;
+    }
+
+    /**
      * Flushes all entities.
      */
     public function saveChanges(){

@@ -48,4 +48,19 @@ class CourseService
         return $courseEntity;
 
     }
+
+    /**
+     * @param $id
+     * @return Course|null|object
+     */
+    public function getCourseById($id){
+
+        $course = $this->courseManager->getCourseById($id);
+
+        if(!$course){
+            throw new Exception("No courses found.");
+        }
+        return $course;
+    }
+
 }

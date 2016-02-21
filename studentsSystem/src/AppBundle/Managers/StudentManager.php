@@ -29,13 +29,11 @@ class StudentManager
         $this->entityManager=$em;
     }
 
-    public function getStudents($start, $end, $firstName = null,$speciality = null,$course = null, $getCount=false){
+    public function getStudents($start, $end, $filters = [], $getCount = false){
 
         $em = $this->entityManager;
 
         $parameters = [];
-
-        $queryString = "";
 
         if(!$getCount) {
             $queryString = "SELECT s
@@ -48,19 +46,29 @@ class StudentManager
 
         $queryString .= " WHERE 1=1 ";
 
-        if($firstName) {
+        if(isset($filters['firstName']) && $filters['firstName']) {
             $queryString .= " AND s.firstName LIKE :username";
-            $parameters['username'] = $firstName . "%";
+            $parameters['username'] = $filters['firstName'] . "%";
         }
 
-        if($speciality){
+        if(isset($filters['speciality']) && $filters['speciality']){
             $queryString .= " AND s.studentSpecialityId = :speciality";
-            $parameters['speciality'] = $speciality;
+            $parameters['speciality'] = $filters['speciality'];
         }
 
-        if($course){
+        if(isset($filters['course']) && $filters['course']){
             $queryString .= " AND s.studentCourseId = :course";
-            $parameters['course'] = $course;
+            $parameters['course'] = $filters['course'];
+        }
+
+        if(isset($filters['email']) && $filters['email']){
+            $queryString .= " AND s.email = :email";
+            $parameters['email'] = $filters['email'];
+        }
+
+        if(isset($filters['facultyNumber']) && $filters['facultyNumber']){
+            $queryString .= " AND s.facultyNumber = :facultyNumber";
+            $parameters['facultyNumber'] = $filters['facultyNumber'];
         }
 
         $query = $em->createQuery($queryString)

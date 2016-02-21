@@ -49,4 +49,18 @@ class SpecialityService
         return $specialityEntity;
 
     }
+
+    /**
+     * @param $id
+     * @return Speciality|null|object
+     */
+    public function getSpecialityById($id){
+
+        $speciality = $this->specialityManager->getSpecialityById($id);
+
+        if(!$speciality){
+            throw new Exception("No specialities found.");
+        }
+        return $speciality;
+    }
 }

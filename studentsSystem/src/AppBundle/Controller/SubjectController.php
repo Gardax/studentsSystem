@@ -79,7 +79,14 @@ class SubjectController extends Controller
             $subjectModels[] = $model;
            }
 
-        return new JsonResponse($subjectModels);
+        $totalCount = $subjectService->getSubjects($page, self::PAGE_SIZE, $name, true);
+        $data = [
+            'subjects' => $subjectModels,
+            'totalCount' => $totalCount,
+            'page' => $page
+        ];
+
+        return new JsonResponse($data);
 }
 
 

@@ -63,14 +63,15 @@ class SubjectService
      * @param $page
      * @param $pageSize
      * @param null $name
-     * @return array
+     * @param bool $getCount
+     * @return array|mixed
      */
-    public function getSubjects($page,$pageSize,$name = null){
+    public function getSubjects($page,$pageSize,$name = null,$getCount=false){
 
         $start = ($page -1) *$pageSize;
         $end = $start + $pageSize;
 
-        $subjects = $this->subjectManager->getSubjects($start,$end,$name);
+        $subjects = $this->subjectManager->getSubjects($start,$end,$name,$getCount);
         if(!$subjects){
             throw new NotFoundHttpException("No subjects found.");
         }

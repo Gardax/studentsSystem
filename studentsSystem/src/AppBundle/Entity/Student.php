@@ -77,21 +77,19 @@ class Student
     protected $studentAssessments;
 
     /**
-     * @ORM\OneToMany(targetEntity="Course", mappedBy="student")
+     * @ORM\ManyToOne(targetEntity="Course", inversedBy="student")
      */
-    protected $courses;
+    protected $course;
 
     /**
-     * @ORM\OneToMany(targetEntity="Speciality", mappedBy="students")
+     * @ORM\ManyToOne(targetEntity="Speciality", inversedBy="students")
      */
-    protected $specialities;
+    protected $speciality;
 
 
     public function __construct()
     {
         $this->studentAssessments = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->courses = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->specialities = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -111,35 +109,35 @@ class Student
     }
 
     /**
+     * @return Course
+     */
+    public function getCourse()
+    {
+        return $this->course;
+    }
+
+    /**
+     * @param Course $course
+     */
+    public function setCourse(Course $course)
+    {
+        $this->course = $course;
+    }
+
+    /**
      * @return integer
      */
-    public function getStudentCourseId()
+    public function getSpeciality()
     {
-        return $this->studentCourseId;
+        return $this->speciality;
     }
 
     /**
-     * @param integer $studentCourseId
+     * @param Speciality $speciality
      */
-    public function setStudentCourseId($studentCourseId)
+    public function setSpeciality(Speciality $speciality)
     {
-        $this->studentCourseId = $studentCourseId;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getStudentSpecialityId()
-    {
-        return $this->studentSpecialityId;
-    }
-
-    /**
-     * @param integer $studentSpecialityId
-     */
-    public function setStudentSpecialityId($studentSpecialityId)
-    {
-        $this->studentSpecialityId = $studentSpecialityId;
+        $this->speciality = $speciality;
     }
 
     /**

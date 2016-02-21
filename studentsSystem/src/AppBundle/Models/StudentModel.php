@@ -78,8 +78,6 @@ class StudentModel
      */
     public function __construct(Student $student){
         $this->setId($student->getId());
-        $this->setStudentCourseId($student->getStudentCourseId());
-        $this->setStudentSpecialityId($student->getStudentSpecialityId());
         $this->setFirstName($student->getFirstName());
         $this->setLastName($student->getLastName());
         $this->setEmail($student->getEmail());

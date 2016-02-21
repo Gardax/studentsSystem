@@ -8,8 +8,10 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\Speciality;
 use AppBundle\Managers\StudentManager;
 use AppBundle\Entity\Student;
+use AppBundle\Entity\Course;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -40,17 +42,16 @@ class StudentService
     /**
      * @param $page
      * @param $pageSize
-     * @param null $firstName
-     * @param null $speciality
-     * @param null $course
-     * @return array
+     * @param array $filters
+     * @param bool $getCount
+     * @return array|mixed
      */
-    public function getStudents($page,$pageSize,$firstName = null,$speciality = null,$course = null, $getCount=false){
+    public function getStudents($page, $pageSize, $filters, $getCount=false){
 
         $start = ($page -1) *$pageSize;
         $end = $start + $pageSize;
 
-        $students = $this->studentManager->getStudents($start,$end,$firstName, $speciality, $course, $getCount);
+        $students = $this->studentManager->getStudents($start, $end, $filters, $getCount);
         if(!$students){
             throw new NotFoundHttpException("No students found.");
         }
@@ -59,11 +60,15 @@ class StudentService
 
     /**
      * @param $studentData
+     * @param Course $courseEntity
+     * @param Speciality $specialityEntity
      * @return Student
      */
-    public function addStudent($studentData){
+    public function addStudent($studentData, Course $courseEntity, Speciality $specialityEntity){
 
         $studentEntity = new Student();
+        $studentEntity->setCourse($courseEntity);
+        $studentEntity->setSpeciality($specialityEntity);
         $studentEntity->setFirstName($studentData['firstName']);
         $studentEntity->setLastName($studentData['lastName']);
         $studentEntity->setEmail($studentData['email']);
