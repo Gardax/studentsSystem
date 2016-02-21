@@ -1,52 +1,54 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: dahaka
+ * Date: 2/20/16
+ * Time: 8:05 PM
+ */
 
-namespace AppBundle\Entity;
+namespace AppBundle\Models;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Entity\Subject;
 
 /**
- * Subjects
- *
- * @ORM\Table
- * @ORM\Entity
+ * Class SubjectModel
+ * @package AppBundle\Models
  */
-class Subject
+class SubjectModel
 {
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var integer
      */
-    protected $id;
+    public $id;
 
     /**
-     * @ORM\Column(type="string", length=45, nullable=true)
-     * @Assert\NotBlank(groups={"edit"}, message="Name cannot be blank.")
+     * @var string
      */
-    protected $name;
-
-    /**
-     * @ORM\Column(type="smallint", nullable=false)
-     * @Assert\NotBlank(groups={"edit"}, message="Workload lectures cannot be blank.")
-     */
-    protected $workloadLectures = '0';
-
-    /** @ORM\OneToMany(targetEntity="StudentAssessment", mappedBy="subject")
-     *
-     */
-    protected $studentAssessments;
+    public $name;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(type="smallint", nullable=false)
-     * @Assert\NotBlank(groups={"edit"}, message="Workload exercises cannot be blank.")
+     */
+    public $workloadLectures = '0';
+
+    /**
+     * @var int
      */
     public $workloadExercises = '0';
 
     /**
-     * @return integer
+     * SubjectModel constructor.
+     * @param Subject $subject
+     */
+    public function __construct(Subject $subject){
+        $this->setId($subject->getId());
+        $this->setName($subject->getName());
+        $this->setWorkloadLectures($subject->getWorkloadLectures());
+        $this->setWorkloadExercises($subject->getWorkloadExercises());
+    }
+
+    /**
+     * @return int
      */
     public function getId()
     {
@@ -54,7 +56,7 @@ class Subject
     }
 
     /**
-     * @param integer $id
+     * @param int $id
      */
     public function setId($id)
     {
@@ -78,7 +80,7 @@ class Subject
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getWorkloadLectures()
     {
@@ -86,7 +88,7 @@ class Subject
     }
 
     /**
-     * @param integer $workloadLectures
+     * @param int $workloadLectures
      */
     public function setWorkloadLectures($workloadLectures)
     {
@@ -108,5 +110,6 @@ class Subject
     {
         $this->workloadExercises = $workloadExercises;
     }
+
 
 }

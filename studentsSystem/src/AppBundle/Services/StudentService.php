@@ -45,12 +45,12 @@ class StudentService
      * @param null $course
      * @return array
      */
-    public function getStudents($page,$pageSize,$firstName = null,$speciality = null,$course = null){
+    public function getStudents($page,$pageSize,$firstName = null,$speciality = null,$course = null, $getCount=false){
 
         $start = ($page -1) *$pageSize;
         $end = $start + $pageSize;
 
-        $students = $this->studentManager->getStudents($start,$end,$firstName, $speciality, $course);
+        $students = $this->studentManager->getStudents($start,$end,$firstName, $speciality, $course, $getCount);
         if(!$students){
             throw new NotFoundHttpException("No students found.");
         }

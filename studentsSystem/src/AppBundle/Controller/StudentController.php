@@ -26,7 +26,7 @@ use AppBundle\Services\StudentService;
  */
 class StudentController extends Controller
 {
-    const PAGE_SIZE = 10;
+    const PAGE_SIZE = 5;
 
     /**
      * @Route("/student/{page}", defaults={"page" = 1})]
@@ -50,7 +50,15 @@ class StudentController extends Controller
             $model = new StudentModel($student);
             $studentModels[] = $model;
         }
-        return new JsonResponse($studentModels);
+
+        $totalCount = $service->getStudents($page, self::PAGE_SIZE, $username,$speciality,$course, true);
+        $data = [
+            'students' => $studentModels,
+            'totalCount' => $totalCount,
+            'page' => $page
+        ];
+
+        return new JsonResponse($data);
     }
 
     /**

@@ -2,6 +2,7 @@
 namespace AppBundle\Security;
 
 use AppBundle\Exceptions\InvalidFormException;
+use AppBundle\Exceptions\ValidatorException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +37,21 @@ class ExceptionListener
             }
             $data = [
                 'errors' => $errors,
-                'errorMessage' => '',
+                'errorMessage' => (string)$exception->getForm()->getErrors(true),
+            ];
+            $response->setData($data);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
+        else if($exception instanceof ValidatorException) {
+            $errors = [];
+            foreach($exception->getErrors() as $error)
+            {
+                $errors[$error->getPropertyPath()] = $error->getMessage();
+            }
+
+            $data = [
+                'errors' => $errors,
+                'errorMessage' => "",
             ];
             $response->setData($data);
             $response->setStatusCode(Response::HTTP_BAD_REQUEST);

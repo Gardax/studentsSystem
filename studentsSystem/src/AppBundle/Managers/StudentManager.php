@@ -29,20 +29,28 @@ class StudentManager
         $this->entityManager=$em;
     }
 
-    public function getStudents($start,$end,$firstName = null,$speciality = null,$course = null){
+    public function getStudents($start, $end, $firstName = null,$speciality = null,$course = null, $getCount=false){
 
         $em = $this->entityManager;
 
         $parameters = [];
 
-        $queryString = "SELECT s
+        $queryString = "";
+
+        if(!$getCount) {
+            $queryString = "SELECT s
                   FROM AppBundle:Student s";
+        }
+        else {
+            $queryString = "SELECT count(s.id)
+                  FROM AppBundle:Student s";
+        }
 
         $queryString .= " WHERE 1=1 ";
 
         if($firstName) {
             $queryString .= " AND s.firstName LIKE :username";
-            $parameters['username'] = "%" . $firstName . "%";
+            $parameters['username'] = $firstName . "%";
         }
 
         if($speciality){
@@ -56,11 +64,14 @@ class StudentManager
         }
 
         $query = $em->createQuery($queryString)
-            ->setParameters($parameters)
-            ->setFirstResult($start)
-            ->setMaxResults($end);
+            ->setParameters($parameters);
 
-        $students = $query->getResult();
+        if(!$getCount) {
+            $query->setFirstResult($start)
+                ->setMaxResults($end);
+        }
+
+        $students = $getCount ? $query->getSingleScalarResult() : $query->getResult();
         return $students;
     }
 

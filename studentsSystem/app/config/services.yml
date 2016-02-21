@@ -34,3 +34,10 @@ services:
     speciality_manager:
             class: AppBundle\Managers\SpecialityManager
             arguments: ['@doctrine.orm.default_entity_manager']
+
+    subject_service:
+            class: AppBundle\Services\SubjectService
+            arguments: ['@subject_manager', '@validator']
+    subject_manager:
+            class: AppBundle\Managers\SubjectManager
+            arguments: ['@doctrine.orm.default_entity_manager']
