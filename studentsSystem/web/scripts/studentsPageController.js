@@ -1,8 +1,8 @@
 var studentsPageController = (function(){
     function load(container){
-        studentsPageService.getUsers(1,1,1,
+        studentsPageService.getUsers(1,[],[],
             function(data){
-                var table = generateUsersTable(JSON.parse(data));
+                var table = generateUsersTable(data);
                 container.append(table);
             },
             function(error){
@@ -22,10 +22,10 @@ var studentsPageController = (function(){
             "</thead><tbody>";
         for(var i = 0; i < usersData.students.length; i++){
             table += "<tr>"+
-                "<td>"+usersData.students[i].student_id+"</td>"+
-                "<td>"+usersData.students[i].first_name+" "+usersData.students[i].last_name+"</td>"+
+                "<td>"+usersData.students[i].id+"</td>"+
+                "<td>"+usersData.students[i].firstName+" "+usersData.students[i].lastName+"</td>"+
                 "<td>"+usersData.students[i].email+"</td>"+
-                "<td>"+usersData.students[i].faculty_number+"</td>"+
+                "<td>"+usersData.students[i].facultyNumber+"</td>"+
                 "<td>MOLIF</td>"+
                 "<td>DEL</td>";
         }

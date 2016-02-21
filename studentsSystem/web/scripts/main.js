@@ -6,7 +6,7 @@
 
     function initializeNavigation(){
         var $maincontainer = $("#mainContainer");
-        var $homeButton = $("nav #homeButton");
+        var $homeButton = $("#homeButton");
         var $coursesButton = $("#coursesButton");
         var $specialitiesButton = $("#specialitiesButton");
         var $subjectsButton = $("#subjectsButton");
@@ -58,10 +58,6 @@
             });
 
         });
-
-
-
-
     }
 
     function userTable(){
