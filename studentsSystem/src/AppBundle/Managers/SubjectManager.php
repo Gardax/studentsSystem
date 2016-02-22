@@ -41,7 +41,6 @@ class SubjectManager
     }
 
     /**
-     * Delete recipe by id.
      *
      * @param $id
      * @return bool
@@ -53,6 +52,13 @@ class SubjectManager
         return true;
     }
 
+    /**
+     * @param $start
+     * @param $end
+     * @param null $name
+     * @param bool $getCount
+     * @return array|mixed
+     */
     public function getSubjects($start,$end,$name = null,$getCount=false){
 
         $em = $this->entityManager;

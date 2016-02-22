@@ -17,29 +17,26 @@ class StudentAssessment
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $saId;
+    protected $id;
 
 
     /**
-     * @var boolean
      *
-     * @ORM\Column(name="sa_workload_lectures", type="boolean", nullable=false)
+     * @ORM\Column(type="integer", length=3, nullable=false)
      */
-    protected $saWorkloadLectures = '0';
+    protected $workloadLectures;
 
     /**
-     * @var boolean
      *
-     * @ORM\Column(name="sa_workload_exercises", type="boolean", nullable=false)
+     * @ORM\Column(type="integer", length=3, nullable=false)
      */
-    protected $saWorkloadExercises = '0';
+    protected $workloadExercises;
 
     /**
-     * @var boolean
      *
-     * @ORM\Column(name="sa_assessment", type="boolean", nullable=false)
+     * @ORM\Column(type="integer", length=3, nullable=false)
      */
-    protected $saAssessment = '0';
+    protected $assessment;
 
     /**
      * @ORM\ManyToOne(targetEntity="Subject", inversedBy="sa_assessment")
@@ -54,67 +51,67 @@ class StudentAssessment
     protected $student;
 
     /**
-     * @return integer
+     * @return mixed
      */
-    public function getSaId()
+    public function getId()
     {
-        return $this->saId;
+        return $this->id;
     }
 
     /**
-     * @param integer $saId
+     * @param mixed $id
      */
-    public function setSaId($saId)
+    public function setId($id)
     {
-        $this->saId = $saId;
+        $this->id = $id;
     }
 
     /**
-     * @return boolean
+     * @return mixed
      */
-    public function isSaWorkloadLectures()
+    public function getWorkloadLectures()
     {
-        return $this->saWorkloadLectures;
+        return $this->workloadLectures;
     }
 
     /**
-     * @param boolean $saWorkloadLectures
+     * @param mixed $workloadLectures
      */
-    public function setSaWorkloadLectures($saWorkloadLectures)
+    public function setWorkloadLectures($workloadLectures)
     {
-        $this->saWorkloadLectures = $saWorkloadLectures;
+        $this->workloadLectures = $workloadLectures;
     }
 
     /**
-     * @return boolean
+     * @return mixed
      */
-    public function isSaWorkloadExercises()
+    public function getWorkloadExercises()
     {
-        return $this->saWorkloadExercises;
+        return $this->workloadExercises;
     }
 
     /**
-     * @param boolean $saWorkloadExercises
+     * @param mixed $workloadExercises
      */
-    public function setSaWorkloadExercises($saWorkloadExercises)
+    public function setWorkloadExercises($workloadExercises)
     {
-        $this->saWorkloadExercises = $saWorkloadExercises;
+        $this->workloadExercises = $workloadExercises;
     }
 
     /**
-     * @return boolean
+     * @return mixed
      */
-    public function isSaAssessment()
+    public function getAssessment()
     {
-        return $this->saAssessment;
+        return $this->assessment;
     }
 
     /**
-     * @param boolean $saAssessment
+     * @param mixed $assessment
      */
-    public function setSaAssessment($saAssessment)
+    public function setAssessment($assessment)
     {
-        $this->saAssessment = $saAssessment;
+        $this->assessment = $assessment;
     }
 
     /**
@@ -148,9 +145,5 @@ class StudentAssessment
     {
         $this->student = $student;
     }
-
-
-
-
 
 }

@@ -41,6 +41,18 @@ class CourseManager
     }
 
     /**
+     *
+     * @param $id
+     * @return bool
+     */
+    public function deleteCourseById($id){
+        $this->entityManager->remove($id);
+        $this->entityManager->flush();
+
+        return true;
+    }
+
+    /**
      * @param $id
      * @return Course|null|object
      */

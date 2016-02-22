@@ -8,11 +8,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Student;
-use AppBundle\Entity\Subject;
 use AppBundle\Exceptions\InvalidFormException;
-use AppBundle\Form\Type\SubjectType;
-use AppBundle\Models\StudentModel;
 use AppBundle\Models\SubjectModel;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -89,8 +85,7 @@ class SubjectController extends Controller
         return new JsonResponse($data);
 }
 
-
-            /**
+    /**
      * @Route("/subject/delete/{id}", name="deleteSubject")
      * @Method("DELETE")
      *

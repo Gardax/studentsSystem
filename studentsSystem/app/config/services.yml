@@ -23,7 +23,7 @@ services:
 
     course_service:
             class: AppBundle\Services\CourseService
-            arguments: ['@course_manager']
+            arguments: ['@course_manager','@validator']
     course_manager:
             class: AppBundle\Managers\CourseManager
             arguments: ['@doctrine.orm.default_entity_manager']
