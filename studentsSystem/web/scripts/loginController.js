@@ -11,7 +11,7 @@ var loginController = (function(){
 
             var data = getFormData();
             loginService.login(data, function() {
-                alert("wohoo");
+                uiController.updateLayout();
             })
 
         })
@@ -26,6 +26,7 @@ var loginController = (function(){
 
     function logout() {
         loginService.logout();
+        uiController.updateLayout();
     }
 
     return {
