@@ -64,6 +64,47 @@ class CourseManager
     }
 
     /**
+     * @param $start
+     * @param $end
+     * @param null $name
+     * @param bool $getCount
+     * @return array|mixed
+     */
+    public function getCourses($start, $end, $name = null, $getCount = false){
+
+        $em = $this->entityManager;
+
+        $parameters = [];
+
+        if(!$getCount) {
+            $queryString = "SELECT c
+                  FROM AppBundle:Course c";
+        }
+        else {
+            $queryString = "SELECT count(c.id)
+                  FROM AppBundle:Course c";
+        }
+
+        $queryString .= " WHERE 1=1 ";
+
+        if($name) {
+            $queryString .= " AND c.name LIKE :name";
+            $parameters['name'] = $name . "%";
+        }
+
+        $query = $em->createQuery($queryString)
+            ->setParameters($parameters);
+
+        if(!$getCount) {
+            $query->setFirstResult($start)
+                ->setMaxResults($end);
+        }
+
+        $courses = $getCount ? $query->getSingleScalarResult() : $query->getResult();
+        return $courses;
+    }
+
+    /**
      * Flushes all entities.
      */
     public function saveChanges(){

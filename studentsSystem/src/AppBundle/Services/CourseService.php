@@ -63,6 +63,26 @@ class CourseService
     }
 
     /**
+     * @param $page
+     * @param $pageSize
+     * @param null $name
+     * @param bool $getCount
+     * @return array|mixed
+     */
+    public function getCourses($page, $pageSize, $name = null, $getCount = false){
+
+        $start = ($page -1) *$pageSize;
+        $end = $start + $pageSize;
+
+        $courses = $this->courseManager->getCourses($start,$end,$name,$getCount);
+        if(!$courses){
+            throw new NotFoundHttpException("No courses found.");
+        }
+        return $courses;
+
+    }
+
+    /**
      * @param $id
      * @return Course|null|object
      */

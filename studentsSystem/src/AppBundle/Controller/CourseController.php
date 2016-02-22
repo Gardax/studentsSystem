@@ -26,6 +26,7 @@ class CourseController extends Controller
 
     const SUCCESS = 1;
     const FAIL = 0;
+    const PAGE_SIZE = 10;
 
     /**
      * @Route("/add/course" , name="addCourse")
@@ -89,5 +90,38 @@ class CourseController extends Controller
 
         $success = $result ? self::SUCCESS : self::FAIL;
         return new JsonResponse(["success" => $success]);
+    }
+
+    /**
+     * @Route("/course/{page}", defaults={"page" = null})]
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param $page
+     * @return JsonResponse
+     */
+    public function getSubjectsAction(Request $request, $page)
+    {
+
+        $courseService = $this->get('course_service');
+
+        $name = $request->query->get('name');
+
+        $courseEntities = $courseService->getCourses($page, self::PAGE_SIZE, $name);
+
+        $courseModels = array();
+        foreach ($courseEntities as $course) {
+            $model = new CourseModel($course);
+            $courseModels[] = $model;
+        }
+
+        $totalCount = $courseService->getCourses($page, self::PAGE_SIZE, $name, true);
+        $data = [
+            'subjects' => $courseModels,
+            'totalCount' => $totalCount,
+            'page' => $page
+        ];
+
+        return new JsonResponse($data);
     }
 }

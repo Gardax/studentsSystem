@@ -61,7 +61,8 @@ class SubjectController extends Controller
      * @param $page
      * @return JsonResponse
      */
-    public function getSubjectsAction(Request $request, $page){
+    public function getSubjectsAction(Request $request, $page)
+    {
 
         $subjectService = $this->get('subject_service');
 
@@ -73,7 +74,7 @@ class SubjectController extends Controller
         foreach ($subjectEntities as $subject) {
             $model = new SubjectModel($subject);
             $subjectModels[] = $model;
-           }
+        }
 
         $totalCount = $subjectService->getSubjects($page, self::PAGE_SIZE, $name, true);
         $data = [
@@ -83,7 +84,7 @@ class SubjectController extends Controller
         ];
 
         return new JsonResponse($data);
-}
+    }
 
     /**
      * @Route("/subject/delete/{id}", name="deleteSubject")
