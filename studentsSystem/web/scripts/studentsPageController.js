@@ -1,4 +1,10 @@
 var studentsPageController = (function(){
+    var $errorsContainer;
+
+    function initialize() {
+        $errorsContainer = $("#errorsContainer");
+    }
+
     function load(container){
         studentsPageService.getUsers(1,[],[],
             function(data){
@@ -6,20 +12,21 @@ var studentsPageController = (function(){
                 container.append(table);
             },
             function(error){
-                alert(error);
+                $errorsContainer.text(error.responseJSON.errorMessage);
             }
         );
     }
 
     function generateUsersTable(usersData){
-        var table = "<table border='1'>" +
-            "<thead>" +
-            "<th>#</th>"+
-            "<th>Име</th>"+
-            "<th>E-mail</th>"+
-            "<th>Факултетен номер</th>"+
-            "<th colspan='2'>Операции</th>"+
-            "</thead><tbody>";
+        var table = "<a href=''>Първа</a> <a href=''Предходна</a> <a href=''>Следваща</a> <a href=''>Последна</a>" +
+                "<table border='1'>" +
+                "<thead>" +
+                "<th>#</th>"+
+                "<th>Име</th>"+
+                "<th>E-mail</th>"+
+                "<th>Факултетен номер</th>"+
+                "<th colspan='2'>Операции</th>"+
+                "</thead><tbody>";
         for(var i = 0; i < usersData.students.length; i++){
             table += "<tr>"+
                 "<td>"+usersData.students[i].id+"</td>"+
@@ -30,10 +37,12 @@ var studentsPageController = (function(){
                 "<td>DEL</td>";
         }
         table += "</tbody></table>";
+        table += "<a href=''>Първа</a> <a href=''Предходна</a> <a href=''>Следваща</a> <a href=''>Последна</a>";
         return table;
     }
 
     return {
-        load: load
+        load: load,
+        initialize: initialize
     };
 }());

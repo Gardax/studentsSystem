@@ -65,9 +65,8 @@ class UserController extends Controller
      * @return JsonResponse
      */
     public function authenticateAction(Request $request) {
-        $userData = $request->get('userData');
-        $username = $userData['username'];
-        $password = $userData['password'];
+        $username = $request->request->get('email');
+        $password = $request->request->get('password');
 
 
         $userService = $this->get('user_service');
