@@ -36,8 +36,8 @@ $minorProblems = $symfonyRequirements->getFailedRecommendations();
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="robots" content="noindex,nofollow" />
         <title>Symfony Configuration Checker</title>
-        <link rel="stylesheet" href="bundles/framework/css/structure.css" media="all" />
-        <link rel="stylesheet" href="bundles/framework/css/body.css" media="all" />
+        <link rel="stylesheet" href="styles/css/structure.css" media="all" />
+        <link rel="stylesheet" href="styles/css/body.css" media="all" />
         <style type="text/css">
             /* styles copied from bundles/sensiodistribution/webconfigurator/css/install.css */
             body {

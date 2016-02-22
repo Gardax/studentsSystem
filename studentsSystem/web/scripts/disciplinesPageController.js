@@ -2,7 +2,7 @@ var disciplinesPageController = (function(){
     function load(container){
         disciplinesPageService.getUsers(1,1,1,
             function(data){
-                var table = generateUsersTable(JSON.parse(data));
+                var table = generateUsersTable(data);
                 container.append(table);
             },
             function(error){
@@ -20,12 +20,12 @@ var disciplinesPageController = (function(){
             "<th>Хорариум(У)</th>"+
             "<th colspan='2'>Операции</th>"+
             "</thead><tbody>";
-        for(var i = 0; i < usersData.disciplines.length; i++){
+        for(var i = 0; i < usersData.subjects.length; i++){
             table += "<tr>"+
-                    "<td>"+usersData.disciplines[i].id+"</td>"+
-                    "<td>"+usersData.disciplines[i].name+"</td>"+
-                    "<td>"+usersData.disciplines[i].workload_lectures+"</td>"+
-                    "<td>"+usersData.disciplines[i].workload_exercises+"</td>"+"<td>MOLIF</td>"+
+                    "<td>"+usersData.subjects[i].id+"</td>"+
+                    "<td>"+usersData.subjects[i].name+"</td>"+
+                    "<td>"+usersData.subjects[i].workloadLectures+"</td>"+
+                    "<td>"+usersData.subjects[i].workloadExercises+"</td>"+"<td>MOLIF</td>"+
                 "<td>DEL</td>";
         }
         table += "</tbody></table>";

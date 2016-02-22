@@ -1,0 +1,43 @@
+body{
+    background-color: #70afff;
+}
+nav{
+    height: 40px;
+}
+nav ul {
+    height: 30px;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+
+}
+nav ul li {
+    float: left;
+    list-style: none;
+    margin-left: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+    -webkit-box-shadow: 5px 2px 2px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: 5px 2px 2px 0px rgba(0,0,0,0.25);
+    box-shadow: 5px 2px 2px 0px rgba(0,0,0,0.25);
+
+}
+nav ul li:hover{
+    background-color: #191aff;
+    color: white;
+}
+nav ul:nth-child(2) {
+    position: fixed;
+    top: 0;
+    right: 5%;
+    list-style: none;
+    margin-left: 5px;
+}
+
+.clear{
+    clear: both;
+}
+
+.searchFields{
+    text-align: center;
+}
