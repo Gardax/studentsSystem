@@ -22,6 +22,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class SpecialityController extends Controller
 {
+    const PAGE_SIZE = 10;
+    const SUCCESS = 1;
+    const FAIL = 0;
+
     /**
      * @Route("/add/speciality" , name="addSpeciality")
      * @Method({"POST"})
@@ -42,6 +46,40 @@ class SpecialityController extends Controller
         $specialityModel = new SpecialityModel($specialityEntity);
 
         return new JsonResponse($specialityModel);
+    }
+
+    /**
+     * @Route("/speciality/{page}", defaults={"page" = null})]
+     * @Method({"GET"})
+     * @param Request $request
+     * @param $page
+     * @return JsonResponse
+     */
+    public function getSpecialityAction(Request $request, $page){
+
+        $specialityService = $this->get('speciality_service');
+
+        $filters = [
+            'longName'  => $request->query->get('longName'),
+            'shortName' => $request->query->get('shortName'),
+        ];
+
+        $specialityEntities = $specialityService->getSpecialities($page, self::PAGE_SIZE, $filters);
+
+        $specialityModels = array();
+        foreach ($specialityEntities as $speciality) {
+            $model = new SpecialityModel($speciality);
+            $specialityModels[] = $model;
+        }
+
+        $totalCount = $specialityService->getSpecialities($page, self::PAGE_SIZE, $filters, true);
+        $data = [
+            'specialities' => $specialityModels,
+            'totalCount' => $totalCount,
+            'page' => $page
+        ];
+
+        return new JsonResponse($data);
     }
 
 }

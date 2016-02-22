@@ -100,7 +100,7 @@ class CourseController extends Controller
      * @param $page
      * @return JsonResponse
      */
-    public function getSubjectsAction(Request $request, $page)
+    public function getCoursesAction(Request $request, $page)
     {
 
         $courseService = $this->get('course_service');
@@ -117,7 +117,7 @@ class CourseController extends Controller
 
         $totalCount = $courseService->getCourses($page, self::PAGE_SIZE, $name, true);
         $data = [
-            'subjects' => $courseModels,
+            'courses' => $courseModels,
             'totalCount' => $totalCount,
             'page' => $page
         ];

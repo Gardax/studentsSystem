@@ -51,6 +51,25 @@ class SpecialityService
     }
 
     /**
+     * @param $page
+     * @param $pageSize
+     * @param array $filters
+     * @param bool $getCount
+     * @return array|mixed
+     */
+    public function getSpecialities($page, $pageSize, $filters, $getCount=false){
+
+        $start = ($page -1) *$pageSize;
+        $end = $start + $pageSize;
+
+        $specialities = $this->specialityManager->getSpecialities($start, $end, $filters, $getCount);
+        if(!$specialities){
+            throw new NotFoundHttpException("No specialities found.");
+        }
+        return $specialities;
+    }
+
+    /**
      * @param $id
      * @return Speciality|null|object
      */
