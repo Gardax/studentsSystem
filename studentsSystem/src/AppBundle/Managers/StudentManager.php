@@ -29,19 +29,29 @@ class StudentManager
         $this->entityManager=$em;
     }
 
-    public function getStudents($start, $end, $filters = [], $getCount = false){
+    public function getStudents($start, $end, $filters = [], $getFullInfo, $getCount = false){
 
         $em = $this->entityManager;
 
         $parameters = [];
 
+        $queryString = "SELECT ";
+
         if(!$getCount) {
-            $queryString = "SELECT s
-                  FROM AppBundle:Student s";
+            $queryString .= "s";
+            $queryString .= $getFullInfo ? ", sa, c, spec, sbj" : "";
+            $queryString .= " FROM AppBundle:Student s";
         }
         else {
-            $queryString = "SELECT count(s.id)
+            $queryString .= "count(s.id)
                   FROM AppBundle:Student s";
+        }
+
+        if($getFullInfo) {
+            $queryString .= " LEFT JOIN s.studentAssessments sa";
+            $queryString .= " LEFT JOIN s.course c ";
+            $queryString .= " LEFT JOIN s.speciality spec";
+            $queryString .= " LEFT JOIN sa.subject sbj";
         }
 
         $queryString .= " WHERE 1=1 ";
@@ -80,6 +90,7 @@ class StudentManager
         }
 
         $students = $getCount ? $query->getSingleScalarResult() : $query->getResult();
+
         return $students;
     }
 

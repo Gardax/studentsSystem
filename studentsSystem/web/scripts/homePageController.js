@@ -2,7 +2,7 @@ var homePageController = (function(){
     function load(container){
           homePageService.getUsers(1,1,1,
               function(data){
-                  var table = generateUsersTable(JSON.parse(data));
+                  var table = generateUsersTable(data);
                   container.append(table);
               },
               function(error){
@@ -54,21 +54,21 @@ var homePageController = (function(){
              table += "<tr>"+
              "<td>"+student.id+"</td>"+
              "<td>"+student.firstName +" "+student.lastName+"("+student.facultyNumber+")</td>"+
-             "<td>"+student.course+","+student.shortSpecialtyName+"</td>";
+             "<td>"+student.courseName+","+student.shortSpecialityName+"</td>";
 
-             for(j = 0; j < student.subjects.length;j++){
-                 table += "<td>"+student.subjects[j].lectureAttended+"("+student.subjects[j].lectureTotal+")</td>"+
-                     "<td>"+student.subjects[j].exerciseAttended+"("+student.subjects[j].exerciseTotal+")</td>"+
-                     "<td>"+student.subjects[j].mark+"</td>";
+             for(j = 0; j < student.studentAssessments.length;j++){
+                 table += "<td>"+student.studentAssessments[j].lectureAttended+"("+student.studentAssessments[j].lectureTotal+")</td>"+
+                     "<td>"+student.studentAssessments[j].exerciseAttended+"("+student.studentAssessments[j].exerciseTotal+")</td>"+
+                     "<td>"+student.studentAssessments[j].assessment+"</td>";
 
-                 average +=  parseInt(student.subjects[j].mark);
-                 attendedLecture += parseInt(student.subjects[j].lectureAttended);
-                 totalLectures += parseInt(student.subjects[j].lectureTotal);
-                 attendedExcercise += parseInt(student.subjects[j].exerciseAttended);
-                 totalExcercise += parseInt(student.subjects[j].exerciseTotal);
+                 average +=  parseInt(student.studentAssessments[j].assessment);
+                 attendedLecture += parseInt(student.studentAssessments[j].lectureAttended);
+                 totalLectures += parseInt(student.studentAssessments[j].lectureTotal);
+                 attendedExcercise += parseInt(student.studentAssessments[j].exerciseAttended);
+                 totalExcercise += parseInt(student.studentAssessments[j].exerciseTotal);
 
              }
-             table += "<td>"+ average/student.subjects.length+"</td>"+
+             table += "<td>"+ average/student.studentAssessments.length+"</td>"+
                  "<td>"+attendedLecture+"("+totalLectures+")</td>"+
                  "<td>"+attendedExcercise+"("+totalExcercise+")</td>";
 

@@ -23,6 +23,8 @@ var uiController = (function(){
         $profileButton = $("#profileButton");
         $exitButton = $("#exitButton");
         $loginButton = $("#loginButton");
+
+        loadHomePage();
     }
 
     function initializeNavigation() {

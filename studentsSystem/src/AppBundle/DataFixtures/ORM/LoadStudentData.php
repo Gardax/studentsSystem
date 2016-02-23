@@ -8,6 +8,8 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\StudentAssessment;
+use AppBundle\Entity\Subject;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Student;
@@ -98,8 +100,6 @@ class LoadStudentData implements FixtureInterface, ContainerAwareInterface
 
         $manager->persist($speciality8);
 
-
-
         $student1 = new Student();
         $student1->setCourse($course1);
         $student1->setSpeciality($speciality8);
@@ -140,6 +140,49 @@ class LoadStudentData implements FixtureInterface, ContainerAwareInterface
 
         $manager->persist($student4);
 
+
+        $subject1 = new Subject();
+        $subject1->setName('Увод в програмирането (С#)');
+        $subject1->setWorkloadLectures('40');
+        $subject1->setWorkloadExercises('60');
+
+        $manager->persist($subject1);
+
+        $sa1 = new StudentAssessment();
+        $sa1->setWorkloadExercises(20);
+        $sa1->setWorkloadLectures(30);
+        $sa1->setAssessment(2);
+        $sa1->setSubject($subject1);
+        $sa1->setStudent($student1);
+
+        $manager->persist($sa1);
+
+        $sa2 = new StudentAssessment();
+        $sa2->setWorkloadExercises(20);
+        $sa2->setWorkloadLectures(30);
+        $sa2->setAssessment(2);
+        $sa2->setSubject($subject1);
+        $sa2->setStudent($student2);
+
+        $manager->persist($sa2);
+
+        $sa3 = new StudentAssessment();
+        $sa3->setWorkloadExercises(20);
+        $sa3->setWorkloadLectures(30);
+        $sa3->setAssessment(2);
+        $sa3->setSubject($subject1);
+        $sa3->setStudent($student3);
+
+        $manager->persist($sa3);
+
+        $sa4 = new StudentAssessment();
+        $sa4->setWorkloadExercises(20);
+        $sa4->setWorkloadLectures(30);
+        $sa4->setAssessment(2);
+        $sa4->setSubject($subject1);
+        $sa4->setStudent($student4);
+
+        $manager->persist($sa4);
 
         $manager->flush();
     }

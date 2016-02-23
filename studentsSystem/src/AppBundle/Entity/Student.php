@@ -77,12 +77,12 @@ class Student
     protected $studentAssessments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Course", inversedBy="student")
+     * @ORM\ManyToOne(targetEntity="Course")
      */
     protected $course;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Speciality", inversedBy="students")
+     * @ORM\ManyToOne(targetEntity="Speciality")
      */
     protected $speciality;
 
@@ -125,7 +125,7 @@ class Student
     }
 
     /**
-     * @return integer
+     * @return Speciality
      */
     public function getSpeciality()
     {
@@ -138,6 +138,22 @@ class Student
     public function setSpeciality(Speciality $speciality)
     {
         $this->speciality = $speciality;
+    }
+
+    /**
+     * @return StudentAssessment[]
+     */
+    public function getStudentAssessments()
+    {
+        return $this->studentAssessments;
+    }
+
+    /**
+     * @param StudentAssessment[] $studentAssessments
+     */
+    public function setStudentAssessments($studentAssessments)
+    {
+        $this->studentAssessments = $studentAssessments;
     }
 
     /**

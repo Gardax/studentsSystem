@@ -13,6 +13,7 @@ use AppBundle\Exceptions\InvalidFormException;
 use AppBundle\Models\StudentModel;
 use AppBundle\Entity\Course;
 use AppBundle\Entity\Speciality;
+use AppBundle\Models\SubjectModel;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -46,24 +47,36 @@ class StudentController extends Controller
             'speciality' => $request->query->get('speciality'),
             'course' => $request->query->get('course'),
             'email' => $request->query->get('email'),
-            'facultyNumber' => $request->query->get('facultyNumber'),
-
+            'facultyNumber' => $request->query->get('facultyNumber')
         ];
 
-        $studentEntities = $service->getStudents($page, self::PAGE_SIZE, $filters);
+        $getFullInfo = (bool)$request->query->get('getFullInfo');
+
+        $studentEntities = $service->getStudents($page, self::PAGE_SIZE, $filters, $getFullInfo);
 
         $studentModels = array();
         foreach ($studentEntities as $student) {
-            $model = new StudentModel($student);
+            $model = new StudentModel($student, $getFullInfo);
             $studentModels[] = $model;
         }
 
-        $totalCount = $service->getStudents($page, self::PAGE_SIZE, $filters, true);
+        $totalCount = $service->getStudents($page, self::PAGE_SIZE, $filters, false, true);
+
+
         $data = [
             'students' => $studentModels,
             'totalCount' => $totalCount,
             'page' => $page
         ];
+
+        if($getFullInfo) {
+            $subjects = [];
+            foreach ($studentEntities[0]->getStudentAssessments() as $studentAssessment) {
+                $subjects[] = new SubjectModel($studentAssessment->getSubject());
+            }
+
+            $data['subjects'] = $subjects;
+        }
 
         return new JsonResponse($data);
     }

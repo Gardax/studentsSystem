@@ -28,13 +28,6 @@ class LoadSubjectData implements FixtureInterface, ContainerAwareInterface
 
     public function load(ObjectManager $manager)
     {
-        $subject1 = new Subject();
-        $subject1->setName('Увод в програмирането (С#)');
-        $subject1->setWorkloadLectures('40');
-        $subject1->setWorkloadExercises('60');
-
-        $manager->persist($subject1);
-
         $subject2 = new Subject();
         $subject2->setName('Линейна алгебра и аналитична геометрия');
         $subject2->setWorkloadLectures('60');

@@ -58,32 +58,47 @@ class StudentModel
     public $educationForm = '';
 
     /**
-     * @var integer
+     * @var
      */
     public $studentAssessments;
 
     /**
      * @var string
      */
-    public $courses;
+    public $courseName;
 
     /**
      * @var string
      */
-    public $specialities;
+    public $specialityName;
+
+    /**
+     * @var string
+     */
+    public $shortSpecialityName;
 
     /**
      * StudentModel constructor.
      * @param Student $student
+     * @param boolean $buildWithFullInfo
      */
-    public function __construct(Student $student){
+    public function __construct(Student $student, $buildWithFullInfo){
         $this->setId($student->getId());
         $this->setFirstName($student->getFirstName());
         $this->setLastName($student->getLastName());
         $this->setEmail($student->getEmail());
         $this->setFacultyNumber($student->getFacultyNumber());
         $this->setEducationForm($student->getEducationForm());
-        $this->getStudentAssessments();
+
+        if($buildWithFullInfo) {
+            $this->setCourseName($student->getCourse()->getName());
+            $this->setSpecialityName($student->getSpeciality()->getSpecialityLongName());
+            $this->setShortSpecialityName($student->getSpeciality()->getSpecialityShortName());
+
+            foreach($student->getStudentAssessments() as $studentAssessment) {
+                $this->studentAssessments[] = new StudentAssessmentModel($studentAssessment);
+            }
+        }
     }
 
     /**
@@ -100,6 +115,22 @@ class StudentModel
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortSpecialityName()
+    {
+        return $this->shortSpecialityName;
+    }
+
+    /**
+     * @param string $shortSpecialityName
+     */
+    public function setShortSpecialityName($shortSpecialityName)
+    {
+        $this->shortSpecialityName = $shortSpecialityName;
     }
 
     /**
@@ -217,33 +248,33 @@ class StudentModel
     /**
      * @return string
      */
-    public function getCourses()
+    public function getCourseName()
     {
-        return $this->courses;
+        return $this->courseName;
     }
 
     /**
-     * @param string $courses
+     * @param string $courseName
      */
-    public function setCourses($courses)
+    public function setCourseName($courseName)
     {
-        $this->courses = $courses;
+        $this->courseName = $courseName;
     }
 
     /**
      * @return string
      */
-    public function getSpecialities()
+    public function getSpecialityName()
     {
-        return $this->specialities;
+        return $this->specialityName;
     }
 
     /**
-     * @param string $specialities
+     * @param string $specialityName
      */
-    public function setSpecialities($specialities)
+    public function setSpecialityName($specialityName)
     {
-        $this->specialities = $specialities;
+        $this->specialityName = $specialityName;
     }
 
     /**

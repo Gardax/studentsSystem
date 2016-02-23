@@ -39,13 +39,13 @@ class StudentAssessment
     protected $assessment;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Subject", inversedBy="sa_assessment")
+     * @ORM\ManyToOne(targetEntity="Subject", inversedBy="studentAssessments")
      * @ORM\JoinColumn(name="subject_id", referencedColumnName="id", nullable=false)
      */
     protected $subject;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Student", inversedBy="sa_assessment")
+     * @ORM\ManyToOne(targetEntity="Student", inversedBy="studentAssessments")
      * @ORM\JoinColumn(name="student_id", referencedColumnName="student_id", nullable=false)
      */
     protected $student;
@@ -115,7 +115,7 @@ class StudentAssessment
     }
 
     /**
-     * @return string
+     * @return Subject
      */
     public function getSubject()
     {
@@ -123,9 +123,9 @@ class StudentAssessment
     }
 
     /**
-     * @param string $subject
+     * @param Subject $subject
      */
-    public function setSubject($subject)
+    public function setSubject(Subject $subject)
     {
         $this->subject = $subject;
     }
