@@ -18,7 +18,7 @@ var studentsPageController = (function(){
     }
 
     function generateUsersTable(usersData){
-        var table = "<a href=''>Първа</a> <a href=''Предходна</a> <a href=''>Следваща</a> <a href=''>Последна</a>" +
+        var table =
                 "<table border='1'>" +
                 "<thead>" +
                 "<th>#</th>"+
@@ -37,7 +37,6 @@ var studentsPageController = (function(){
                 "<td class='delete'></td>";
         }
         table += "</tbody></table>";
-        table += "<a href=''>Първа</a> <a href=''Предходна</a> <a href=''>Следваща</a> <a href=''>Последна</a>";
         return table;
     }
 

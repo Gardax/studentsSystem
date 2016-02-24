@@ -11,6 +11,72 @@ var uiController = (function(){
     var $exitButton;
     var $loginButton;
 
+    var $homeFirstPageButton;
+    var $homePreviousPageButton;
+    var $homeNextPageButton;
+    var $homeLastPageButton;
+
+    var $specialitiesFirstPage;
+    var $specialitiesPreviousPage;
+    var $specialitiesNextPage;
+    var $specialitiesLastPage;
+
+    var $disciplineFirstPage;
+    var $disciplinePreviousPage;
+    var $disciplineNextPage;
+    var $disciplineLastPage;
+
+    var $assessmentFirstPage;
+    var $assessmentPreviousPage;
+    var $assessmentNextPage;
+    var $assessmentLastPage;
+
+    var $studentsFirstPage;
+    var $studentsPreviousPage;
+    var $studentsNextPage;
+    var $studentsLastPage;
+
+    var $userFirstPage;
+    var $userPreviousPage;
+    var $userNextPage;
+    var $userLastPage;
+
+
+
+
+    function attachEvents(){
+         $homeFirstPageButton = $(".homeFirstPageButton");
+         $homePreviousPageButton = $(".homePreviousPageButton");
+         $homeNextPageButton = $(".homeNextPageButton");
+         $homeLastPageButton = $(".homeLastPageButton");
+
+         $specialitiesFirstPage = $(".specialitiesFirstPage");
+         $specialitiesPreviousPage = $(".specialitiesPreviousPage");
+         $specialitiesNextPage = $(".specialitiesNextPage");
+         $specialitiesLastPage = $(".specialitiesLastPage");
+
+         $disciplineFirstPage = $(".disciplineFirstPage");
+         $disciplinePreviousPage = $(".disciplinePreviousPage");
+         $disciplineNextPage = $(".disciplineNextPage");
+         $disciplineLastPage = $(".disciplineLastPage");
+
+         $assessmentFirstPage = $();
+         $assessmentPreviousPage = $();
+         $assessmentNextPage = $();
+         $assessmentLastPage = $();
+
+         $studentsFirstPage = $();
+         $studentsPreviousPage = $();
+         $studentsNextPage = $();
+         $studentsLastPage = $();
+
+         $userFirstPage = $();
+         $userPreviousPage = $();
+         $userNextPage = $();
+         $userLastPage =$();
+    }
+
+
     function initialize() {
         $maincontainer = $("#mainContainer");
         $homeButton = $("#homeButton");
@@ -24,7 +90,11 @@ var uiController = (function(){
         $exitButton = $("#exitButton");
         $loginButton = $("#loginButton");
 
+
+
+
         loadHomePage();
+        attachEvents();
     }
 
     function initializeNavigation() {
@@ -74,6 +144,8 @@ var uiController = (function(){
         $exitButton.on("click", function () {
             loginController.logout();
         });
+
+
 
         updateAvailableButtons();
     }
@@ -132,7 +204,6 @@ var uiController = (function(){
         specialitiesPageController.load(specialitiesTable);
     }
 
-
     function loadCourseTable(){
         var courseTable = $("#courseTable");
         coursePageController.load(courseTable);
@@ -145,7 +216,9 @@ var uiController = (function(){
 
     function loadTable(){
         var userTable = $("#userTable");
-        homePageController.load(userTable);
+        homePageController.initialize(userTable);
+
+        homePageController.loadPage(1, [], []);
     }
 
     return {

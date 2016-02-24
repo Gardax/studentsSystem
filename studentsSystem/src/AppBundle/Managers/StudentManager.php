@@ -47,10 +47,11 @@ class StudentManager
                   FROM AppBundle:Student s";
         }
 
+        $queryString .= " LEFT JOIN s.course c ";
+        $queryString .= " LEFT JOIN s.speciality spec";
+
         if($getFullInfo) {
             $queryString .= " LEFT JOIN s.studentAssessments sa";
-            $queryString .= " LEFT JOIN s.course c ";
-            $queryString .= " LEFT JOIN s.speciality spec";
             $queryString .= " LEFT JOIN sa.subject sbj";
         }
 
@@ -62,12 +63,12 @@ class StudentManager
         }
 
         if(isset($filters['speciality']) && $filters['speciality']){
-            $queryString .= " AND s.studentSpecialityId = :speciality";
+            $queryString .= " AND spec.id = :speciality";
             $parameters['speciality'] = $filters['speciality'];
         }
 
         if(isset($filters['course']) && $filters['course']){
-            $queryString .= " AND s.studentCourseId = :course";
+            $queryString .= " AND c.id = :course";
             $parameters['course'] = $filters['course'];
         }
 

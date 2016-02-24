@@ -55,3 +55,12 @@ nav ul:nth-child(2) {
 .edit:hover,.delete:hover{
     cursor: pointer;
 }
+.firstPage,.previousPage,.nextPage,.lastPage{
+    background-color: #b9b97e;
+    color: #540968;
+}
+
+#mainContainer{
+    margin: 20px;
+}
+

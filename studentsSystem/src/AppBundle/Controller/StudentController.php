@@ -66,7 +66,8 @@ class StudentController extends Controller
         $data = [
             'students' => $studentModels,
             'totalCount' => $totalCount,
-            'page' => $page
+            'page' => $page,
+            'itemsPerPage' => self::PAGE_SIZE
         ];
 
         if($getFullInfo) {

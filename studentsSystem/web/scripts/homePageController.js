@@ -1,14 +1,87 @@
 var homePageController = (function(){
-    function load(container){
-          homePageService.getUsers(1,1,1,
-              function(data){
-                  var table = generateUsersTable(data);
-                  container.append(table);
-              },
-              function(error){
-                  alert(error);
-              }
-          );
+    var currentPage = 1;
+    var currentFilters = [];
+    var currentOrder = [];
+    var lastPage =1;
+
+    var container;
+
+    var $homeFirstPageButton;
+    var $homePreviousPageButton;
+    var $homeNextPageButton;
+    var $homeLastPageButton;
+
+    function initizlize(containerElement) {
+        container = containerElement;
+        atachEvents();
+    }
+
+    function atachEvents(){
+        $homeFirstPageButton = $(".homeFirstPageButton");
+        $homePreviousPageButton = $(".homePreviousPageButton");
+        $homeNextPageButton = $(".homeNextPageButton");
+        $homeLastPageButton = $(".homeLastPageButton");
+
+        $homePreviousPageButton.on("click",function(){
+            loadPage(currentPage - 1, currentOrder, currentFilters );
+        });
+
+        $homeNextPageButton.on("click",function(){
+            loadPage(currentPage + 1, currentOrder, currentFilters );
+        });
+
+        $homeFirstPageButton.on("click",function(){
+            loadPage(1, currentOrder, currentFilters );
+        });
+
+        $homeLastPageButton.on("click",function(){
+            loadPage(lastPage, currentOrder, currentFilters );
+        });
+
+    }
+
+    function loadPage(page, order, filters) {
+        homePageService.getUsers(page, order, filters,
+            function(data){
+                currentPage = page;
+                currentFilters = filters;
+                currentOrder = order;
+
+                lastPage = parseInt(data.totalCount / data.itemsPerPage);
+                if(data.totalCount % data.itemsPerPage != 0) {
+                    lastPage++;
+                }
+
+                manageButtonsState();
+
+                var table = generateUsersTable(data);
+                container.html(table);
+            },
+            function(error){
+                alert(error);
+            }
+        );
+    }
+
+    function manageButtonsState(){
+        if(currentPage == 1) {
+            $homeFirstPageButton.prop('disabled', true);
+            $homePreviousPageButton.prop('disabled', true);
+            $homeNextPageButton.prop('disabled', false);
+            $homeLastPageButton.prop('disabled', false);
+        }
+        else if(currentPage == lastPage) {
+            $homeFirstPageButton.prop('disabled', false);
+            $homePreviousPageButton.prop('disabled', false);
+            $homeNextPageButton.prop('disabled', true);
+            $homeLastPageButton.prop('disabled', true);
+        }
+        else {
+            $homeFirstPageButton.prop('disabled', false);
+            $homePreviousPageButton.prop('disabled', false);
+            $homeNextPageButton.prop('disabled', false);
+            $homeLastPageButton.prop('disabled', false);
+        }
     }
 
      function generateUsersTable(usersData){
@@ -74,11 +147,13 @@ var homePageController = (function(){
 
              table += "</tr>";
          }
+
          table += "</tbody></table>";
         return table;
      }
 
     return {
-        load: load
+        loadPage: loadPage,
+        initialize: initizlize
     };
 }());
