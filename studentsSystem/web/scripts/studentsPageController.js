@@ -33,8 +33,8 @@ var studentsPageController = (function(){
                 "<td>"+usersData.students[i].firstName+" "+usersData.students[i].lastName+"</td>"+
                 "<td>"+usersData.students[i].email+"</td>"+
                 "<td>"+usersData.students[i].facultyNumber+"</td>"+
-                "<td>MOLIF</td>"+
-                "<td>DEL</td>";
+                "<td class='edit'></td>"+
+                "<td class='delete'></td>";
         }
         table += "</tbody></table>";
         table += "<a href=''>Първа</a> <a href=''Предходна</a> <a href=''>Следваща</a> <a href=''>Последна</a>";

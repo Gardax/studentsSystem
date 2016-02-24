@@ -26,8 +26,8 @@ var userPageController = (function(){
                 "<td>"+usersData.users[i].username+"</td>"+
                 "<td>"+usersData.users[i].email+"</td>"+
                 "<td>"+usersData.users[i].role+"</td>"+
-                "<td>MOLIF</td>"+
-                "<td>DEL</td>";
+                "<td class='edit'></td>"+
+                "<td class='delete'></td>";
         }
         table += "</tbody></table>";
         return table;

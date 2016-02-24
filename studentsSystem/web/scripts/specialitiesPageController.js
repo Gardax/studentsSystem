@@ -2,7 +2,7 @@ var specialitiesPageController = (function(){
     function load(container){
         specialitiesPageService.getUsers(1,1,1,
             function(data){
-                var table = generateUsersTable(JSON.parse(data));
+                var table = generateUsersTable(data);
                 container.append(table);
             },
             function(error){
@@ -22,10 +22,10 @@ var specialitiesPageController = (function(){
         for(var i = 0; i < usersData.specialities.length; i++){
             table += "<tr>"+
                 "<td>"+usersData.specialities[i].id+"</td>"+
-                "<td>"+usersData.specialities[i].fullName+"</td>"+
-                "<td>"+usersData.specialities[i].shortName+"</td>"+
-                "<td>MOLIF</td>"+
-                "<td>DEL</td>";
+                "<td>"+usersData.specialities[i].specialityLongName+"</td>"+
+                "<td>"+usersData.specialities[i].specialityShortName+"</td>"+
+                "<td class='edit'></td>"+
+                "<td class='delete'></td>";
         }
         table += "</tbody></table>";
         return table;

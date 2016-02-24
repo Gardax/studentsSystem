@@ -4,7 +4,7 @@ var coursePageController = (function(){
 
         coursePageService.getUsers(1,1,1,
             function(data){
-                var table = generateUsersTable(JSON.parse(data));
+                var table = generateUsersTable(data);
                 container.append(table);
             },
             function(error){
@@ -22,14 +22,13 @@ var coursePageController = (function(){
             "<th>Име</th>"+
             "<th colspan='2'>Операции</th>"+
             "</thead><tbody>";
-            for(var i = 0; i < usersData.students.length; i++){
-                student = usersData.students[i];
+            for(var i = 0; i < usersData.courses.length; i++){
+                student = usersData.courses[i];
                 table += "<tr>"+
                 "<td>"+student.id+"</td>"+
-                "<td>"+student.course+"</td>"+
-                "<td>"+student.firstName+" " +student.lastName+ " ("+student.facultyNumber+")</td>"+
-                "<td>MOLIF</td>"+
-                "<td>DEL</td>";
+                "<td>"+student.name+"</td>"+
+                "<td class='edit'></td>"+
+                "<td class='delete'></td>";
             }
 
 

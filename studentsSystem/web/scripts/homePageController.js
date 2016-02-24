@@ -42,7 +42,7 @@ var homePageController = (function(){
              "<th>Упражнения</th>"+
              "</tr>"+
              "</thead><tbody>";
-         var student, j,k,average,attendedLecture,totalLectures ,attendedExcercise,totalExcercise;
+         var student, j,average,attendedLecture,totalLectures ,attendedExcercise,totalExcercise;
 
          for(i = 0; i < usersData.students.length;i++){
              attendedLecture =0;
@@ -54,7 +54,7 @@ var homePageController = (function(){
              table += "<tr>"+
              "<td>"+student.id+"</td>"+
              "<td>"+student.firstName +" "+student.lastName+"("+student.facultyNumber+")</td>"+
-             "<td>"+student.courseName+","+student.shortSpecialityName+"</td>";
+             "<td>"+student.courseName+" "+student.shortSpecialityName+"</td>";
 
              for(j = 0; j < student.studentAssessments.length;j++){
                  table += "<td>"+student.studentAssessments[j].lectureAttended+"("+student.studentAssessments[j].lectureTotal+")</td>"+

@@ -25,8 +25,9 @@ var disciplinesPageController = (function(){
                     "<td>"+usersData.subjects[i].id+"</td>"+
                     "<td>"+usersData.subjects[i].name+"</td>"+
                     "<td>"+usersData.subjects[i].workloadLectures+"</td>"+
-                    "<td>"+usersData.subjects[i].workloadExercises+"</td>"+"<td>MOLIF</td>"+
-                "<td>DEL</td>";
+                    "<td>"+usersData.subjects[i].workloadExercises+"</td>"+
+                    "<td class='edit'></td>"+
+                    "<td class='delete'></td>";
         }
         table += "</tbody></table>";
         return table;

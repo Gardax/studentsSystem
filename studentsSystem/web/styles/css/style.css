@@ -41,3 +41,17 @@ nav ul:nth-child(2) {
 .searchFields{
     text-align: center;
 }
+.edit{
+    background-image: url("../img/pencil_pen_write_edit_delete-128.png");
+    background-repeat:   no-repeat;
+    background-position: center center;
+}
+.delete{
+    background-image: url("../img/trash-128.png");
+    background-repeat:   no-repeat;
+    background-position: center center;
+}
+
+.edit:hover,.delete:hover{
+    cursor: pointer;
+}
