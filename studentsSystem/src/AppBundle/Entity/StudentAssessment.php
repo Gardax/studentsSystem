@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * StudentsAssessments
@@ -19,22 +20,21 @@ class StudentAssessment
      */
     protected $id;
 
-
     /**
-     *
      * @ORM\Column(type="integer", length=3, nullable=false)
+     * @Assert\NotBlank(groups={"edit"}, message="Lectures cannot be blank.")
      */
     protected $workloadLectures;
 
     /**
-     *
      * @ORM\Column(type="integer", length=3, nullable=false)
+     * @Assert\NotBlank(groups={"edit"}, message="Exercises cannot be blank.")
      */
     protected $workloadExercises;
 
     /**
-     *
      * @ORM\Column(type="integer", length=3, nullable=false)
+     * @Assert\NotBlank(groups={"edit"}, message="Assessment cannot be blank.")
      */
     protected $assessment;
 

@@ -68,7 +68,7 @@ class StudentService
         $student = $this->studentManager->getStudentById($id);
 
         if(!$student){
-            throw new Exception("No students found.");
+            throw new BadRequestHttpException("No student found.");
         }
         return $student;
     }

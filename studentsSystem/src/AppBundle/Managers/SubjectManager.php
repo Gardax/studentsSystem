@@ -53,6 +53,16 @@ class SubjectManager
     }
 
     /**
+     * @return \AppBundle\Entity\Subject[]|array
+     */
+    public function getAllSubjects(){
+
+        $subjects = $this->entityManager->getRepository('AppBundle:Subject')->findAll();
+
+        return $subjects;
+    }
+
+    /**
      * @param $start
      * @param $end
      * @param null $name

@@ -30,6 +30,54 @@ class StudentAssessmentManager
     }
 
     /**
+     * @param $start
+     * @param $end
+     * @param $studentId
+     * @param $subjectId
+     * @param bool $getCount
+     * @return array|mixed
+     */
+    public function getStudentAssessments($start, $end, $studentId, $subjectId, $getCount = false){
+
+        $em = $this->entityManager;
+
+        $parameters = [];
+
+        if(!$getCount) {
+            $queryString = "SELECT s
+                  FROM AppBundle:StudentAssessment s";
+        }
+        else {
+            $queryString = "SELECT count(s.id)
+                  FROM AppBundle:StudentAssessment s";
+        }
+
+        $queryString .= " WHERE 1=1 ";
+
+        if($studentId) {
+            $queryString .= " AND s.student = :studentId";
+            $parameters['studentId'] = $studentId;
+        }
+
+        if($subjectId) {
+            $queryString .= " AND s.subject = :subjectId";
+            $parameters['subjectId'] = $subjectId;
+        }
+
+        $query = $em->createQuery($queryString)
+            ->setParameters($parameters);
+
+        if(!$getCount) {
+            $query->setFirstResult($start)
+                ->setMaxResults($end);
+        }
+
+        $studentAssessment = $getCount ? $query->getSingleScalarResult() : $query->getResult();
+
+        return $studentAssessment;
+    }
+
+    /**
      * @param StudentAssessment $studentAssessmentEntity
      * @return StudentAssessment
      */

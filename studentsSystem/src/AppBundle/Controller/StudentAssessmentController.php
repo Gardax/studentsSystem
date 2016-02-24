@@ -13,6 +13,7 @@ use AppBundle\Models\StudentAssessmentModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -56,5 +57,110 @@ class StudentAssessmentController extends Controller
         $studentAssessmentModel = new StudentAssessmentModel($studentAssessmentEntity);
 
         return new JsonResponse($studentAssessmentModel);
+    }
+    /**
+     * @Route("/assessment/delete/{id}", name="deleteStudentAssessment")
+     * @Method("DELETE")
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function deleteStudentAssessmentAction(Request $request, $id)
+    {
+        $studentAssessmentService = $this->get("student_assessment_service");
+
+        $studentAssessmentEntity = $studentAssessmentService->getStudentAssessmentById($id);
+
+        $result = self::FAIL;
+
+        if ($studentAssessmentEntity) {
+            $result = $studentAssessmentService->deleteStudentAssessmentById($studentAssessmentEntity);
+        }
+
+        $success = $result ? self::SUCCESS : self::FAIL;
+        return new JsonResponse(["success" => $success]);
+    }
+
+    /**
+     * @Route("/assessment/{page}", defaults={"page" = null})]
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param $page
+     * @return JsonResponse
+     */
+    public function getStudentAssessmentsAction(Request $request, $page)
+    {
+
+        $studentAssessmentService = $this->get('student_assessment_service');
+
+        $studentId = $request->query->get('studentId');
+        $subjectId = $request->query->get('subjectId');
+
+        $studentAssessmentEntities = $studentAssessmentService->getStudentAssessments(
+            $page, self::PAGE_SIZE, $studentId,$subjectId);
+
+        $studentAssessmentModels = array();
+        foreach ($studentAssessmentEntities as $studentAssessment) {
+            $model = new StudentAssessmentModel($studentAssessment);
+            $studentAssessmentModels[] = $model;
+        }
+
+        $totalCount = $studentAssessmentService->getStudentAssessments(
+            $page, self::PAGE_SIZE, $studentId, $subjectId, true);
+
+        $data = [
+            'subjects' => $studentAssessmentModels,
+            'totalCount' => $totalCount,
+            'page' => $page
+        ];
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/assessment/edit/{id}", name="updateAssessment")
+     * @Method("POST")
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     * @throws InvalidFormException
+     */
+    public function updateStudentAssessmentAction(Request $request, $id){
+
+        $studentAssessmentService = $this->get('student_assessment_service');
+        $studentService = $this->get('student_service');
+        $subjectService = $this->get('subject_service');
+
+        $studentAssessmentData = [
+            'workloadLectures' => $request->request->get('workloadLectures'),
+            'workloadExercises' => $request->request->get('workloadExercises'),
+            'assessment' => $request->request->get('assessment'),
+        ];
+
+        $studentId = $request->request->get('studentId');
+        $subjectId = $request->request->get('subjectId');
+
+        if(!$studentId){
+            throw new BadRequestHttpException('No student id.');
+        }
+        $studentEntity = $studentService->getStudentById($studentId);
+
+        if(!$subjectId){
+            throw new BadRequestHttpException('No student id.');
+        }
+        $subjectEntity = $subjectService->getSubjectById($subjectId);
+
+
+        $studentAssessmentEntity = $studentAssessmentService->getStudentAssessmentById($id);
+
+        $studentAssessmentService->updateStudentAssessment(
+            $studentAssessmentEntity,$studentEntity,$subjectEntity,$studentAssessmentData);
+
+        $studentAssessmentModel = new StudentAssessmentModel($studentAssessmentEntity);
+
+        return new  JsonResponse($studentAssessmentModel);
     }
 }

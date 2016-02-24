@@ -54,9 +54,19 @@ class SubjectService
         $subject = $this->subjectManager->getSubjectById($id);
 
         if(!$subject){
-            throw new Exception("No subject found.");
+            throw new BadRequestHttpException("No subject found.");
         }
         return $subject;
+    }
+
+    /**
+     * @return \AppBundle\Entity\Subject[]|array
+     */
+    public function getAllSubjects(){
+
+        $subjects = $this->subjectManager->getAllSubjects();
+
+        return $subjects;
     }
 
     /**
