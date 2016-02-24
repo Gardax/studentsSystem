@@ -41,3 +41,10 @@ services:
     subject_manager:
             class: AppBundle\Managers\SubjectManager
             arguments: ['@doctrine.orm.default_entity_manager']
+
+    student_assessment_service:
+            class: AppBundle\Services\StudentAssessmentService
+            arguments: ['@student_assessment_manager', '@validator']
+    student_assessment_manager:
+            class: AppBundle\Managers\StudentAssessmentManager
+            arguments: ['@doctrine.orm.default_entity_manager']

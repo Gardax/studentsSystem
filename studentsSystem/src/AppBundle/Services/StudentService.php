@@ -42,9 +42,10 @@ class StudentService
     /**
      * @param $page
      * @param $pageSize
-     * @param array $filters
+     * @param $filters
+     * @param $getFullInfo
      * @param bool $getCount
-     * @return Student[]
+     * @return array|mixed
      */
     public function getStudents($page, $pageSize, $filters, $getFullInfo, $getCount=false ){
 
@@ -56,6 +57,20 @@ class StudentService
             throw new NotFoundHttpException("No students found.");
         }
         return $students;
+    }
+
+    /**
+     * @param $id
+     * @return Student|null|object
+     */
+    public function getStudentById($id){
+
+        $student = $this->studentManager->getStudentById($id);
+
+        if(!$student){
+            throw new Exception("No students found.");
+        }
+        return $student;
     }
 
     /**
