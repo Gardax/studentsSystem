@@ -1,15 +1,90 @@
 var disciplinesPageController = (function(){
-    function load(container){
-        disciplinesPageService.getUsers(1,1,1,
+
+    var currentPage = 1;
+    var currentFilters = [];
+    var currentOrder = [];
+    var lastPage =1;
+
+    var container;
+
+    var disciplineFirstPageButton;
+    var disciplinePreviousPageButton;
+    var disciplineNextPageButton;
+    var disciplineLastPageButton;
+
+    function initizlize(containerElement) {
+        container = containerElement;
+        atachEvents();
+    }
+
+    function atachEvents(){
+        disciplineFirstPageButton = $(".disciplineFirstPageButton");
+        disciplinePreviousPageButton = $(".disciplinePreviousPageButton");
+        disciplineNextPageButton = $(".disciplineNextPageButton");
+        disciplineLastPageButton = $(".disciplineLastPageButton");
+
+        disciplinePreviousPageButton.on("click",function(){
+            loadPage(currentPage - 1, currentOrder, currentFilters );
+        });
+
+        disciplineNextPageButton.on("click",function(){
+            loadPage(currentPage + 1, currentOrder, currentFilters );
+        });
+
+        disciplineFirstPageButton.on("click",function(){
+            loadPage(1, currentOrder, currentFilters );
+        });
+
+        disciplineLastPageButton.on("click",function(){
+            loadPage(lastPage, currentOrder, currentFilters );
+        });
+
+    }
+
+    function loadPage(page, order, filters) {
+        disciplinesPageService.getUsers(page, order, filters,
             function(data){
+                currentPage = page;
+                currentFilters = filters;
+                currentOrder = order;
+
+                lastPage = parseInt(data.totalCount / data.itemsPerPage);
+                if(data.totalCount % data.itemsPerPage != 0) {
+                    lastPage++;
+                }
+
+                manageButtonsState();
+
                 var table = generateUsersTable(data);
-                container.append(table);
+                container.html(table);
             },
             function(error){
                 alert(error);
             }
         );
     }
+
+    function manageButtonsState(){
+        if(currentPage == 1) {
+            disciplineFirstPageButton.prop('disabled', true);
+            disciplinePreviousPageButton.prop('disabled', true);
+            disciplineNextPageButton.prop('disabled', false);
+            disciplineLastPageButton.prop('disabled', false);
+        }
+        else if(currentPage == lastPage) {
+            disciplineFirstPageButton.prop('disabled', false);
+            disciplinePreviousPageButton.prop('disabled', false);
+            disciplineNextPageButton.prop('disabled', true);
+            disciplineLastPageButton.prop('disabled', true);
+        }
+        else {
+            disciplineFirstPageButton.prop('disabled', false);
+            disciplinePreviousPageButton.prop('disabled', false);
+            disciplineNextPageButton.prop('disabled', false);
+            disciplineLastPageButton.prop('disabled', false);
+        }
+    }
+
 
     function generateUsersTable(usersData){
         var table = "<table border='1'>" +
@@ -34,6 +109,7 @@ var disciplinesPageController = (function(){
     }
 
     return {
-        load: load
+        loadPage: loadPage,
+        initizlize: initizlize
     };
 }());

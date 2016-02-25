@@ -1,14 +1,88 @@
 var userPageController = (function(){
-    function load(container){
-        userPageService.getUsers(1,1,1,
+
+    var currentPage = 1;
+    var currentFilters = [];
+    var currentOrder = [];
+    var lastPage =1;
+
+    var container;
+
+    var userFirstPageButton;
+    var userPreviousPageButton;
+    var userNextPageButton;
+    var userLastPageButton;
+
+    function initizlize(containerElement) {
+        container = containerElement;
+        atachEvents();
+    }
+
+    function atachEvents(){
+        userFirstPageButton = $(".userFirstPageButton");
+        userPreviousPageButton = $(".userPreviousPageButton");
+        userNextPageButton = $(".userNextPageButton");
+        userLastPageButton = $(".userLastPageButton");
+
+        userPreviousPageButton.on("click",function(){
+            loadPage(currentPage - 1, currentOrder, currentFilters );
+        });
+
+        userNextPageButton.on("click",function(){
+            loadPage(currentPage + 1, currentOrder, currentFilters );
+        });
+
+        userFirstPageButton.on("click",function(){
+            loadPage(1, currentOrder, currentFilters );
+        });
+
+        userLastPageButton.on("click",function(){
+            loadPage(lastPage, currentOrder, currentFilters );
+        });
+
+    }
+
+    function loadPage(page, order, filters) {
+        userPageService.getUsers(page, order, filters,
             function(data){
-                var table = generateUsersTable(JSON.parse(data));
-                container.append(table);
+                currentPage = page;
+                currentFilters = filters;
+                currentOrder = order;
+
+                lastPage = parseInt(data.totalCount / data.itemsPerPage);
+                if(data.totalCount % data.itemsPerPage != 0) {
+                    lastPage++;
+                }
+
+                manageButtonsState();
+
+                var table = generateUsersTable(data);
+                container.html(table);
             },
             function(error){
                 alert(error);
             }
         );
+    }
+
+    function manageButtonsState(){
+        if(currentPage == 1) {
+            userFirstPageButton.prop('disabled', true);
+            userPreviousPageButton.prop('disabled', true);
+            userNextPageButton.prop('disabled', false);
+            userLastPageButton.prop('disabled', false);
+        }
+        else if(currentPage == lastPage) {
+            userFirstPageButton.prop('disabled', false);
+            userPreviousPageButton.prop('disabled', false);
+            userNextPageButton.prop('disabled', true);
+            userLastPageButton.prop('disabled', true);
+        }
+        else {
+            userFirstPageButton.prop('disabled', false);
+            userPreviousPageButton.prop('disabled', false);
+            userNextPageButton.prop('disabled', false);
+            userLastPageButton.prop('disabled', false);
+        }
     }
 
     function generateUsersTable(usersData){
@@ -34,6 +108,7 @@ var userPageController = (function(){
     }
 
     return {
-        load: load
+        loadPage: loadPage,
+        initizlize: initizlize
     };
 }());
