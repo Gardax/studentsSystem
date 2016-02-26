@@ -124,7 +124,8 @@ class CourseController extends Controller
         $data = [
             'courses' => $courseModels,
             'totalCount' => $totalCount,
-            'page' => $page
+            'page' => $page,
+            'itemsPerPage' => self::PAGE_SIZE,
         ];
 
         return new JsonResponse($data);

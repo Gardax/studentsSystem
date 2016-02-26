@@ -83,7 +83,8 @@ class SubjectController extends Controller
         $data = [
             'subjects' => $subjectModels,
             'totalCount' => $totalCount,
-            'page' => $page
+            'page' => $page,
+            'itemsPerPage' => self::PAGE_SIZE,
         ];
 
         return new JsonResponse($data);

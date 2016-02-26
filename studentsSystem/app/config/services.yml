@@ -30,7 +30,7 @@ services:
 
     speciality_service:
             class: AppBundle\Services\SpecialityService
-            arguments: ['@speciality_manager']
+            arguments: ['@speciality_manager','@validator']
     speciality_manager:
             class: AppBundle\Managers\SpecialityManager
             arguments: ['@doctrine.orm.default_entity_manager']

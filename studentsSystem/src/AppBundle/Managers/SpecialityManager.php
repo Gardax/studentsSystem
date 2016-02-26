@@ -98,6 +98,19 @@ class SpecialityManager
     }
 
     /**
+     *
+     * @param $id
+     * @return bool
+     */
+    public function deleteSpecialityById($id){
+
+        $this->entityManager->remove($id);
+        $this->entityManager->flush();
+
+        return true;
+    }
+
+    /**
      * Flushes all entities.
      */
     public function saveChanges(){

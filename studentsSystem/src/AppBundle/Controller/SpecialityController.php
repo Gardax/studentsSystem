@@ -80,10 +80,64 @@ class SpecialityController extends Controller
         $data = [
             'specialities' => $specialityModels,
             'totalCount' => $totalCount,
-            'page' => $page
+            'page' => $page,
+            'itemsPerPage' => self::PAGE_SIZE,
         ];
 
         return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/speciality/delete/{id}", name="deleteSpeciality")
+     * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function deleteSubjectAction(Request $request, $id)
+    {
+        $specialityService = $this->get("speciality_service");
+
+        $specialityEntity = $specialityService->getSpecialityById($id);
+
+        $result = self::FAIL;
+
+        if ($specialityEntity) {
+            $result = $specialityService->deleteSpecialityById($specialityEntity);
+        }
+
+        $success = $result ? self::SUCCESS : self::FAIL;
+        return new JsonResponse(["success" => $success]);
+    }
+
+    /**
+     * @Route("/speciality/edit/{id}", name="updateSpecialityById")
+     * @Method("PUT")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     * @throws \AppBundle\Exceptions\ValidatorException
+     */
+    public function updateSpecialityAction(Request $request, $id){
+
+        $specialityService = $this->get('speciality_service');
+
+        $specialityData = [
+            'longName' => $request->request->get('longName'),
+            'shortName' => $request->request->get('shortName'),
+        ];
+
+        $specialityEntity = $specialityService->getSpecialityById($id);
+
+        $specialityService->updateSpeciality($specialityEntity,$specialityData);
+
+        $specialityModel = new SpecialityModel($specialityEntity);
+
+        return new  JsonResponse($specialityModel);
     }
 
 }
