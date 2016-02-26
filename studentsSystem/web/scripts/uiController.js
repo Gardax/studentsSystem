@@ -223,6 +223,7 @@ var uiController = (function(){
 
 
     }
+    
 
     function loadTable(){
         var userTable = $("#userTable");
