@@ -45,7 +45,7 @@ class StudentService
      * @param $filters
      * @param $getFullInfo
      * @param bool $getCount
-     * @return array|mixed
+     * @return Student[]
      */
     public function getStudents($page, $pageSize, $filters, $getFullInfo, $getCount=false ){
 

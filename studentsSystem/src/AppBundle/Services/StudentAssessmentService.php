@@ -47,18 +47,17 @@ class StudentAssessmentService
     /**
      * @param $page
      * @param $pageSize
-     * @param $studentId
-     * @param $subjectId
+     * @param $filters
      * @param bool $getCount
      * @return array|mixed
      */
-    public function getStudentAssessments($page, $pageSize, $studentId, $subjectId, $getCount = false ){
+    public function getStudentAssessments($page, $pageSize, $filters, $getCount = false ){
 
         $start = ($page -1) *$pageSize;
         $end = $start + $pageSize;
 
         $studentAssessments = $this->studentAssessmentManager->getStudentAssessments(
-            $start, $end, $studentId, $subjectId, $getCount);
+            $start, $end, $filters, $getCount);
 
         if(!$studentAssessments){
             throw new BadRequestHttpException("No student assessments found.");

@@ -94,11 +94,15 @@ class StudentAssessmentController extends Controller
     {
 
         $studentAssessmentService = $this->get('student_assessment_service');
-        $studentService = $this->get('student_service');
-        $subjectService = $this->get('subject_service');
 
         $studentId = $request->query->get('studentId');
         $subjectId = $request->query->get('subjectId');
+
+        $filters = [
+            'studentId'  => $request->query->get('studentId'),
+            'subjectId' => $request->query->get('subjectId'),
+
+        ];
 
         $studentAssessmentEntities = $studentAssessmentService->getStudentAssessments(
             $page, self::PAGE_SIZE, $studentId,$subjectId);
@@ -110,7 +114,7 @@ class StudentAssessmentController extends Controller
         }
 
         $totalCount = $studentAssessmentService->getStudentAssessments(
-            $page, self::PAGE_SIZE, $studentId, $subjectId, true);
+            $page, self::PAGE_SIZE, $filters, true);
 
         $data = [
             'studentAssessments' => $studentAssessmentModels,

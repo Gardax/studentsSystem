@@ -37,7 +37,7 @@ class StudentAssessmentManager
      * @param bool $getCount
      * @return array|mixed
      */
-    public function getStudentAssessments($start, $end, $studentId, $subjectId, $getCount = false){
+    public function getStudentAssessments($start, $end, $filters = [], $getCount = false){
 
         $em = $this->entityManager;
 
@@ -54,14 +54,14 @@ class StudentAssessmentManager
 
         $queryString .= " LEFT JOIN sa.student s LEFT JOIN sa.subject sub  WHERE 1=1 ";
 
-        if($studentId) {
+        if(isset($filters['studentId']) && $filters['studentId']) {
             $queryString .= " AND s.id = :studentId";
-            $parameters['studentId'] = $studentId;
+            $parameters['studentId'] = $filters['studentId'];
         }
 
-        if($subjectId) {
+        if(isset($filters['subjectId']) && $filters['subjectId']) {
             $queryString .= " AND sub.id = :subjectId";
-            $parameters['subjectId'] = $subjectId;
+            $parameters['subjectId'] = $filters['subjectId'];
         }
 
         $query = $em->createQuery($queryString)

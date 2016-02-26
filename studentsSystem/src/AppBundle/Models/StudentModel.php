@@ -82,7 +82,7 @@ class StudentModel
      * @param Student $student
      * @param boolean $buildWithFullInfo
      */
-    public function __construct(Student $student, $buildWithFullInfo){
+    public function __construct(Student $student, $buildWithFullInfo = false){
         $this->setId($student->getId());
         $this->setFirstName($student->getFirstName());
         $this->setLastName($student->getLastName());

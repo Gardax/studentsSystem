@@ -58,6 +58,10 @@ class StudentAssessmentModel
      */
     public $subjectName;
 
+    /**
+     * StudentAssessmentModel constructor.
+     * @param StudentAssessment $studentAssessment
+     */
     public function __construct(StudentAssessment $studentAssessment) {
         $this->setId($studentAssessment->getId());
         $this->setExerciseAttended($studentAssessment->getWorkloadExercises());
