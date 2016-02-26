@@ -64,3 +64,6 @@ nav ul:nth-child(2) {
     margin: 20px;
 }
 
+table{
+    min-width: 20%;
+}

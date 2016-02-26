@@ -6,10 +6,10 @@ var homePageController = (function(){
 
     var container;
 
-    var $homeFirstPageButton;
-    var $homePreviousPageButton;
-    var $homeNextPageButton;
-    var $homeLastPageButton;
+    var homeFirstPageButton;
+    var homePreviousPageButton;
+    var homeNextPageButton;
+    var homeLastPageButton;
 
     function initizlize(containerElement) {
         container = containerElement;
@@ -17,24 +17,24 @@ var homePageController = (function(){
     }
 
     function atachEvents(){
-        $homeFirstPageButton = $(".homeFirstPageButton");
-        $homePreviousPageButton = $(".homePreviousPageButton");
-        $homeNextPageButton = $(".homeNextPageButton");
-        $homeLastPageButton = $(".homeLastPageButton");
+        homeFirstPageButton = $(".homeFirstPageButton");
+        homePreviousPageButton = $(".homePreviousPageButton");
+        homeNextPageButton = $(".homeNextPageButton");
+        homeLastPageButton = $(".homeLastPageButton");
 
-        $homePreviousPageButton.on("click",function(){
+        homePreviousPageButton.on("click",function(){
             loadPage(currentPage - 1, currentOrder, currentFilters );
         });
 
-        $homeNextPageButton.on("click",function(){
+        homeNextPageButton.on("click",function(){
             loadPage(currentPage + 1, currentOrder, currentFilters );
         });
 
-        $homeFirstPageButton.on("click",function(){
+        homeFirstPageButton.on("click",function(){
             loadPage(1, currentOrder, currentFilters );
         });
 
-        $homeLastPageButton.on("click",function(){
+        homeLastPageButton.on("click",function(){
             loadPage(lastPage, currentOrder, currentFilters );
         });
 
@@ -65,22 +65,22 @@ var homePageController = (function(){
 
     function manageButtonsState(){
         if(currentPage == 1) {
-            $homeFirstPageButton.prop('disabled', true);
-            $homePreviousPageButton.prop('disabled', true);
-            $homeNextPageButton.prop('disabled', false);
-            $homeLastPageButton.prop('disabled', false);
+            homeFirstPageButton.prop('disabled', true);
+            homePreviousPageButton.prop('disabled', true);
+            homeNextPageButton.prop('disabled', false);
+            homeLastPageButton.prop('disabled', false);
         }
         else if(currentPage == lastPage) {
-            $homeFirstPageButton.prop('disabled', false);
-            $homePreviousPageButton.prop('disabled', false);
-            $homeNextPageButton.prop('disabled', true);
-            $homeLastPageButton.prop('disabled', true);
+            homeFirstPageButton.prop('disabled', false);
+            homePreviousPageButton.prop('disabled', false);
+            homeNextPageButton.prop('disabled', true);
+            homeLastPageButton.prop('disabled', true);
         }
         else {
-            $homeFirstPageButton.prop('disabled', false);
-            $homePreviousPageButton.prop('disabled', false);
-            $homeNextPageButton.prop('disabled', false);
-            $homeLastPageButton.prop('disabled', false);
+            homeFirstPageButton.prop('disabled', false);
+            homePreviousPageButton.prop('disabled', false);
+            homeNextPageButton.prop('disabled', false);
+            homeLastPageButton.prop('disabled', false);
         }
     }
 

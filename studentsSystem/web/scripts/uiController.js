@@ -190,13 +190,17 @@ var uiController = (function(){
 
     function userTable(){
         var userTable = $("#userTable");
-        studentsPageController.load(userTable);
+
+        userPageController.initizlize(userTable);
+        userPageController.loadPage(1, [], []);
+
     }
 
     function loadStudentsTable(){
         var studentsTable = $("#studentsTable");
-        studentsPageController.initialize();
-        studentsPageController.load(studentsTable);
+
+        studentsPageController.initizlize(studentsTable);
+        studentsPageController.loadPage(1, [], []);
     }
 
     function loadSpecialitiesTable(){
@@ -206,12 +210,18 @@ var uiController = (function(){
 
     function loadCourseTable(){
         var courseTable = $("#courseTable");
-        coursePageController.load(courseTable);
+
+        coursePageController.initialize(courseTable);
+        coursePageController.loadPage(1, [], []);
     }
 
     function loadDisciplinesTable(){
         var disciplinesTable = $("#disciplinesTable");
-        disciplinesPageController.load(disciplinesTable);
+        disciplinesPageController.initizlize(disciplinesTable);
+
+        disciplinesPageController.loadPage(1, [], []);
+
+
     }
 
     function loadTable(){

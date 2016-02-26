@@ -1,18 +1,94 @@
 var studentsPageController = (function(){
-    var $errorsContainer;
 
-    function initialize() {
-        $errorsContainer = $("#errorsContainer");
+    var currentPage = 1;
+    var currentFilters = [];
+    var currentOrder = [];
+    var lastPage =1;
+
+    var container;
+
+    var studentsFirstPageButton;
+    var studentsPreviousPageButton;
+    var studentsNextPageButton;
+    var studentsLastPageButton;
+
+    function initizlize(containerElement) {
+        container = containerElement;
+        atachEvents();
     }
 
-    function load(container){
-        studentsPageService.getUsers(1,[],[],
+    function atachEvents(){
+        studentsFirstPageButton = $(".studentsFirstPageButton");
+        studentsPreviousPageButton = $(".studentsPreviousPageButton");
+        studentsNextPageButton = $(".studentsNextPageButton");
+        studentsLastPageButton = $(".studentsLastPageButton");
+
+        studentsPreviousPageButton.on("click",function(){
+            loadPage(currentPage - 1, currentOrder, currentFilters );
+        });
+
+        studentsNextPageButton.on("click",function(){
+            loadPage(currentPage + 1, currentOrder, currentFilters );
+        });
+
+        studentsFirstPageButton.on("click",function(){
+            loadPage(1, currentOrder, currentFilters );
+        });
+
+        studentsLastPageButton.on("click",function(){
+            loadPage(lastPage, currentOrder, currentFilters );
+        });
+
+    }
+
+    function manageButtonsState(){
+        if(currentPage == 1) {
+            studentsFirstPageButton.prop('disabled', true);
+            studentsPreviousPageButton.prop('disabled', true);
+            studentsNextPageButton.prop('disabled', false);
+            studentsLastPageButton.prop('disabled', false);
+        }
+        else if(currentPage == lastPage) {
+            studentsFirstPageButton.prop('disabled', false);
+            studentsPreviousPageButton.prop('disabled', false);
+            studentsNextPageButton.prop('disabled', true);
+            studentsLastPageButton.prop('disabled', true);
+        }
+        else {
+            studentsFirstPageButton.prop('disabled', false);
+            studentsPreviousPageButton.prop('disabled', false);
+            studentsNextPageButton.prop('disabled', false);
+            studentsLastPageButton.prop('disabled', false);
+        }
+    }
+
+
+    var $errorsContainer;
+
+    //function initialize() {
+    $errorsContainer = $("#errorsContainer");
+    //}
+
+
+    function loadPage(page, order, filters) {
+        homePageService.getUsers(page, order, filters,
             function(data){
+                currentPage = page;
+                currentFilters = filters;
+                currentOrder = order;
+
+                lastPage = parseInt(data.totalCount / data.itemsPerPage);
+                if(data.totalCount % data.itemsPerPage != 0) {
+                    lastPage++;
+                }
+
+                manageButtonsState();
+
                 var table = generateUsersTable(data);
-                container.append(table);
+                container.html(table);
             },
             function(error){
-                $errorsContainer.text(error.responseJSON.errorMessage);
+                alert(error);
             }
         );
     }
@@ -41,7 +117,7 @@ var studentsPageController = (function(){
     }
 
     return {
-        load: load,
-        initialize: initialize
+        loadPage: loadPage,
+        initizlize: initizlize
     };
 }());
