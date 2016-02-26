@@ -64,23 +64,19 @@ var homePageController = (function(){
     }
 
     function manageButtonsState(){
+        homeFirstPageButton.prop('disabled', false);
+        homePreviousPageButton.prop('disabled', false);
+        homeNextPageButton.prop('disabled', false);
+        homeLastPageButton.prop('disabled', false);
+
         if(currentPage == 1) {
             homeFirstPageButton.prop('disabled', true);
             homePreviousPageButton.prop('disabled', true);
-            homeNextPageButton.prop('disabled', false);
-            homeLastPageButton.prop('disabled', false);
         }
-        else if(currentPage == lastPage) {
-            homeFirstPageButton.prop('disabled', false);
-            homePreviousPageButton.prop('disabled', false);
+
+        if(currentPage == lastPage) {
             homeNextPageButton.prop('disabled', true);
             homeLastPageButton.prop('disabled', true);
-        }
-        else {
-            homeFirstPageButton.prop('disabled', false);
-            homePreviousPageButton.prop('disabled', false);
-            homeNextPageButton.prop('disabled', false);
-            homeLastPageButton.prop('disabled', false);
         }
     }
 
