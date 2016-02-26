@@ -13,6 +13,7 @@ use AppBundle\Models\SubjectModel;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,6 +34,7 @@ class SubjectController extends Controller
     /**
      * @Route("/add/subject" , name="addSubject")
      * @Method({"POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
      * @return JsonResponse
@@ -56,6 +58,7 @@ class SubjectController extends Controller
     /**
      * @Route("/subject/{page}", defaults={"page" = null})]
      * @Method({"GET"})
+     * @Security("has_role('ROLE_TEACHER')")
      *
      * @param Request $request
      * @param $page
@@ -89,6 +92,7 @@ class SubjectController extends Controller
     /**
      * @Route("/subject/delete/{id}", name="deleteSubject")
      * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
      * @param $id
@@ -113,6 +117,7 @@ class SubjectController extends Controller
     /**
      * @Route("/subject/edit/{id}", name="updateSubjectById")
      * @Method("POST")
+     * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
      * @param $id

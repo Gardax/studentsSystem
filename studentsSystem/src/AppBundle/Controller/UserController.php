@@ -15,6 +15,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,7 @@ class UserController extends Controller
     /**
      * @Route("/user/add" , name="addUser")
      * @Method({"POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
      *
@@ -67,8 +69,7 @@ class UserController extends Controller
     public function authenticateAction(Request $request) {
         $username = $request->request->get('email');
         $password = $request->request->get('password');
-
-
+        
         $userService = $this->get('user_service');
         $user = $userService->authenticateUser($username, $password);
 

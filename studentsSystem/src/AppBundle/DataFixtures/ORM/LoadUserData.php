@@ -42,12 +42,18 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $roleAdmin->addUser($user);
         $manager->persist($roleAdmin);
 
+        $roleTeacher = new Role();
+        $roleTeacher->setRole('ROLE_TEACHER');
+        $roleTeacher->addUser($user);
+        $manager->persist($roleTeacher);
+
         $roleUser = new Role();
         $roleUser->setRole('ROLE_USER');
         $roleUser->addUser($user);
         $manager->persist($roleUser);
 
         $user->addRole($roleAdmin);
+        $user->addRole($roleTeacher);
         $user->addRole($roleUser);
 
         $manager->flush();

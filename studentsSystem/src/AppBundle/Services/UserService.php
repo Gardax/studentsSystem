@@ -111,7 +111,7 @@ class UserService implements UserProviderInterface
     public function getUsernameForApiKey($apiKey) {
         $user = $this->userManager->getUserByApiKey($apiKey);
 
-        return $user->getUsername();
+        return $user ? $user->getUsername() : null;
     }
 
     /**

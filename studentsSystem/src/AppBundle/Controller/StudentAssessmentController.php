@@ -12,6 +12,7 @@ use AppBundle\Exceptions\InvalidFormException;
 use AppBundle\Models\StudentAssessmentModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,6 +33,7 @@ class StudentAssessmentController extends Controller
     /**
      * @Route("/add/assessment" , name="addStudentAssessment")
      * @Method({"POST"})
+     * @Security("has_role('ROLE_TEACHER')")
      *
      * @param Request $request
      * @return JsonResponse
@@ -61,6 +63,7 @@ class StudentAssessmentController extends Controller
     /**
      * @Route("/assessment/delete/{id}", name="deleteStudentAssessment")
      * @Method("DELETE")
+     * @Security("has_role('ROLE_TEACHER')")
      *
      * @param Request $request
      * @param $id
@@ -85,6 +88,7 @@ class StudentAssessmentController extends Controller
     /**
      * @Route("/assessment/{page}", defaults={"page" = null})]
      * @Method({"GET"})
+     * @Security("has_role('ROLE_TEACHER')")
      *
      * @param Request $request
      * @param $page
@@ -128,6 +132,7 @@ class StudentAssessmentController extends Controller
     /**
      * @Route("/assessment/edit/{id}", name="updateAssessment")
      * @Method("POST")
+     * @Security("has_role('ROLE_TEACHER')")
      *
      * @param Request $request
      * @param $id

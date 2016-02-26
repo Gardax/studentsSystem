@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -29,6 +30,7 @@ class SpecialityController extends Controller
     /**
      * @Route("/add/speciality" , name="addSpeciality")
      * @Method({"POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
      * @return JsonResponse
@@ -51,6 +53,8 @@ class SpecialityController extends Controller
     /**
      * @Route("/speciality/{page}", defaults={"page" = null})]
      * @Method({"GET"})
+     * @Security("has_role('ROLE_TEACHER')")
+     *
      * @param Request $request
      * @param $page
      * @return JsonResponse

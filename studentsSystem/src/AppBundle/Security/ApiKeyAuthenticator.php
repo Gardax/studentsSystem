@@ -66,11 +66,7 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface
         $username = $userService->getUsernameForApiKey($apiKey);
 
         if(!$username) {
-            // CAUTION: this message will be returned to the client
-            // (so don't put any un-trusted messages / error strings here)
-            throw new CustomUserMessageAuthenticationException(
-                sprintf('API Key "%s" does not exist.', $apiKey)
-            );
+            throw new CustomUserMessageAuthenticationException("Session expired.");
         }
 
         $user = $userService->loadUserByUsername($username);

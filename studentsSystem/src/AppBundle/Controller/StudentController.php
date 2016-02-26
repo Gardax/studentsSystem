@@ -17,6 +17,7 @@ use AppBundle\Models\SubjectModel;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -85,6 +86,7 @@ class StudentController extends Controller
     /**
      * @Route("/add/student" , name="addStudent")
      * @Method({"POST"})
+     * @Security("has_role('ROLE_TEACHER')")
      *
      * @param Request $request
      * @return JsonResponse

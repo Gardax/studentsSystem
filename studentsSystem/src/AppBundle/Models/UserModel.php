@@ -64,6 +64,7 @@ class UserModel
         $this->setUserLastName($user->getUserLastName());
         $this->setEmail($user->getEmail());
         $this->setPassword($user->getPassword());
+        $this->setApiKey($user->getApiKey());
     }
 
     /**
