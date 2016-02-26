@@ -5,6 +5,9 @@
             type: "GET",
             timeout: 5000,
             contentType: "application/json",
+            headers: {
+                apiKey: loginService.getApiKey()
+            },
             success: success,
             error: error,
             complete: complete
@@ -16,6 +19,9 @@
             url: url,
             type: "DELETE",
             timeout: 5000,
+            headers: {
+                apiKey: loginService.getApiKey()
+            },
             contentType: "application/json",
             success: success,
             error: error,
@@ -29,6 +35,9 @@
             type: "POST",
             contentType: "application/json",
             timeout: 5000,
+            headers: {
+                apiKey: loginService.getApiKey()
+            },
             data: JSON.stringify(data),
             success: success,
             error: error,
@@ -42,6 +51,9 @@
             type: "PUT",
             contentType: "application/json",
             timeout: 5000,
+            headers: {
+                apiKey: loginService.getApiKey()
+            },
             data: JSON.stringify(data),
             success: success,
             error: error,

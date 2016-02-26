@@ -53,14 +53,14 @@ class SpecialityManager
 
         $queryString .= " WHERE 1=1 ";
 
-        if(isset($filters['specialityLongName']) && $filters['specialityLongName']) {
+        if(isset($filters['longName']) && $filters['longName']) {
             $queryString .= " AND s.specialityLongName LIKE :longName";
-            $parameters['longName'] = $filters['specialityLongName'] . "%";
+            $parameters['longName'] = $filters['longName'] . "%";
         }
 
-        if(isset($filters['specialityShortName']) && $filters['specialityShortName']) {
+        if(isset($filters['shortName']) && $filters['shortName']) {
             $queryString .= " AND s.specialityShortName LIKE :shortName";
-            $parameters['shortName'] = $filters['specialityShortName'] . "%";
+            $parameters['shortName'] = $filters['shortName'] . "%";
         }
 
         $query = $em->createQuery($queryString)

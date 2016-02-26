@@ -4,6 +4,8 @@ var homePageController = (function(){
     var currentOrder = [];
     var lastPage =1;
 
+    var $errorsContainer;
+
     var container;
 
     var homeFirstPageButton;
@@ -13,6 +15,8 @@ var homePageController = (function(){
 
     function initizlize(containerElement) {
         container = containerElement;
+        $errorsContainer = $("#errorsContainer");
+        $errorsContainer.text("");
         atachEvents();
     }
 
@@ -58,7 +62,7 @@ var homePageController = (function(){
                 container.html(table);
             },
             function(error){
-                alert(error);
+                $errorsContainer.text(error.responseJSON.errorMessage);
             }
         );
     }
