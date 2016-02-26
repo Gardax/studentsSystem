@@ -44,23 +44,23 @@ class StudentAssessmentManager
         $parameters = [];
 
         if(!$getCount) {
-            $queryString = "SELECT s
-                  FROM AppBundle:StudentAssessment s";
+            $queryString = "SELECT sa
+                  FROM AppBundle:StudentAssessment sa";
         }
         else {
-            $queryString = "SELECT count(s.id)
-                  FROM AppBundle:StudentAssessment s";
+            $queryString = "SELECT count(sa.id)
+                  FROM AppBundle:StudentAssessment sa";
         }
 
-        $queryString .= " WHERE 1=1 ";
+        $queryString .= " LEFT JOIN sa.student s LEFT JOIN sa.subject sub  WHERE 1=1 ";
 
         if($studentId) {
-            $queryString .= " AND s.student = :studentId";
+            $queryString .= " AND s.id = :studentId";
             $parameters['studentId'] = $studentId;
         }
 
         if($subjectId) {
-            $queryString .= " AND s.subject = :subjectId";
+            $queryString .= " AND sub.id = :subjectId";
             $parameters['subjectId'] = $subjectId;
         }
 

@@ -61,7 +61,7 @@ class StudentAssessmentService
             $start, $end, $studentId, $subjectId, $getCount);
 
         if(!$studentAssessments){
-            throw new NotFoundHttpException("No student assessments found.");
+            throw new BadRequestHttpException("No student assessments found.");
         }
         return $studentAssessments;
     }

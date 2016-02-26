@@ -131,7 +131,7 @@ class StudentAssessment
     }
 
     /**
-     * @return mixed
+     * @return Student
      */
     public function getStudent()
     {
@@ -139,7 +139,7 @@ class StudentAssessment
     }
 
     /**
-     * @param mixed $student
+     * @param Student $student
      */
     public function setStudent($student)
     {

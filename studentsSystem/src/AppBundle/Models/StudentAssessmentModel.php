@@ -43,6 +43,21 @@ class StudentAssessmentModel
      */
     public $assessment;
 
+    /**
+     * @var string
+     */
+    public $studentFirstName;
+
+    /**
+     * @var string
+     */
+    public $studentLastName;
+
+    /**
+     * @var string
+     */
+    public $subjectName;
+
     public function __construct(StudentAssessment $studentAssessment) {
         $this->setId($studentAssessment->getId());
         $this->setExerciseAttended($studentAssessment->getWorkloadExercises());
@@ -50,6 +65,57 @@ class StudentAssessmentModel
         $this->setAssessment($studentAssessment->getAssessment());
         $this->setExerciseTotal($studentAssessment->getSubject()->getWorkloadExercises());
         $this->setLectureTotal($studentAssessment->getSubject()->getWorkloadLectures());
+        $this->setStudentFirstName($studentAssessment->getStudent()->getFirstName());
+        $this->setStudentLastName($studentAssessment->getStudent()->getLastName());
+        $this->setSubjectName($studentAssessment->getSubject()->getName());
+    }
+
+    /**
+     * @return string
+     */
+    public function getStudentLastName()
+    {
+        return $this->studentLastName;
+    }
+
+    /**
+     * @param string $studentLastName
+     */
+    public function setStudentLastName($studentLastName)
+    {
+        $this->studentLastName = $studentLastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubjectName()
+    {
+        return $this->subjectName;
+    }
+
+    /**
+     * @param string $subjectName
+     */
+    public function setSubjectName($subjectName)
+    {
+        $this->subjectName = $subjectName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStudentFirstName()
+    {
+        return $this->studentFirstName;
+    }
+
+    /**
+     * @param string $studentFirstName
+     */
+    public function setStudentFirstName($studentFirstName)
+    {
+        $this->studentFirstName = $studentFirstName;
     }
 
     /**
