@@ -86,7 +86,7 @@ class LoadStudentData implements FixtureInterface, ContainerAwareInterface
         $speciality6->setSpecialityLongName('Информационни технологии, математика и образователен мениджмънт ');
         $speciality6->setSpecialityShortName('ИТМОМ');
 
-        $manager->persist($speciality5);
+        $manager->persist($speciality6);
 
         $speciality7 = new Speciality();
         $speciality7->setSpecialityLongName('Бизнес математика');
