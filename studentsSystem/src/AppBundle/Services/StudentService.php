@@ -49,7 +49,7 @@ class StudentService
      */
     public function getStudents($page, $pageSize, $filters, $getFullInfo, $getCount=false ){
 
-        $start = ($page - 1) * $pageSize;
+        $start = ((int)$page - 1) * $pageSize;
         $end = $start + $pageSize;
 
         $students = $this->studentManager->getStudents($start, $end, $filters, $getFullInfo, $getCount);

@@ -69,7 +69,7 @@ class UserController extends Controller
     public function authenticateAction(Request $request) {
         $username = $request->request->get('email');
         $password = $request->request->get('password');
-        
+
         $userService = $this->get('user_service');
         $user = $userService->authenticateUser($username, $password);
 

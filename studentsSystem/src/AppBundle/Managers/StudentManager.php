@@ -90,7 +90,9 @@ class StudentManager
                 ->setMaxResults($end);
         }
 
-        $students = $getCount ? $query->getSingleScalarResult() : $query->getResult();
+        //!!!WARNING!!!
+        //The array slice is a dirty hack to fix a problem with pagination in doctrine!
+        $students = $getCount ? $query->getSingleScalarResult() : array_slice($query->getResult(), 0, $end-$start);
 
         return $students;
     }
