@@ -32,8 +32,7 @@ class StudentAssessmentManager
     /**
      * @param $start
      * @param $end
-     * @param $studentId
-     * @param $subjectId
+     * @param array $filters
      * @param bool $getCount
      * @return array|mixed
      */

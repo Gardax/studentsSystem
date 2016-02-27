@@ -61,7 +61,7 @@ class Role implements RoleInterface
     }
 
     /**
-     * @return string
+     * @return Role
      */
     public function getRole()
     {
@@ -69,9 +69,9 @@ class Role implements RoleInterface
     }
 
     /**
-     * @param string $role
+     * @param Role $role
      */
-    public function setRole($role)
+    public function setRole(Role $role)
     {
         $this->role = $role;
     }
