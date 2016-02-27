@@ -10,8 +10,16 @@ var coursePageService = (function(){
         httpRequester.getJSON(url,success,error,complete);
     }
 
+    function addCourse(data, success, error, complete) {
+        var url = config.API_URL + "add/course";
+
+        httpRequester.postJSON(url, data, success, error, complete);
+    }
+
     return {
-        getUsers : getUsers
+        getUsers : getUsers,
+        addCourse: addCourse
     };
 
 }());
+

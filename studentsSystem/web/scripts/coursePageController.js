@@ -5,12 +5,17 @@ var coursePageController = (function(){
     var currentOrder = [];
     var lastPage =1;
 
-    var $errorsContainer;
-    var $searchInput;
-    var $searchButton;
-    var $pagingButtons;
+    var errorsContainer;
+    var searchInput;
+    var searchButton;
+    var pagingButtons;
+
+    var addNewCourse;
+    var courseAddCourseNameInput;
+    var addCourseButton;
 
     var container;
+    var $maincontainer;
 
     var courseFirstPageButton;
     var coursePreviousPageButton;
@@ -19,12 +24,14 @@ var coursePageController = (function(){
 
 
     function initizlize(containerElement) {
+        $maincontainer = $("#mainContainer");
         container = containerElement;
-        $errorsContainer = $("#errorsContainer");
-        $searchInput = $("#nameSearch");
-        $searchButton = $("#searchButton");
-        $pagingButtons = $(".paging");
-        $errorsContainer.text("");
+        errorsContainer = $("#errorsContainer");
+        searchInput = $("#nameSearch");
+        searchButton = $("#searchButton");
+        pagingButtons = $(".paging");
+        errorsContainer.text("");
+        addNewCourse = $("#addNewCourse");
         atachEvents();
     }
 
@@ -50,9 +57,31 @@ var coursePageController = (function(){
             loadPage(lastPage, currentOrder, currentFilters );
         });
 
-        $searchButton.on("click", function(event){
+        searchButton.on("click", function(event){
             event.preventDefault();
             loadPage(1, [], getFilterValues());
+        });
+
+        addNewCourse.on("click",function(){
+            $maincontainer.load("/pages/coursesAdd.html", function(){
+                addCourseButton = $("#addCourseButton");
+                courseAddCourseNameInput = $("#courseAddCourseNameInput");
+                addCourseButton.on("click",function(event){
+                    event.preventDefault();
+                    var data = getFormData();
+
+                    coursePageService.addCourse(data, function(){
+                        //TODO: Load table with all courses.
+                        alert("added");
+                    },
+                    function(){
+                        //TODO: sHOw error
+                        alert("error");
+                    });
+
+                })
+            });
+
         });
 
 
@@ -60,13 +89,19 @@ var coursePageController = (function(){
 
     function getFilterValues(){
         return {
-            'name': $searchInput.val()
+            'name': searchInput.val()
+        };
+    }
+
+    function getFormData(){
+        return {
+            'name': courseAddCourseNameInput.val()
         };
     }
 
 
     function manageButtonsState(){
-        $pagingButtons.show();
+        pagingButtons.show();
 
         courseFirstPageButton.prop('disabled', false);
         coursePreviousPageButton.prop('disabled', false);
@@ -107,6 +142,8 @@ var coursePageController = (function(){
             }
         );
     }
+
+
 
     function generateUsersTable(usersData){
         var table = "<table border='1'>"+
