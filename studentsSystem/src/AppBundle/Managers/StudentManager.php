@@ -98,17 +98,6 @@ class StudentManager
     }
 
     /**
-     * @param $id
-     * @return Student|null|object
-     */
-    public function getStudentById($id)
-    {
-        $student = $this->entityManager->getRepository("AppBundle:Student")->find($id);
-
-        return $student;
-    }
-
-    /**
      * @param Student $studentEntity
      * @return Student
      */
