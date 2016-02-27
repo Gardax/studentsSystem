@@ -4,6 +4,7 @@ var userPageController = (function(){
     var currentFilters = [];
     var currentOrder = [];
     var lastPage =1;
+    var $errorsContainer;
 
     var container;
 
@@ -14,6 +15,8 @@ var userPageController = (function(){
 
     function initizlize(containerElement) {
         container = containerElement;
+        $errorsContainer = $("#errorsContainer");
+        $errorsContainer.text("");
         atachEvents();
     }
 
@@ -59,31 +62,30 @@ var userPageController = (function(){
                 container.html(table);
             },
             function(error){
-                alert(error);
+                $errorsContainer.text(error.responseJSON.errorMessage);
             }
         );
     }
 
+
     function manageButtonsState(){
+        userFirstPageButton.prop('disabled', false);
+        userPreviousPageButton.prop('disabled', false);
+        userNextPageButton.prop('disabled', false);
+        userLastPageButton.prop('disabled', false);
+
         if(currentPage == 1) {
             userFirstPageButton.prop('disabled', true);
             userPreviousPageButton.prop('disabled', true);
-            userNextPageButton.prop('disabled', false);
-            userLastPageButton.prop('disabled', false);
         }
-        else if(currentPage == lastPage) {
-            userFirstPageButton.prop('disabled', false);
-            userPreviousPageButton.prop('disabled', false);
+
+        if(currentPage == lastPage) {
             userNextPageButton.prop('disabled', true);
             userLastPageButton.prop('disabled', true);
         }
-        else {
-            userFirstPageButton.prop('disabled', false);
-            userPreviousPageButton.prop('disabled', false);
-            userNextPageButton.prop('disabled', false);
-            userLastPageButton.prop('disabled', false);
-        }
     }
+
+
 
     function generateUsersTable(usersData){
         var table = "<table border='1'>" +

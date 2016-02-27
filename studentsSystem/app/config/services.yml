@@ -1,7 +1,7 @@
 services:
     user_service:
         class: AppBundle\Services\UserService
-        arguments: ['@user_manager','@security.password_encoder']
+        arguments: ['@user_manager','@security.password_encoder','@validator']
     user_manager:
           class: AppBundle\Managers\UserManager
           arguments: ['@doctrine.orm.default_entity_manager']

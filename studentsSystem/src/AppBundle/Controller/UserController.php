@@ -29,6 +29,8 @@ use AppBundle\Services\UserService;
  */
 class UserController extends Controller
 {
+    const PAGE_SIZE = 10;
+
     /**
      * @Route("/user/add" , name="addUser")
      * @Method({"POST"})
@@ -40,21 +42,68 @@ class UserController extends Controller
      * @return JsonResponse
      */
     public function registerAction(Request $request) {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user, ['validation_groups' => ['registration']] );
-        $form->handleRequest($request);
-
-        if(!$form->isValid()){
-            throw new InvalidFormException($form);
-        }
 
         $userService = $this->get('user_service');
 
-        $user = $userService->addUser($user);
+        $userData = [
+            'username' => $request->request->get('username'),
+            'firstName' => $request->request->get('firstName'),
+            'lastName' => $request->request->get('lastName'),
+            'password' => $request->request->get('password'),
+            'confirmPassword' => $request->request->get('confirmPassword'),
+            'email' => $request->request->get('email'),
+            'roleId' => $request->request->get('roleId')
+        ];
 
-        $userModel = new UserModel($user);
+        if($userData['password'] != $userData['confirmPassword']){
+            throw new BadRequestHttpException("Паролите не съвпадат.");
+        }
+
+        $userEntity = $userService->addUser($userData);
+
+        $userModel = new UserModel($userEntity);
 
         return new JsonResponse($userModel);
+    }
+
+    /**
+     * @Route("/user/{page}", defaults={"page" = null})]
+     * @Method({"GET"})
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @param $page
+     * @return JsonResponse
+     */
+    public function getUsersAction(Request $request, $page)
+    {
+
+        $userService = $this->get('user_service');
+
+        $filters = [
+            'username'  => $request->query->get('username'),
+            'email' => $request->query->get('email'),
+
+        ];
+
+        $userEntities = $userService->getUsers($page, self::PAGE_SIZE, $filters);
+
+        $userModels = array();
+        foreach ($userEntities as $user) {
+            $model = new UserModel($user);
+            $userModels[] = $model;
+        }
+
+        $totalCount = $userService->getUsers($page, self::PAGE_SIZE, $filters, true);
+
+        $data = [
+            'studentAssessments' => $userModels,
+            'totalCount' => $totalCount,
+            'page' => $page,
+            'itemsPerPage' => self::PAGE_SIZE,
+        ];
+
+        return new JsonResponse($data);
     }
 
     /**

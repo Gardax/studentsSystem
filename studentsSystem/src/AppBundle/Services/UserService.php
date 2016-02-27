@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Services;
 
+use AppBundle\Exceptions\ValidatorException;
 use AppBundle\Managers\UserManager;
 use AppBundle\Entity\User;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -10,6 +11,8 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
 * Class UserService
@@ -18,6 +21,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class UserService implements UserProviderInterface
 {
     const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_TEACHER = 'ROLE_TEACHER';
 
     /**
      * @var UserManager
@@ -30,33 +35,83 @@ class UserService implements UserProviderInterface
     protected $passwordEncoder;
 
     /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
      * UserService constructor.
      * @param UserManager $userManager
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param ValidatorInterface $validator
      */
-    public function __construct(UserManager $userManager, UserPasswordEncoderInterface $passwordEncoder) {
+    public function __construct(
+        UserManager $userManager,UserPasswordEncoderInterface $passwordEncoder, ValidatorInterface $validator) {
+
         $this->userManager = $userManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->validator = $validator;
     }
 
     /**
-     * @param User $user
+     * @param $userData
      * @return User
+     * @throws ValidatorException
      */
-    public function addUser(User $user){
+    public function addUser($userData){
+
+        $user = new User();
+
+        $user->setUsername($userData['username']);
+        $user->setUserFirstName($userData['firstName']);
+        $user->setUserLastName($userData['lastName']);
+        $user->setUserLastName($userData['lastName']);
+        $user->setEmail($userData['email']);
+
+        $errors = $this->validator->validate($user, null, array('registration'));
+
+        if(count($errors) > 0) {
+            throw new ValidatorException($errors);
+        }
+
         $user->setSalt();
         $password = $this->passwordEncoder->encodePassword($user, $user->getPassword());
         $user->setPassword($password);
 
-        $roleUser = $this->getUserRole();
-        $user->addRole($roleUser);
-
         $user = $this->userManager->addUser($user);
+
+        $roles = $this->getRoles();
+        $this->assignAppropriateRoles($user, $userData['roleId'], $roles);
 
         $this->setUserApiKey($user);
 
+        if(count($errors) > 0){
+            throw new ValidatorException($errors);
+        }
+
         return $user;
     }
+
+    /**
+     * @param $page
+     * @param $pageSize
+     * @param $filters
+     * @param bool $getCount
+     * @return array|mixed
+     */
+    public function getUsers($page, $pageSize, $filters, $getCount = false ){
+
+        $start = ($page -1) *$pageSize;
+        $end = $start + $pageSize;
+
+        $users = $this->userManager->getUsers($start, $end, $filters, $getCount);
+
+        if(!$users){
+            throw new BadRequestHttpException("No users found.");
+        }
+        return $users;
+    }
+
 
     /**
      * Authenticates a user.
@@ -105,6 +160,38 @@ class UserService implements UserProviderInterface
     }
 
     /**
+     * @param User $user
+     * @param $roleId
+     * @param $allRoles
+     */
+    private function assignAppropriateRoles(User $user, $roleId, $allRoles){
+        $admin = null;
+        $teacher = null;
+        $userRole = null;
+
+        foreach($allRoles as $currentRole) {
+            if($currentRole->getRole() == self::ROLE_ADMIN) {
+               $admin = $currentRole;
+            }
+            else if($currentRole->getRole() == self::ROLE_TEACHER) {
+                $teacher = $currentRole;
+            }
+            else if($currentRole->getRole() == self::ROLE_USER) {
+                $userRole = $currentRole;
+            }
+        }
+
+        $user->addRole($userRole);
+        if($roleId == $teacher->getId()) {
+            $user->addRole($teacher);
+        }
+        if($roleId == $admin->getId()) {
+            $user->addRole($teacher);
+            $user->addRole($admin);
+        }
+    }
+
+    /**
      * @param $apiKey
      * @return mixed
      */
@@ -129,6 +216,15 @@ class UserService implements UserProviderInterface
      */
     protected function getUserRole() {
         return $this->userManager->getUserRole(self::ROLE_USER);
+    }
+
+    /**
+     * Returns all roles.
+     *
+     * @return \AppBundle\Entity\Role[]
+     */
+    protected function getRoles() {
+        return $this->userManager->getRoles();
     }
 
     public function refreshUser(UserInterface $user)

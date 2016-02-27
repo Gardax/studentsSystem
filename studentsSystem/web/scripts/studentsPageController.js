@@ -4,6 +4,7 @@ var studentsPageController = (function(){
     var currentFilters = [];
     var currentOrder = [];
     var lastPage =1;
+    var $errorsContainer;
 
     var container;
 
@@ -12,8 +13,10 @@ var studentsPageController = (function(){
     var studentsNextPageButton;
     var studentsLastPageButton;
 
-    function initizlize(containerElement) {
+    function initialize(containerElement) {
         container = containerElement;
+        $errorsContainer = $("#errorsContainer");
+        $errorsContainer.text("");
         atachEvents();
     }
 
@@ -42,36 +45,25 @@ var studentsPageController = (function(){
     }
 
     function manageButtonsState(){
+        studentsFirstPageButton.prop('disabled', false);
+        studentsPreviousPageButton.prop('disabled', false);
+        studentsNextPageButton.prop('disabled', false);
+        studentsLastPageButton.prop('disabled', false);
+
         if(currentPage == 1) {
             studentsFirstPageButton.prop('disabled', true);
             studentsPreviousPageButton.prop('disabled', true);
-            studentsNextPageButton.prop('disabled', false);
-            studentsLastPageButton.prop('disabled', false);
         }
-        else if(currentPage == lastPage) {
-            studentsFirstPageButton.prop('disabled', false);
-            studentsPreviousPageButton.prop('disabled', false);
+
+        if(currentPage == lastPage) {
             studentsNextPageButton.prop('disabled', true);
             studentsLastPageButton.prop('disabled', true);
-        }
-        else {
-            studentsFirstPageButton.prop('disabled', false);
-            studentsPreviousPageButton.prop('disabled', false);
-            studentsNextPageButton.prop('disabled', false);
-            studentsLastPageButton.prop('disabled', false);
         }
     }
 
 
-    var $errorsContainer;
-
-    //function initialize() {
-    $errorsContainer = $("#errorsContainer");
-    //}
-
-
     function loadPage(page, order, filters) {
-        homePageService.getUsers(page, order, filters,
+        studentsPageService.getUsers(page, order, filters,
             function(data){
                 currentPage = page;
                 currentFilters = filters;
@@ -88,7 +80,7 @@ var studentsPageController = (function(){
                 container.html(table);
             },
             function(error){
-                alert(error);
+                $errorsContainer.text(error.responseJSON.errorMessage);
             }
         );
     }
@@ -118,6 +110,6 @@ var studentsPageController = (function(){
 
     return {
         loadPage: loadPage,
-        initizlize: initizlize
+        initialize: initialize
     };
 }());

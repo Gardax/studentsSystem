@@ -34,7 +34,7 @@ class User implements UserInterface, \Serializable
     protected $username;
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=25)
      * @Assert\NotBlank(groups={"registration"}, message="First name cannot be blank.")
      * @Assert\Length(
      *     min=3,
@@ -47,7 +47,7 @@ class User implements UserInterface, \Serializable
     protected $userFirstName;
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=25)
      * @Assert\NotBlank(groups={"registration"}, message="Last name cannot be blank.")
      * @Assert\Length(
      *     min=3,

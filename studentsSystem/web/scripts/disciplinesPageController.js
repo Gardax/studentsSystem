@@ -4,6 +4,11 @@ var disciplinesPageController = (function(){
     var currentFilters = [];
     var currentOrder = [];
     var lastPage =1;
+    var $errorsContainer;
+
+    var disciplinesSearch;
+    var disciplinesSearchButton;
+    var pagingButtons;
 
     var container;
 
@@ -14,6 +19,11 @@ var disciplinesPageController = (function(){
 
     function initizlize(containerElement) {
         container = containerElement;
+        $errorsContainer = $("#errorsContainer");
+        disciplinesSearch = $("#disciplinesSearch");
+        disciplinesSearchButton = $("#disciplinesSearchButton");
+        pagingButtons = $(".paging");
+        $errorsContainer.text("");
         atachEvents();
     }
 
@@ -39,6 +49,17 @@ var disciplinesPageController = (function(){
             loadPage(lastPage, currentOrder, currentFilters );
         });
 
+        disciplinesSearchButton.on("click", function(event){
+            event.preventDefault();
+            loadPage(1, [], getFilterValues());
+        });
+
+    }
+
+    function getFilterValues(){
+        return {
+            'name': disciplinesSearch.val()
+        };
     }
 
     function loadPage(page, order, filters) {
@@ -59,29 +80,30 @@ var disciplinesPageController = (function(){
                 container.html(table);
             },
             function(error){
-                alert(error);
+                $errorsContainer.text(error.responseJSON.errorMessage);
+                $pagingButtons.hide();
             }
         );
     }
 
+
+
     function manageButtonsState(){
+        pagingButtons.show();
+
+        disciplineFirstPageButton.prop('disabled', false);
+        disciplinePreviousPageButton.prop('disabled', false);
+        disciplineNextPageButton.prop('disabled', false);
+        disciplineLastPageButton.prop('disabled', false);
+
         if(currentPage == 1) {
             disciplineFirstPageButton.prop('disabled', true);
             disciplinePreviousPageButton.prop('disabled', true);
-            disciplineNextPageButton.prop('disabled', false);
-            disciplineLastPageButton.prop('disabled', false);
         }
-        else if(currentPage == lastPage) {
-            disciplineFirstPageButton.prop('disabled', false);
-            disciplinePreviousPageButton.prop('disabled', false);
+
+        if(currentPage == lastPage) {
             disciplineNextPageButton.prop('disabled', true);
             disciplineLastPageButton.prop('disabled', true);
-        }
-        else {
-            disciplineFirstPageButton.prop('disabled', false);
-            disciplinePreviousPageButton.prop('disabled', false);
-            disciplineNextPageButton.prop('disabled', false);
-            disciplineLastPageButton.prop('disabled', false);
         }
     }
 

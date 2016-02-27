@@ -23,6 +23,47 @@ class UserManager
         $this->entityManager=$em;
     }
 
+    public function getUsers($start, $end, $filters = [], $getCount = false){
+
+        $em = $this->entityManager;
+
+        $parameters = [];
+
+        if(!$getCount) {
+            $queryString = "SELECT u
+                  FROM AppBundle:User u";
+        }
+        else {
+            $queryString = "SELECT count(u.id)
+                  FROM AppBundle:User u";
+        }
+
+        $queryString .= " WHERE 1=1";
+
+        if(isset($filters['username']) && $filters['username']) {
+            $queryString .= " AND s.username LIKE :username";
+            $parameters['username'] = $filters['username'];
+        }
+
+        if(isset($filters['email']) && $filters['email']) {
+            $queryString .= " AND s.email LIKE :email";
+            $parameters['email'] = $filters['email'];
+        }
+
+        $query = $em->createQuery($queryString)
+            ->setParameters($parameters);
+
+        if(!$getCount) {
+            $query->setFirstResult($start)
+                ->setMaxResults($end);
+        }
+
+        $user = $getCount ? $query->getSingleScalarResult() : $query->getResult();
+
+        return $user;
+    }
+
+
     /**
      * @param User $userEntity
      * @return User
@@ -34,7 +75,10 @@ class UserManager
         return $userEntity;
     }
 
-
+    /**
+     * @param $id
+     * @return User|null|object
+     */
     public function getUserById($id)
     {
         $user = $this->entityManager->getRepository("AppBundle:User")->find($id);
@@ -116,6 +160,51 @@ class UserManager
         );
 
         return $role;
+    }
+
+    /**
+     * @param $roleName
+     * @return \AppBundle\Entity\Role[]
+     */
+    public function getAdminRole($roleName) {
+        $role = $this->entityManager->getRepository("AppBundle:Role")->findOneBy([
+                'role' => $roleName
+            ]
+        );
+
+        return $role;
+    }
+
+    /**
+     * @param $roleName
+     * @return \AppBundle\Entity\Role[]
+     */
+    public function getTeacherRole($roleName) {
+        $role = $this->entityManager->getRepository("AppBundle:Role")->findOneBy([
+                'role' => $roleName
+            ]
+        );
+
+        return $role;
+    }
+
+    /**
+     * @param $id
+     * @return \AppBundle\Entity\Role|null|object
+     */
+    public function getRoleById($id) {
+        $role = $this->entityManager->getRepository("AppBundle:Role")->find($id);
+
+        return $role;
+    }
+
+    /**
+     * @return \AppBundle\Entity\Role[]|array
+     */
+    public function getRoles() {
+        $roles = $this->entityManager->getRepository("AppBundle:Role")->findAll();
+
+        return $roles;
     }
 
     /**
