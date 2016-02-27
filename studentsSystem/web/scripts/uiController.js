@@ -6,75 +6,11 @@ var uiController = (function(){
     var $subjectsButton;
     var $students;
     var $users;
-    var $grades;
+    var $studentAssessment;
     var $profileButton;
     var $exitButton;
     var $loginButton;
 
-    var $homeFirstPageButton;
-    var $homePreviousPageButton;
-    var $homeNextPageButton;
-    var $homeLastPageButton;
-
-    var $specialitiesFirstPage;
-    var $specialitiesPreviousPage;
-    var $specialitiesNextPage;
-    var $specialitiesLastPage;
-
-    var $disciplineFirstPage;
-    var $disciplinePreviousPage;
-    var $disciplineNextPage;
-    var $disciplineLastPage;
-
-    var $assessmentFirstPage;
-    var $assessmentPreviousPage;
-    var $assessmentNextPage;
-    var $assessmentLastPage;
-
-    var $studentsFirstPage;
-    var $studentsPreviousPage;
-    var $studentsNextPage;
-    var $studentsLastPage;
-
-    var $userFirstPage;
-    var $userPreviousPage;
-    var $userNextPage;
-    var $userLastPage;
-
-
-
-
-    function attachEvents(){
-         $homeFirstPageButton = $(".homeFirstPageButton");
-         $homePreviousPageButton = $(".homePreviousPageButton");
-         $homeNextPageButton = $(".homeNextPageButton");
-         $homeLastPageButton = $(".homeLastPageButton");
-
-         $specialitiesFirstPage = $(".specialitiesFirstPage");
-         $specialitiesPreviousPage = $(".specialitiesPreviousPage");
-         $specialitiesNextPage = $(".specialitiesNextPage");
-         $specialitiesLastPage = $(".specialitiesLastPage");
-
-         $disciplineFirstPage = $(".disciplineFirstPage");
-         $disciplinePreviousPage = $(".disciplinePreviousPage");
-         $disciplineNextPage = $(".disciplineNextPage");
-         $disciplineLastPage = $(".disciplineLastPage");
-
-         $assessmentFirstPage = $();
-         $assessmentPreviousPage = $();
-         $assessmentNextPage = $();
-         $assessmentLastPage = $();
-
-         $studentsFirstPage = $();
-         $studentsPreviousPage = $();
-         $studentsNextPage = $();
-         $studentsLastPage = $();
-
-         $userFirstPage = $();
-         $userPreviousPage = $();
-         $userNextPage = $();
-         $userLastPage =$();
-    }
 
 
     function initialize() {
@@ -85,16 +21,12 @@ var uiController = (function(){
         $subjectsButton = $("#subjectsButton");
         $students = $("#students");
         $users = $("#users");
-        $grades = $("#grades");
+        $studentAssessment = $("#studentAssessment");
         $profileButton = $("#profileButton");
         $exitButton = $("#exitButton");
         $loginButton = $("#loginButton");
 
-
-
-
         loadHomePage();
-        attachEvents();
     }
 
     function initializeNavigation() {
@@ -110,6 +42,13 @@ var uiController = (function(){
         $users.on("click", function () {
             $maincontainer.load("/pages/user.html", function () {
                 userTable();
+            });
+
+        });
+
+        $studentAssessment.on("click", function () {
+            $maincontainer.load("/pages/assessments.html", function () {
+                loadAssessment();
             });
 
         });
@@ -146,7 +85,6 @@ var uiController = (function(){
         });
 
 
-
         updateAvailableButtons();
     }
 
@@ -165,7 +103,7 @@ var uiController = (function(){
             $subjectsButton.hide();
             $students.hide();
             $users.hide();
-            $grades.hide();
+            $studentAssessment.hide();
             $profileButton.hide();
             $exitButton.hide();
         }
@@ -176,7 +114,7 @@ var uiController = (function(){
             $subjectsButton.show();
             $students.show();
             $users.show();
-            $grades.show();
+            $studentAssessment.show();
             $profileButton.show();
             $exitButton.show();
         }
@@ -199,13 +137,16 @@ var uiController = (function(){
     function loadStudentsTable(){
         var studentsTable = $("#studentsTable");
 
-        studentsPageController.initizlize(studentsTable);
+        studentsPageController.initialize(studentsTable);
         studentsPageController.loadPage(1, [], []);
     }
 
     function loadSpecialitiesTable(){
         var specialitiesTable = $("#specialitiesTable");
-        specialitiesPageController.load(specialitiesTable);
+
+        specialitiesPageController.initialize(specialitiesTable);
+        specialitiesPageController.loadPage(1, [], []);
+
     }
 
     function loadCourseTable(){
@@ -223,7 +164,12 @@ var uiController = (function(){
 
 
     }
-    
+    function loadAssessment(){
+        var studentAssessment = $("#assessmentTable");
+        assessmentPageController.initialize(studentAssessment);
+
+        assessmentPageController.loadPage(1, [], []);
+    }
 
     function loadTable(){
         var userTable = $("#userTable");

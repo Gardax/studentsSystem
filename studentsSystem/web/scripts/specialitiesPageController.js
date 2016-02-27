@@ -1,14 +1,106 @@
 var specialitiesPageController = (function(){
-    function load(container){
-        specialitiesPageService.getUsers(1,1,1,
+    var currentPage = 1;
+    var currentFilters = [];
+    var currentOrder = [];
+    var lastPage =1;
+
+    var $errorsContainer;
+    var $searchInput;
+    var $specialitiesSearchButton;
+    var $pagingButtons;
+
+    var container;
+
+    var specialitiesFirstPageButton;
+    var specialitiesPreviousPageButton;
+    var specialitiesNextPageButton;
+    var specialitiesLastPageButton;
+
+    function initialize(containerElement) {
+        container = containerElement;
+        $errorsContainer = $("#errorsContainer");
+        $searchInput = $("#disciplinesSearch");
+        $specialitiesSearchButton = $("#specialitiesSearchButton");
+        $pagingButtons = $(".paging");
+        $errorsContainer.text("");
+        atachEvents();
+    }
+
+    function atachEvents(){
+        specialitiesFirstPageButton = $(".specialitiesFirstPageButton");
+        specialitiesPreviousPageButton = $(".specialitiesPreviousPageButton");
+        specialitiesNextPageButton = $(".specialitiesNextPageButton");
+        specialitiesLastPageButton = $(".specialitiesLastPageButton");
+
+        specialitiesPreviousPageButton.on("click",function(){
+            loadPage(currentPage - 1, currentOrder, currentFilters );
+        });
+
+        specialitiesNextPageButton.on("click",function(){
+            loadPage(currentPage + 1, currentOrder, currentFilters );
+        });
+
+        specialitiesFirstPageButton.on("click",function(){
+            loadPage(1, currentOrder, currentFilters );
+        });
+
+        specialitiesLastPageButton.on("click",function(){
+            loadPage(lastPage, currentOrder, currentFilters );
+        });
+
+        $specialitiesSearchButton.on("click", function(event){
+            event.preventDefault();
+            loadPage(1, [], getFilterValues());
+        });
+
+    }
+
+    function loadPage(page, order, filters) {
+        specialitiesPageService.getUsers(page, order, filters,
             function(data){
+                currentPage = page;
+                currentFilters = filters;
+                currentOrder = order;
+
+                lastPage = parseInt(data.totalCount / data.itemsPerPage);
+                if(data.totalCount % data.itemsPerPage != 0) {
+                    lastPage++;
+                }
+
+                manageButtonsState();
+
                 var table = generateUsersTable(data);
-                container.append(table);
+                container.html(table);
             },
             function(error){
-                alert(error);
+                $errorsContainer.text(error.responseJSON.errorMessage);
+                $pagingButtons.hide();
             }
         );
+    }
+
+    function getFilterValues(){
+        return {
+            'longName': $searchInput.val()
+        };
+    }
+
+    function manageButtonsState(){
+        $pagingButtons.show();
+        specialitiesFirstPageButton.prop('disabled', false);
+        specialitiesPreviousPageButton.prop('disabled', false);
+        specialitiesNextPageButton.prop('disabled', false);
+        specialitiesLastPageButton.prop('disabled', false);
+
+        if(currentPage == 1) {
+            specialitiesFirstPageButton.prop('disabled', true);
+            specialitiesPreviousPageButton.prop('disabled', true);
+        }
+
+        if(currentPage == lastPage) {
+            specialitiesNextPageButton.prop('disabled', true);
+            specialitiesLastPageButton.prop('disabled', true);
+        }
     }
 
     function generateUsersTable(usersData){
@@ -32,6 +124,7 @@ var specialitiesPageController = (function(){
     }
 
     return {
-        load: load
+        loadPage: loadPage,
+        initialize : initialize
     };
 }());

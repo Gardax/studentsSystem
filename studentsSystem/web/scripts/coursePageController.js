@@ -5,6 +5,11 @@ var coursePageController = (function(){
     var currentOrder = [];
     var lastPage =1;
 
+    var $errorsContainer;
+    var $searchInput;
+    var $searchButton;
+    var $pagingButtons;
+
     var container;
 
     var courseFirstPageButton;
@@ -12,8 +17,14 @@ var coursePageController = (function(){
     var courseNextPageButton;
     var courseLastPageButton;
 
+
     function initizlize(containerElement) {
         container = containerElement;
+        $errorsContainer = $("#errorsContainer");
+        $searchInput = $("#nameSearch");
+        $searchButton = $("#searchButton");
+        $pagingButtons = $(".paging");
+        $errorsContainer.text("");
         atachEvents();
     }
 
@@ -39,26 +50,37 @@ var coursePageController = (function(){
             loadPage(lastPage, currentOrder, currentFilters );
         });
 
+        $searchButton.on("click", function(event){
+            event.preventDefault();
+            loadPage(1, [], getFilterValues());
+        });
+
+
     }
 
+    function getFilterValues(){
+        return {
+            'name': $searchInput.val()
+        };
+    }
+
+
     function manageButtonsState(){
+        $pagingButtons.show();
+
+        courseFirstPageButton.prop('disabled', false);
+        coursePreviousPageButton.prop('disabled', false);
+        courseNextPageButton.prop('disabled', false);
+        courseLastPageButton.prop('disabled', false);
+
         if(currentPage == 1) {
             courseFirstPageButton.prop('disabled', true);
             coursePreviousPageButton.prop('disabled', true);
-            courseNextPageButton.prop('disabled', false);
-            courseLastPageButton.prop('disabled', false);
         }
-        else if(currentPage == lastPage) {
-            courseFirstPageButton.prop('disabled', false);
-            coursePreviousPageButton.prop('disabled', false);
+
+        if(currentPage == lastPage) {
             courseNextPageButton.prop('disabled', true);
             courseLastPageButton.prop('disabled', true);
-        }
-        else {
-            courseFirstPageButton.prop('disabled', false);
-            coursePreviousPageButton.prop('disabled', false);
-            courseNextPageButton.prop('disabled', false);
-            courseLastPageButton.prop('disabled', false);
         }
     }
 
@@ -80,7 +102,8 @@ var coursePageController = (function(){
                 container.html(table);
             },
             function(error){
-                alert(error);
+                container.text(error.responseJSON.errorMessage);
+                $pagingButtons.hide();
             }
         );
     }
