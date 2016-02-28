@@ -175,4 +175,23 @@ class StudentAssessmentController extends Controller
 
         return new  JsonResponse($studentAssessmentModel);
     }
+
+    /**
+     * @Route("/assessmentId/{id}")]
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getUserById(Request $request, $id){
+
+        $studentAssessmentService = $this->get('student_assessment_service');
+
+        $studentAssessmentEntity = $studentAssessmentService->getStudentAssessmentById($id);
+
+        $studentAssessmentModel = new StudentAssessmentModel($studentAssessmentEntity);
+
+        return new JsonResponse($studentAssessmentModel);
+    }
 }

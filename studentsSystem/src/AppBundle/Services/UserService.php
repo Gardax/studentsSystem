@@ -156,6 +156,10 @@ class UserService implements UserProviderInterface
     public function getUserById($id){
         $user = $this->userManager->getUserById($id);
 
+        if(!$user){
+            throw new BadRequestHttpException("There is no user with this id.");
+        }
+
         return $user;
     }
 

@@ -138,4 +138,23 @@ class SubjectController extends Controller
         return new  JsonResponse($subjectModel);
     }
 
+    /**
+     * @Route("/subjectId/{id}")]
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getSubjectById(Request $request, $id){
+
+        $subjectService = $this->get('subject_service');
+
+        $subjectEntity = $subjectService->getSubjectById($id);
+
+        $subjectModel = new SubjectModel($subjectEntity);
+
+        return new JsonResponse($subjectModel);
+    }
+
 }

@@ -127,4 +127,23 @@ class UserController extends Controller
         return new JsonResponse($userModel);
     }
 
+    /**
+     * @Route("/userId/{id}")]
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getUserById(Request $request, $id){
+
+        $userService = $this->get('user_service');
+
+        $userEntity = $userService->getUserById($id);
+
+        $userModel = new UserModel($userEntity);
+
+        return new JsonResponse($userModel);
+    }
+
 }

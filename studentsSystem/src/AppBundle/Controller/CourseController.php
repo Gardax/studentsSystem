@@ -130,4 +130,23 @@ class CourseController extends Controller
 
         return new JsonResponse($data);
     }
+
+    /**
+     * @Route("/courseId/{id}")]
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getCourseByIdAction(Request $request, $id){
+
+        $courseService = $this->get('course_service');
+
+        $courseEntity = $courseService->getCourseById($id);
+
+        $courseModel = new CourseModel($courseEntity);
+
+        return new JsonResponse($courseModel);
+    }
 }

@@ -161,4 +161,23 @@ class StudentController extends Controller
 
         return new  JsonResponse($studentModel);
     }
+
+    /**
+     * @Route("/studentId/{id}")]
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getStudentByIdAction(Request $request, $id){
+
+        $studentService = $this->get('student_service');
+
+        $studentEntity = $studentService->getStudentById($id);
+
+        $studentModel = new StudentModel($studentEntity);
+
+        return new JsonResponse($studentModel);
+    }
 }
