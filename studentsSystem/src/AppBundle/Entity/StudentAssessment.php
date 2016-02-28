@@ -22,19 +22,19 @@ class StudentAssessment
 
     /**
      * @ORM\Column(type="integer", length=3, nullable=false)
-     * @Assert\NotBlank(groups={"edit"}, message="Lectures cannot be blank.")
+     * @Assert\NotBlank(groups={"edit","add"}, message="Lectures cannot be blank.")
      */
     protected $workloadLectures;
 
     /**
      * @ORM\Column(type="integer", length=3, nullable=false)
-     * @Assert\NotBlank(groups={"edit"}, message="Exercises cannot be blank.")
+     * @Assert\NotBlank(groups={"edit","add"}, message="Exercises cannot be blank.")
      */
     protected $workloadExercises;
 
     /**
      * @ORM\Column(type="integer", length=3, nullable=false)
-     * @Assert\NotBlank(groups={"edit"}, message="Assessment cannot be blank.")
+     * @Assert\NotBlank(groups={"edit","add"}, message="Assessment cannot be blank.")
      */
     protected $assessment;
 

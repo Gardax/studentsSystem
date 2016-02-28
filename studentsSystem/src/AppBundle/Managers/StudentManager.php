@@ -10,6 +10,7 @@ namespace AppBundle\Managers;
 
 use AppBundle\Entity\Student;
 use Doctrine\ORM\EntityManager;
+use Symfony\Bridge\Doctrine\Tests\Fixtures\User;
 
 /**
  * Class StudentManager
@@ -106,6 +107,38 @@ class StudentManager
         $this->entityManager->flush();
 
         return $studentEntity;
+    }
+
+    /**
+     * @param $email
+     * @return Student
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getStudentByEmail($email)
+    {
+        $query = $this->entityManager->createQuery(
+            "SELECT s
+             FROM AppBundle:Student s
+             WHERE s.email = :email"
+        )
+            ->setParameters([
+                "email" => $email
+            ]);
+
+        $user = $query->getOneOrNullResult();
+
+        return $user;
+    }
+
+    /**
+     * @param $id
+     * @return Student|null|object
+     */
+    public function getStudentById($id)
+    {
+        $student = $this->entityManager->getRepository("AppBundle:Student")->find($id);
+
+        return $student;
     }
 
     /**

@@ -16,7 +16,7 @@ services:
 
     student_service:
         class: AppBundle\Services\StudentService
-        arguments: ['@student_manager']
+        arguments: ['@student_manager','@validator']
     student_manager:
         class: AppBundle\Managers\StudentManager
         arguments: ['@doctrine.orm.default_entity_manager']

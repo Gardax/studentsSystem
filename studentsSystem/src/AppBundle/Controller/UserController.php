@@ -97,7 +97,7 @@ class UserController extends Controller
         $totalCount = $userService->getUsers($page, self::PAGE_SIZE, $filters, true);
 
         $data = [
-            'studentAssessments' => $userModels,
+            'users' => $userModels,
             'totalCount' => $totalCount,
             'page' => $page,
             'itemsPerPage' => self::PAGE_SIZE,

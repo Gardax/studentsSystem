@@ -33,7 +33,7 @@ class Student
     /**
      * @ORM\Column(type="string", length=45, nullable=false)
      *
-     * @Assert\NotBlank(message="First name cannot be blank.")
+     * @Assert\NotBlank(groups={"edit","add"},message="First name cannot be blank.")
      * @Assert\Length(
      *     min=3,
      *     max=45,
@@ -46,7 +46,7 @@ class Student
     /**
      * @ORM\Column(type="string", length=45, nullable=false)
      *
-     * @Assert\NotBlank(message="Last name cannot be blank.")
+     * @Assert\NotBlank(groups={"edit","add"},message="Last name cannot be blank.")
      * @Assert\Length(
      *     min=3,
      *     max=45,
@@ -58,16 +58,20 @@ class Student
 
     /**
      * @ORM\Column(type="string", length=60, unique=true, nullable=true)
+     * @Assert\NotBlank(groups={"edit","add"},message="Email cannot be blank.")
+     *
      */
     protected $email;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true, unique=true)
+     * @Assert\NotBlank(groups={"edit","add"},message="Faculty number cannot be blank.")
      */
     protected $facultyNumber = '0000000000';
 
     /**
      * @ORM\Column(type="string", nullable=false)
+     * @Assert\NotBlank(groups={"edit","add"},message="Education form cannot be blank.")
      */
     protected $educationForm = '';
 

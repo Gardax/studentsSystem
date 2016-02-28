@@ -8,6 +8,7 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Exceptions\ValidatorException;
 use AppBundle\Entity\Speciality;
 use AppBundle\Managers\StudentManager;
 use AppBundle\Entity\Student;
@@ -19,6 +20,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class StudentService
@@ -32,11 +34,18 @@ class StudentService
     protected $studentManager;
 
     /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
      * StudentService constructor.
      * @param StudentManager $studentManager
+     * @param ValidatorInterface $validator
      */
-    public function __construct(StudentManager $studentManager){
+    public function __construct(StudentManager $studentManager, ValidatorInterface $validator){
         $this->studentManager=$studentManager;
+        $this->validator = $validator;
     }
 
     /**
@@ -78,6 +87,7 @@ class StudentService
      * @param Course $courseEntity
      * @param Speciality $specialityEntity
      * @return Student
+     * @throws ValidatorException
      */
     public function addStudent($studentData, Course $courseEntity, Speciality $specialityEntity){
 
@@ -90,10 +100,59 @@ class StudentService
         $studentEntity->setFacultyNumber($studentData['facultyNumber']);
         $studentEntity->setEducationForm($studentData['educationForm']);
 
+        $errors = $this->validator->validate($studentEntity, null, array('add'));
+
+        if(count($errors) > 0){
+            throw new ValidatorException($errors);
+        }
+
         $this->studentManager->addStudent($studentEntity);
         $this->studentManager->saveChanges();
 
         return $studentEntity;
 
+    }
+
+    /**
+     * @param Student $student
+     * @param Course $course
+     * @param Speciality $speciality
+     * @param $studentData
+     * @return Student
+     * @throws ValidatorException
+     */
+    public function updateStudent(Student $student, Course $course, Speciality $speciality, $studentData){
+
+        $student->setCourse($course);
+        $student->setSpeciality($speciality);
+        $student->setFirstName($studentData['firstName']);
+        $student->setLastName($studentData['lastName']);
+        $student->setFacultyNumber($studentData['facultyNumber']);
+        $student->setEmail($studentData['email']);
+        $student->setEducationForm($studentData['educationForm']);
+
+        $errors = $this->validator->validate($student, null, array('edit'));
+
+        if(count($errors) > 0){
+            throw new ValidatorException($errors);
+        }
+
+        $this->studentManager->saveChanges();
+
+        return $student;
+    }
+
+    /**
+     * @param $id
+     * @return Student|null|object
+     */
+    public function getStudentByEmail($id){
+
+        $student = $this->studentManager->getStudentById($id);
+
+        if(!$student){
+            throw new BadRequestHttpException("No student found.");
+        }
+        return $student;
     }
 }
