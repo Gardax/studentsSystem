@@ -37,6 +37,20 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($user);
         $manager->flush();
 
+
+        $user2 = new User();
+        $user2->setUsername('suxorr');
+        $user2->setUserFirstName('mario');
+        $user2->setUserLastName('hristev');
+        $user2->setEmail('hristevmario@gmail.com');
+        $user2->setApiKey('a');
+
+        $encoder2 = $this->container->get('security.password_encoder');
+        $password2 = $encoder2->encodePassword($user2, 'azsammario123');
+        $user2->setPassword($password2);
+        $manager->persist($user2);
+        $manager->flush();
+
         $roleAdmin = new Role();
         $roleAdmin->setRole('ROLE_ADMIN');
         $roleAdmin->addUser($user);
@@ -52,9 +66,28 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $roleUser->addUser($user);
         $manager->persist($roleUser);
 
+        $roleAdmin2 = new Role();
+        $roleAdmin2->setRole('ROLE_ADMIN');
+        $roleAdmin2->addUser($user2);
+        $manager->persist($roleAdmin2);
+
+        $roleTeacher2 = new Role();
+        $roleTeacher2->setRole('ROLE_TEACHER');
+        $roleTeacher2->addUser($user2);
+        $manager->persist($roleTeacher2);
+
+        $roleUser2 = new Role();
+        $roleUser2->setRole('ROLE_USER');
+        $roleUser2->addUser($user2);
+        $manager->persist($roleUser2);
+
         $user->addRole($roleAdmin);
         $user->addRole($roleTeacher);
         $user->addRole($roleUser);
+
+        $user2->addRole($roleAdmin);
+        $user2->addRole($roleTeacher);
+        $user2->addRole($roleUser);
 
         $manager->flush();
     }

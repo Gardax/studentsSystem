@@ -98,10 +98,10 @@ var userPageController = (function(){
             "</thead><tbody>";
         for(var i = 0; i < usersData.users.length; i++){
             table += "<tr>"+
-                "<td>"+usersData.users[i].user_id+"</td>"+
+                "<td>"+usersData.users[i].id+"</td>"+
                 "<td>"+usersData.users[i].username+"</td>"+
                 "<td>"+usersData.users[i].email+"</td>"+
-                "<td>"+usersData.users[i].role+"</td>"+
+                "<td>"+usersData.users[i].roles+"</td>"+
                 "<td class='edit'></td>"+
                 "<td class='delete'></td>";
         }
