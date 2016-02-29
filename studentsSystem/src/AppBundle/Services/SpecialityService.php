@@ -116,9 +116,6 @@ class SpecialityService
 
         $speciality = $this->specialityManager->getSpecialityById($id);
 
-        if(!$speciality){
-            throw new BadRequestHttpException("There is no speciality with this id.");
-        }
         return $speciality;
     }
 

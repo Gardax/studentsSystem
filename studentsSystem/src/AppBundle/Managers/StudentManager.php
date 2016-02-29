@@ -125,9 +125,30 @@ class StudentManager
                 "email" => $email
             ]);
 
-        $user = $query->getOneOrNullResult();
+        $student = $query->getOneOrNullResult();
 
-        return $user;
+        return $student;
+    }
+
+    /**
+     * @param $facultyNumber
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getStudentByFacultyNumber($facultyNumber)
+    {
+        $query = $this->entityManager->createQuery(
+            "SELECT s
+             FROM AppBundle:Student s
+             WHERE s.facultyNumber LIKE :facultyNumber"
+        )
+            ->setParameters([
+                "facultyNumber" => $facultyNumber
+            ]);
+
+        $student = $query->getOneOrNullResult();
+
+        return $student;
     }
 
     /**

@@ -97,9 +97,6 @@ class CourseService
 
         $course = $this->courseManager->getCourseById($id);
 
-        if(!$course){
-            throw new BadRequestHttpException("There is no course with this id.");
-        }
         return $course;
     }
 

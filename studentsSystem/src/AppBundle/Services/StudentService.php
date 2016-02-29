@@ -49,40 +49,6 @@ class StudentService
     }
 
     /**
-     * @param $page
-     * @param $pageSize
-     * @param $filters
-     * @param $getFullInfo
-     * @param bool $getCount
-     * @return Student[]
-     */
-    public function getStudents($page, $pageSize, $filters, $getFullInfo, $getCount=false ){
-
-        $start = ((int)$page - 1) * $pageSize;
-        $end = $start + $pageSize;
-
-        $students = $this->studentManager->getStudents($start, $end, $filters, $getFullInfo, $getCount);
-        if(!$students){
-            throw new NotFoundHttpException("No students found.");
-        }
-        return $students;
-    }
-
-    /**
-     * @param $id
-     * @return Student|null|object
-     */
-    public function getStudentById($id){
-
-        $student = $this->studentManager->getStudentById($id);
-
-        if(!$student){
-            throw new BadRequestHttpException("No student found.");
-        }
-        return $student;
-    }
-
-    /**
      * @param $studentData
      * @param Course $courseEntity
      * @param Speciality $specialityEntity
@@ -143,10 +109,30 @@ class StudentService
     }
 
     /**
+     * @param $page
+     * @param $pageSize
+     * @param $filters
+     * @param $getFullInfo
+     * @param bool $getCount
+     * @return Student[]
+     */
+    public function getStudents($page, $pageSize, $filters, $getFullInfo, $getCount=false ){
+
+        $start = ((int)$page - 1) * $pageSize;
+        $end = $start + $pageSize;
+
+        $students = $this->studentManager->getStudents($start, $end, $filters, $getFullInfo, $getCount);
+        if(!$students){
+            throw new NotFoundHttpException("No students found.");
+        }
+        return $students;
+    }
+
+    /**
      * @param $id
      * @return Student|null|object
      */
-    public function getStudentByEmail($id){
+    public function getStudentById($id){
 
         $student = $this->studentManager->getStudentById($id);
 
@@ -154,5 +140,27 @@ class StudentService
             throw new BadRequestHttpException("No student found.");
         }
         return $student;
+    }
+
+    /**
+     * @param $email
+     * @return Student
+     */
+    public function getStudentByEmail($email){
+
+        $studentEmail = $this->studentManager->getStudentByEmail($email);
+
+        return $studentEmail;
+    }
+
+    /**
+     * @param $facultyNumber
+     * @return mixed
+     */
+    public function getStudentByFacultyNumber($facultyNumber){
+
+        $studentFacultyNumber = $this->studentManager->getStudentByFacultyNumber($facultyNumber);
+
+        return $studentFacultyNumber;
     }
 }
