@@ -71,7 +71,7 @@ class Role implements RoleInterface
     /**
      * @param Role $role
      */
-    public function setRole(Role $role)
+    public function setRole($role)
     {
         $this->role = $role;
     }
