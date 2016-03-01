@@ -17,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Class CourseController
@@ -40,9 +41,16 @@ class CourseController extends Controller
     public function addCourseAction(Request $request)
     {
         $courseService = $this->get('course_service');
+
         $courseData = [
             'name' => $request->request->get('name'),
         ];
+
+        $courseName = $courseService->getCourseName($request->request->get('name'));
+
+        if($courseName){
+            throw new BadRequestHttpException("There is already a course with this name.");
+        }
 
         $courseEntity = $courseService->addCourse($courseData);
         $courseModel = new CourseModel($courseEntity);
@@ -52,7 +60,7 @@ class CourseController extends Controller
     /**
      * @Route("/course/edit/{id}", name="updateCourseById")
      * @Method("POST")
-     * @Security("has_role('ROLE_TEACHER')")
+     * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
      * @param $id
@@ -62,9 +70,17 @@ class CourseController extends Controller
 
         $courseService = $this->get('course_service');
 
+        $courseData = [
+          'name' => $request->request->get('name')
+        ];
+
         $courseEntity = $courseService->getCourseById($id);
 
-        $courseService->updateCourse($courseEntity,$request->request->get('course'));
+        if(!$courseEntity){
+            throw new BadRequestHttpException("There is no course with this id.");
+        }
+
+        $courseService->updateCourse($courseEntity,$courseData);
 
         $courseModel = new CourseModel($courseEntity);
 

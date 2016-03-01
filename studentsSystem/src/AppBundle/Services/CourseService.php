@@ -132,4 +132,15 @@ class CourseService
         return $result;
     }
 
+    /**
+     * @param $name
+     * @return Course
+     */
+    public function getCourseName($name){
+
+        $courseName = $this->courseManager->getCourseName($name);
+
+        return $courseName;
+    }
+
 }

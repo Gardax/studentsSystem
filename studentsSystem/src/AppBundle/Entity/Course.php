@@ -62,5 +62,4 @@ class Course
         $this->id = $id;
     }
 
-
 }
