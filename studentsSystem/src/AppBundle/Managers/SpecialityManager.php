@@ -59,8 +59,8 @@ class SpecialityManager
         }
 
         if(isset($filters['shortName']) && $filters['shortName']) {
-            $queryString .= " AND s.specialityShortName LIKE :shortName";
-            $parameters['shortName'] = $filters['shortName'] . "%";
+            $queryString .= " AND s.specialityShortName = :shortName";
+            $parameters['shortName'] = $filters['shortName'];
         }
 
         $query = $em->createQuery($queryString)
