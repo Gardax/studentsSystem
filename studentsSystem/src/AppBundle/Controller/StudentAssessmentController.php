@@ -109,7 +109,7 @@ class StudentAssessmentController extends Controller
         ];
 
         $studentAssessmentEntities = $studentAssessmentService->getStudentAssessments(
-            $page, self::PAGE_SIZE, $studentId,$subjectId);
+            $page, self::PAGE_SIZE, $filters);
 
         $studentAssessmentModels = array();
         foreach ($studentAssessmentEntities as $studentAssessment) {

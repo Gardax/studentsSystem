@@ -8,7 +8,9 @@ var coursePageController = (function(){
     var errorsContainer;
     var searchInput;
     var searchButton;
+
     var pagingButtons;
+    var courseTable;
 
     var addNewCourse;
     var courseAddCourseNameInput;
@@ -32,6 +34,7 @@ var coursePageController = (function(){
         pagingButtons = $(".paging");
         errorsContainer.text("");
         addNewCourse = $("#addNewCourse");
+        courseTable = $(".courseTable");
         atachEvents();
     }
 
@@ -137,8 +140,10 @@ var coursePageController = (function(){
                 container.html(table);
             },
             function(error){
-                container.text(error.responseJSON.errorMessage);
-                $pagingButtons.hide();
+                errorsContainer.text(error.responseJSON.errorMessage);
+                pagingButtons.hide();
+                addNewCourse.hide();
+                courseTable.hide();
             }
         );
     }

@@ -8,6 +8,7 @@ var specialitiesPageController = (function(){
     var $searchInput;
     var $specialitiesSearchButton;
     var $pagingButtons;
+    var $specialitiesTable;
 
     var container;
 
@@ -22,6 +23,7 @@ var specialitiesPageController = (function(){
         $searchInput = $("#disciplinesSearch");
         $specialitiesSearchButton = $("#specialitiesSearchButton");
         $pagingButtons = $(".paging");
+        $specialitiesTable = $("#specialitiesTable");
         $errorsContainer.text("");
         atachEvents();
     }
@@ -68,6 +70,9 @@ var specialitiesPageController = (function(){
                 }
 
                 manageButtonsState();
+                $pagingButtons.show();
+                $specialitiesTable.show();
+                $errorsContainer.text("");
 
                 var table = generateUsersTable(data);
                 container.html(table);
@@ -75,6 +80,7 @@ var specialitiesPageController = (function(){
             function(error){
                 $errorsContainer.text(error.responseJSON.errorMessage);
                 $pagingButtons.hide();
+                $specialitiesTable.hide();
             }
         );
     }
@@ -86,7 +92,6 @@ var specialitiesPageController = (function(){
     }
 
     function manageButtonsState(){
-        $pagingButtons.show();
         specialitiesFirstPageButton.prop('disabled', false);
         specialitiesPreviousPageButton.prop('disabled', false);
         specialitiesNextPageButton.prop('disabled', false);

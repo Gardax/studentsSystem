@@ -4,11 +4,12 @@ var disciplinesPageController = (function(){
     var currentFilters = [];
     var currentOrder = [];
     var lastPage =1;
-    var $errorsContainer;
+    var errorsContainer;
 
     var disciplinesSearch;
     var disciplinesSearchButton;
     var pagingButtons;
+    var disciplinesTable;
 
     var container;
 
@@ -19,11 +20,12 @@ var disciplinesPageController = (function(){
 
     function initizlize(containerElement) {
         container = containerElement;
-        $errorsContainer = $("#errorsContainer");
+        errorsContainer = $("#errorsContainer");
         disciplinesSearch = $("#disciplinesSearch");
         disciplinesSearchButton = $("#disciplinesSearchButton");
         pagingButtons = $(".paging");
-        $errorsContainer.text("");
+        disciplinesTable = $("#disciplinesTable");
+        errorsContainer.text("");
         atachEvents();
     }
 
@@ -75,13 +77,16 @@ var disciplinesPageController = (function(){
                 }
 
                 manageButtonsState();
-
+                pagingButtons.show();
+                disciplinesTable.show();
+                errorsContainer.text("");
                 var table = generateUsersTable(data);
                 container.html(table);
             },
             function(error){
-                $errorsContainer.text(error.responseJSON.errorMessage);
-                $pagingButtons.hide();
+                errorsContainer.text(error.responseJSON.errorMessage);
+                pagingButtons.hide();
+                disciplinesTable.hide();
             }
         );
     }
