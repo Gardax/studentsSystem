@@ -60,7 +60,6 @@ var studentsPageController = (function(){
 
     function getFilterValues(){
         return {
-            //'firstName' : filterByName.val(),
             'facultyNumber': filterByFacultyNumber.val(),
             'email' : filterByEmail.val()
         };
@@ -82,7 +81,6 @@ var studentsPageController = (function(){
             studentsLastPageButton.prop('disabled', true);
         }
     }
-
 
     function loadPage(page, order, filters) {
         studentsPageService.getUsers(page, order, filters,
