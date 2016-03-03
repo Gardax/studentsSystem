@@ -31,7 +31,7 @@ class UserManager
 
         if(!$getCount) {
             $queryString = "SELECT u
-                  FROM AppBundle:User u";
+                  FROM AppBundle:User u LEFT JOIN u.roles role";
         }
         else {
             $queryString = "SELECT count(u.id)

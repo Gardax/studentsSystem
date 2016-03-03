@@ -10,6 +10,7 @@
 namespace AppBundle\Models;
 
 use AppBundle\Entity\User;
+use AppBundle\Services\UserService;
 
 /**
  * Class UserModel
@@ -53,6 +54,11 @@ class UserModel
     public $apiKey;
 
     /**
+     * @var string
+     */
+    public $roleName;
+
+    /**
      * UserModel constructor.
      * @param User $user
      */
@@ -65,6 +71,7 @@ class UserModel
         $this->setEmail($user->getEmail());
         $this->setPassword($user->getPassword());
         $this->setApiKey($user->getApiKey());
+        $this->setRoleName($this->determineTheBiggestRoleName($user));
     }
 
     /**
@@ -179,4 +186,39 @@ class UserModel
         $this->apiKey = $apiKey;
     }
 
+    /**
+     * @return string
+     */
+    public function getRoleName()
+    {
+        return $this->roleName;
+    }
+
+    /**
+     * @param string $roleName
+     */
+    public function setRoleName($roleName)
+    {
+        $this->roleName = $roleName;
+    }
+
+    private function determineTheBiggestRoleName(User $user) {
+        $containsRoleAdmin = false;
+        $containsRoleTeacher = false;
+        foreach($user->getRoles() as $role) {
+            if($role->getRole() == UserService::ROLE_ADMIN) {
+                $containsRoleAdmin = true;
+                break;
+            }
+            if($role->getRole() == UserService::ROLE_TEACHER) {
+                $containsRoleTeacher = true;
+            }
+        }
+
+        //TODO: Extract the hardcoded string as constants!
+        if($containsRoleAdmin) return 'Admin';
+        if($containsRoleTeacher) return 'Teacher';
+
+        return 'Student';
+    }
 }

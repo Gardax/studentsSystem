@@ -222,7 +222,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return ArrayCollection
+     * @return Role[]
      */
     public function getRoles()
     {
