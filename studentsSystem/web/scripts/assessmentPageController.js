@@ -23,7 +23,7 @@ var assessmentPageController = (function() {
         errorsContainer = $("#errorsContainer");
         pagingButtons = $(".paging");
         assessmentTable = $("#assessmentTable");
-        assessmentStudentName = $("assessmentStudentName");
+        assessmentStudentName = $("#assessmentsName");
         errorsContainer.text("");
         atachEvents();
     }
@@ -59,7 +59,7 @@ var assessmentPageController = (function() {
 
     function getFilterValues(){
         return {
-            //'name' : assessmentsName.val(),
+            'name' : assessmentStudentName.val(),
             'subjectId' : assessmentDisciplineSelect.val()
         };
     }
@@ -88,7 +88,9 @@ var assessmentPageController = (function() {
                 }
 
                 manageButtonsState();
-
+                pagingButtons.show();
+                assessmentTable.show();
+                errorsContainer.text("");
                 var table = generateUsersTable(data);
                 container.html(table);
             },
@@ -101,7 +103,7 @@ var assessmentPageController = (function() {
     }
 
     function generateAssessmentsOptions(data){
-        var option = "";
+        var option = "<option value='0'>Всички</option>";
         for(var i = 0 ; i < data.subjects.length ; i++ ){
             option += "<option value='"+data.subjects[i].id+"'>"+data.subjects[i].name +"</option>";
         }

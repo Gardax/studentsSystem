@@ -41,12 +41,12 @@ class UserManager
         $queryString .= " WHERE 1=1";
 
         if(isset($filters['username']) && $filters['username']) {
-            $queryString .= " AND s.username LIKE :username";
+            $queryString .= " AND u.username LIKE :username";
             $parameters['username'] = $filters['username'];
         }
 
         if(isset($filters['email']) && $filters['email']) {
-            $queryString .= " AND s.email LIKE :email";
+            $queryString .= " AND u.email LIKE :email";
             $parameters['email'] = $filters['email'];
         }
 

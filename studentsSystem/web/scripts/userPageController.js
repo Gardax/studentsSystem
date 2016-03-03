@@ -4,19 +4,28 @@ var userPageController = (function(){
     var currentFilters = [];
     var currentOrder = [];
     var lastPage =1;
-    var $errorsContainer;
-
+    var errorsContainer;
+    var pagingButtons;
     var container;
+    var userTable;
+    var studentName;
+    var studentEmail;
+    var userSearchButton;
 
     var userFirstPageButton;
     var userPreviousPageButton;
     var userNextPageButton;
     var userLastPageButton;
 
-    function initizlize(containerElement) {
+    function initialize(containerElement) {
         container = containerElement;
-        $errorsContainer = $("#errorsContainer");
-        $errorsContainer.text("");
+        pagingButtons = $(".paging");
+        userSearchButton = $("#userSearchButton");
+        errorsContainer = $("#errorsContainer");
+        studentName = $("#studentName");
+        studentEmail = $("#studentEmail");
+        userTable = $("#userTable");
+        errorsContainer.text("");
         atachEvents();
     }
 
@@ -25,6 +34,7 @@ var userPageController = (function(){
         userPreviousPageButton = $(".userPreviousPageButton");
         userNextPageButton = $(".userNextPageButton");
         userLastPageButton = $(".userLastPageButton");
+
 
         userPreviousPageButton.on("click",function(){
             loadPage(currentPage - 1, currentOrder, currentFilters );
@@ -42,6 +52,18 @@ var userPageController = (function(){
             loadPage(lastPage, currentOrder, currentFilters );
         });
 
+        userSearchButton.on("click", function(event){
+            event.preventDefault();
+            loadPage(1, [], getFilterValues());
+        });
+
+    }
+
+    function getFilterValues(){
+        return {
+            'username': studentName.val(),
+            'email': studentEmail.val()
+        };
     }
 
     function loadPage(page, order, filters) {
@@ -57,12 +79,16 @@ var userPageController = (function(){
                 }
 
                 manageButtonsState();
-
+                userTable.show();
+                pagingButtons.show();
+                errorsContainer.text("");
                 var table = generateUsersTable(data);
                 container.html(table);
             },
             function(error){
-                $errorsContainer.text(error.responseJSON.errorMessage);
+                errorsContainer.text(error.responseJSON.errorMessage);
+                userTable.hide();
+                pagingButtons.hide();
             }
         );
     }
@@ -101,7 +127,7 @@ var userPageController = (function(){
                 "<td>"+usersData.users[i].id+"</td>"+
                 "<td>"+usersData.users[i].username+"</td>"+
                 "<td>"+usersData.users[i].email+"</td>"+
-                "<td>"+usersData.users[i].roles+"</td>"+
+                "<td>"+usersData.users[i].roleName+"</td>"+
                 "<td class='edit'></td>"+
                 "<td class='delete'></td>";
         }
@@ -111,6 +137,6 @@ var userPageController = (function(){
 
     return {
         loadPage: loadPage,
-        initizlize: initizlize
+        initialize: initialize
     };
 }());

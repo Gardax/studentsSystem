@@ -3,8 +3,9 @@ var homePageController = (function(){
     var currentFilters = [];
     var currentOrder = [];
     var lastPage =1;
+    var paging;
 
-    var $errorsContainer;
+    var errorsContainer;
 
     var container;
     var subjectsContainer;
@@ -21,13 +22,15 @@ var homePageController = (function(){
 
     function initialize(containerElement, subjectsContainerElement) {
         nameFilterInput = $('#nameInput');
-        specialityFilterInput = $('#specialtyHome');
+        specialityFilterInput = $('#specialtiesSelectElement');
         courseFilterInput = $('#coursesSelectElement');
+        paging = $(".paging");
 
         container = containerElement;
         subjectsContainer = subjectsContainerElement;
-        $errorsContainer = $("#errorsContainer");
-        $errorsContainer.text("");
+
+        errorsContainer = $("#errorsContainer");
+        errorsContainer.text("");
         atachEvents();
     }
 
@@ -67,6 +70,50 @@ var homePageController = (function(){
     function loadPage(page, order, filters) {
         loadStudentsTable(page, order, filters);
         populateSubjects();
+        populateSpecialities();
+        populateCourses();
+    }
+
+    function populateCourses(){
+        coursePageService.getAllCourses(
+            function(data){
+                var options = generateCourseOptions(data);
+                courseFilterInput.html(options);
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+            }
+        );
+
+    }
+
+    function populateSpecialities(){
+        specialitiesPageService.getAllSpecialities(
+            function(data){
+                var options = generateSpecialitiesOptions(data);
+                specialityFilterInput.html(options);
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+
+            }
+        );
+    }
+
+    function generateSpecialitiesOptions(data){
+        var specialitiesOptions = "<option value='0'>Всички</option>";
+        for(var i = 0; i < data.specialities.length; i++){
+            specialitiesOptions += "<option value='"+data.specialities[i].id+"'>"+data.specialities[i].specialityLongName +"</option>";
+        }
+        return specialitiesOptions;
+    }
+
+    function generateCourseOptions(data){
+        var options = "<option value='0'>Всички</option>";
+        for(var i =0; i < data.courses.length ; i++){
+            options += "<option value='"+data.courses[i].id+"'>"+data.courses[i].name +"</option>";
+        }
+        return options;
     }
 
     function loadStudentsTable(page, order, filters){
@@ -82,12 +129,17 @@ var homePageController = (function(){
                 }
 
                 manageButtonsState();
+                paging.show();
+                container.show();
+                errorsContainer.text("");
 
                 var table = generateUsersTable(data);
                 container.html(table);
             },
             function(error){
-                $errorsContainer.text(error.responseJSON.errorMessage);
+                errorsContainer.text(error.responseJSON.errorMessage);
+                paging.hide();
+                container.hide();
             }
         );
     }

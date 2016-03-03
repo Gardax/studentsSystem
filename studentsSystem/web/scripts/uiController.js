@@ -129,7 +129,7 @@ var uiController = (function(){
     function userTable(){
         var userTable = $("#userTable");
 
-        userPageController.initizlize(userTable);
+        userPageController.initialize(userTable);
         userPageController.loadPage(1, [], []);
 
     }

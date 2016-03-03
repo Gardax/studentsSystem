@@ -63,9 +63,9 @@ class StudentAssessmentManager
             $parameters['subjectId'] = $filters['subjectId'];
         }
 
-        if(isset($filters['name']) && $filters['name'] ) {
+        if(isset($filters['name']) && $filters['name']) {
             $queryString .= " AND CONCAT(CONCAT(s.firstName, ' '), s.lastName) LIKE :name";
-            $parameters['name'] = $filters['name'];
+            $parameters['name'] = $filters['name'] . '%';
         }
 
         $query = $em->createQuery($queryString)
