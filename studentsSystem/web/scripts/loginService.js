@@ -3,12 +3,22 @@ var loginService = (function(){
         var url = config.API_URL + "user/authenticate";
         httpRequester.postJSON(url, formData, function (data) {
             saveApiKey(data.apiKey);
+            localStorage.setItem('username', data.username);
+            localStorage.setItem('role', data.roleName);
             success(data);
         }, error, complete);
     }
 
     function saveApiKey(apiKey) {
         localStorage.setItem('apiKey', apiKey);
+    }
+
+    function getUserName(){
+        return localStorage.getItem('username');
+    }
+
+    function getRole(){
+        return localStorage.getItem('role');
     }
 
     function getApiKey() {
@@ -18,12 +28,16 @@ var loginService = (function(){
     function logout() {
         //TODO: Send request to the back end
         localStorage.removeItem('apiKey');
+        localStorage.removeItem('role');
+        localStorage.removeItem('username');
     }
 
     return {
         login : login,
-        getApiKey: getApiKey,
-        logout: logout
+        getApiKey : getApiKey,
+        logout : logout,
+        getRole : getRole,
+        getUserName : getUserName
     };
 
 }());

@@ -11,6 +11,7 @@ var userPageController = (function(){
     var studentName;
     var studentEmail;
     var userSearchButton;
+    var userCurrentPageContainer;
 
     var userFirstPageButton;
     var userPreviousPageButton;
@@ -23,6 +24,7 @@ var userPageController = (function(){
         userSearchButton = $("#userSearchButton");
         errorsContainer = $("#errorsContainer");
         studentName = $("#studentName");
+        userCurrentPageContainer = $(".userCurrentPage");
         studentEmail = $("#studentEmail");
         userTable = $("#userTable");
         errorsContainer.text("");
@@ -77,6 +79,8 @@ var userPageController = (function(){
                 if(data.totalCount % data.itemsPerPage != 0) {
                     lastPage++;
                 }
+
+                userCurrentPageContainer.text(currentPage);
 
                 manageButtonsState();
                 userTable.show();

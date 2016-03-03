@@ -7,11 +7,9 @@ var uiController = (function(){
     var $students;
     var $users;
     var $studentAssessment;
-    var $profileButton;
     var $exitButton;
     var $loginButton;
-
-
+    var $usernameSpan;
 
     function initialize() {
         $maincontainer = $("#mainContainer");
@@ -22,9 +20,10 @@ var uiController = (function(){
         $students = $("#students");
         $users = $("#users");
         $studentAssessment = $("#studentAssessment");
-        $profileButton = $("#profileButton");
         $exitButton = $("#exitButton");
         $loginButton = $("#loginButton");
+
+        $usernameSpan = $("#usernameSpan");
 
         loadHomePage();
     }
@@ -104,8 +103,9 @@ var uiController = (function(){
             $students.hide();
             $users.hide();
             $studentAssessment.hide();
-            $profileButton.hide();
             $exitButton.hide();
+
+            $usernameSpan.parent().hide();
         }
         else {
             $loginButton.hide();
@@ -113,10 +113,15 @@ var uiController = (function(){
             $specialitiesButton.show();
             $subjectsButton.show();
             $students.show();
-            $users.show();
+            //TODO: Extract this as constant.
+            if(loginService.getRole() == "Admin") {
+                $users.show();
+            }
             $studentAssessment.show();
-            $profileButton.show();
             $exitButton.show();
+
+            $usernameSpan.text(loginService.getUserName());
+            $usernameSpan.parent().show();
         }
     }
 
