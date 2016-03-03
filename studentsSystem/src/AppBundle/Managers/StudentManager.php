@@ -10,6 +10,7 @@ namespace AppBundle\Managers;
 
 use AppBundle\Entity\Student;
 use Doctrine\ORM\EntityManager;
+use Symfony\Bridge\Doctrine\Tests\Fixtures\User;
 
 /**
  * Class StudentManager
@@ -98,17 +99,6 @@ class StudentManager
     }
 
     /**
-     * @param $id
-     * @return Student|null|object
-     */
-    public function getStudentById($id)
-    {
-        $student = $this->entityManager->getRepository("AppBundle:Student")->find($id);
-
-        return $student;
-    }
-
-    /**
      * @param Student $studentEntity
      * @return Student
      */
@@ -117,6 +107,59 @@ class StudentManager
         $this->entityManager->flush();
 
         return $studentEntity;
+    }
+
+    /**
+     * @param $email
+     * @return Student
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getStudentByEmail($email)
+    {
+        $query = $this->entityManager->createQuery(
+            "SELECT s
+             FROM AppBundle:Student s
+             WHERE s.email = :email"
+        )
+            ->setParameters([
+                "email" => $email
+            ]);
+
+        $student = $query->getOneOrNullResult();
+
+        return $student;
+    }
+
+    /**
+     * @param $facultyNumber
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getStudentByFacultyNumber($facultyNumber)
+    {
+        $query = $this->entityManager->createQuery(
+            "SELECT s
+             FROM AppBundle:Student s
+             WHERE s.facultyNumber LIKE :facultyNumber"
+        )
+            ->setParameters([
+                "facultyNumber" => $facultyNumber
+            ]);
+
+        $student = $query->getOneOrNullResult();
+
+        return $student;
+    }
+
+    /**
+     * @param $id
+     * @return Student|null|object
+     */
+    public function getStudentById($id)
+    {
+        $student = $this->entityManager->getRepository("AppBundle:Student")->find($id);
+
+        return $student;
     }
 
     /**

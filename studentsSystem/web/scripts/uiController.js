@@ -136,7 +136,6 @@ var uiController = (function(){
 
     function loadStudentsTable(){
         var studentsTable = $("#studentsTable");
-
         studentsPageController.initialize(studentsTable);
         studentsPageController.loadPage(1, [], []);
     }

@@ -92,6 +92,7 @@ class SubjectService
     /**
      * @param $subjectData
      * @return Subject
+     * @throws ValidatorException
      */
     public function addSubject($subjectData){
 
@@ -99,6 +100,12 @@ class SubjectService
         $subjectEntity->setName($subjectData['name']);
         $subjectEntity->setWorkloadLectures($subjectData['workloadLectures']);
         $subjectEntity->setWorkloadExercises($subjectData['workloadExercises']);
+
+        $errors = $this->validator->validate($subjectEntity, null, array('add'));
+
+        if(count($errors) > 0){
+            throw new ValidatorException($errors);
+        }
 
         $this->subjectManager->addSubject($subjectEntity);
         $this->subjectManager->saveChanges();
@@ -115,17 +122,9 @@ class SubjectService
      */
     public function updateSubject(Subject $subject, $subjectData){
 
-        if(isset($subjectData['name'])){
-            $subject->setName($subjectData['name']);
-        }
-
-        if(isset($subjectData['workloadLectures'])){
-            $subject->setWorkloadLectures($subjectData['workloadLectures']);
-        }
-
-        if(isset($subjectData['workloadExercises'])){
-            $subject->setWorkloadExercises($subjectData['workloadExercises']);
-        }
+        $subject->setName($subjectData['name']);
+        $subject->setWorkloadLectures($subjectData['workloadLectures']);
+        $subject->setWorkloadExercises($subjectData['workloadExercises']);
 
         $errors = $this->validator->validate($subject, null, array('edit'));
 

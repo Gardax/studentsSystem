@@ -35,6 +35,7 @@ class StudentController extends Controller
     /**
      * @Route("/student/{page}", defaults={"page" = 1})]
      * @Method({"GET"})
+     * @Security("has_role('ROLE_TEACHER')")
      * @param Request $request
      * @param $page
      * @return JsonResponse
@@ -62,7 +63,6 @@ class StudentController extends Controller
         }
 
         $totalCount = $service->getStudents($page, self::PAGE_SIZE, $filters, false, true);
-
 
         $data = [
             'students' => $studentModels,
@@ -97,11 +97,75 @@ class StudentController extends Controller
         $courseService = $this->get('course_service');
         $specialityService = $this->get('speciality_service');
 
-        //TODO: Before you add the student you should first check if the email is free.
+        $studentData = [
+            'firstName' => $request->request->get('firstName'),
+            'lastName' => $request->request->get('lastName'),
+            'email' => $request->request->get('email'),
+            'facultyNumber' => $request->request->get('facultyNumber'),
+            'educationForm' => $request->request->get('educationForm'),
+        ];
 
-        //TODO: Check if the IDs are passed.
+        $courseId = $request->request->get('courseId');
+        $specialityId = $request->request->get('specialityId');
+        $facultyNumber = $request->request->get('facultyNumber');
+        $email = $request->request->get('email');
+
         $courseEntity = $courseService->getCourseById($request->request->get('courseId'));
         $specialityEntity = $specialityService->getSpecialityById($request->request->get('specialityId'));
+
+        $studentEmail = $studentService->getStudentByEmail($request->request->get('email'));
+        $studentFacultyNumber = $studentService->getStudentByFacultyNumber($request->request->get('facultyNumber'));
+
+        if(!$courseEntity){
+            if(!$courseId){
+                throw new BadRequestHttpException("You must add course.");
+            }
+            throw new BadRequestHttpException("There is no course with this id.");
+        }
+
+        if(!$specialityEntity){
+            if(!$specialityId){
+                throw new BadRequestHttpException("You must add speciality.");
+            }
+            throw new BadRequestHttpException("There is no speciality with this id.");
+        }
+
+        if($studentEmail){
+            if(!$email){
+                throw new BadRequestHttpException("You must add email.");
+            }
+            throw new BadRequestHttpException("The email already exists.");
+        }
+
+        if($studentFacultyNumber){
+            if(!$facultyNumber){
+                throw new BadRequestHttpException("You must add a faculty number.");
+            }
+            throw new BadRequestHttpException("This faculty number already exists.");
+        }
+
+        $studentEntity = $studentService->addStudent($studentData, $courseEntity, $specialityEntity);
+
+        $studentModel = new StudentModel($studentEntity);
+
+        return new JsonResponse($studentModel);
+    }
+
+    /**
+     * @Route("/student/edit/{id}", name="updateStudent")
+     * @Method("PUT")
+     * @Security("has_role('ROLE_TEACHER')")
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     * @throws InvalidFormException
+     */
+    public function updateStudentAction(Request $request, $id){
+
+        $studentService = $this->get('student_service');
+        $courseService = $this->get('course_service');
+        $specialityService = $this->get('speciality_service');
 
         $studentData = [
             'firstName' => $request->request->get('firstName'),
@@ -111,7 +175,68 @@ class StudentController extends Controller
             'educationForm' => $request->request->get('educationForm'),
         ];
 
-        $studentEntity = $studentService->addStudent($studentData, $courseEntity, $specialityEntity);
+        $courseId = $request->request->get('courseId');
+        $specialityId = $request->request->get('specialityId');
+        $facultyNumber = $request->request->get('facultyNumber');
+        $email = $request->request->get('email');
+
+        $courseEntity = $courseService->getCourseById($request->request->get('courseId'));
+        $specialityEntity = $specialityService->getSpecialityById($request->request->get('specialityId'));
+
+        $studentEmail = $studentService->getStudentByEmail($request->request->get('email'));
+        $studentFacultyNumber = $studentService->getStudentByFacultyNumber($request->request->get('facultyNumber'));
+
+        if(!$courseEntity){
+            if(!$courseId){
+                throw new BadRequestHttpException("You must add course.");
+            }
+            throw new BadRequestHttpException("There is no course with this id.");
+        }
+
+        if(!$specialityEntity){
+            if(!$specialityId){
+                throw new BadRequestHttpException("You must add speciality.");
+            }
+            throw new BadRequestHttpException("There is no speciality with this id.");
+        }
+
+        if($studentEmail){
+            if(!$email){
+                throw new BadRequestHttpException("You must add email.");
+            }
+            throw new BadRequestHttpException("The email already exists.");
+        }
+
+        if($studentFacultyNumber){
+            if(!$facultyNumber){
+                throw new BadRequestHttpException("You must add a faculty number.");
+            }
+            throw new BadRequestHttpException("This faculty number already exists.");
+        }
+
+        $studentEntity = $studentService->getStudentById($id);
+
+        $studentService->updateStudent($studentEntity,$courseEntity,$specialityEntity,$studentData);
+
+        $studentModel = new StudentModel($studentEntity);
+
+        return new  JsonResponse($studentModel);
+    }
+
+    /**
+     * @Route("/studentId/{id}")]
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getStudentByIdAction(Request $request, $id){
+
+        $studentService = $this->get('student_service');
+
+        $studentEntity = $studentService->getStudentById($id);
+
         $studentModel = new StudentModel($studentEntity);
 
         return new JsonResponse($studentModel);

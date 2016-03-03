@@ -105,6 +105,27 @@ class CourseManager
     }
 
     /**
+     * @param $name
+     * @return Course
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getCourseName($name)
+    {
+        $query = $this->entityManager->createQuery(
+            "SELECT co
+             FROM AppBundle:Course co
+             WHERE co.name LIKE :name"
+        )
+            ->setParameters([
+                "name" => $name
+            ]);
+
+        $course = $query->getOneOrNullResult();
+
+        return $course;
+    }
+
+    /**
      * Flushes all entities.
      */
     public function saveChanges(){

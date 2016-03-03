@@ -97,7 +97,7 @@ class UserController extends Controller
         $totalCount = $userService->getUsers($page, self::PAGE_SIZE, $filters, true);
 //TODO KRISKO FIX THIS NOT STUDENT ASSESSMENTS A USERS AND ROLE !
         $data = [
-            'studentAssessments' => $userModels,
+            'users' => $userModels,
             'totalCount' => $totalCount,
             'page' => $page,
             'itemsPerPage' => self::PAGE_SIZE,
@@ -123,6 +123,25 @@ class UserController extends Controller
         $user = $userService->authenticateUser($username, $password);
 
         $userModel = new UserModel($user);
+
+        return new JsonResponse($userModel);
+    }
+
+    /**
+     * @Route("/userId/{id}")]
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getUserById(Request $request, $id){
+
+        $userService = $this->get('user_service');
+
+        $userEntity = $userService->getUserById($id);
+
+        $userModel = new UserModel($userEntity);
 
         return new JsonResponse($userModel);
     }

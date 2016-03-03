@@ -155,7 +155,7 @@ var coursePageController = (function(){
             "<th colspan='2'>Операции</th>"+
             "</thead><tbody>";
             for(var i = 0; i < usersData.courses.length; i++){
-                student = usersData.courses[i];
+                var student = usersData.courses[i];
                 table += "<tr>"+
                 "<td>"+student.id+"</td>"+
                 "<td>"+student.name+"</td>"+

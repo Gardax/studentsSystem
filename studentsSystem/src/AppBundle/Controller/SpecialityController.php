@@ -9,6 +9,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Models\SpecialityModel;
+use AppBundle\Models\StudentModel;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -138,6 +139,25 @@ class SpecialityController extends Controller
         $specialityModel = new SpecialityModel($specialityEntity);
 
         return new  JsonResponse($specialityModel);
+    }
+
+    /**
+     * @Route("/specialityId/{id}")]
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getSpecialityById(Request $request, $id){
+
+        $specialityService = $this->get('speciality_service');
+
+        $specialityEntity = $specialityService->getSpecialityById($id);
+
+        $specialityModel = new SpecialityModel($specialityEntity);
+
+        return new JsonResponse($specialityModel);
     }
 
 }

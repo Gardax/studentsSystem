@@ -22,13 +22,13 @@ class Subject
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
-     * @Assert\NotBlank(groups={"edit"}, message="Name cannot be blank.")
+     * @Assert\NotBlank(groups={"edit","add"}, message="Name cannot be blank.")
      */
     protected $name;
 
     /**
      * @ORM\Column(type="smallint", nullable=false)
-     * @Assert\NotBlank(groups={"edit"}, message="Workload lectures cannot be blank.")
+     * @Assert\NotBlank(groups={"edit","add"}, message="Workload lectures cannot be blank.")
      */
     protected $workloadLectures = '0';
 
@@ -41,7 +41,7 @@ class Subject
      * @var integer
      *
      * @ORM\Column(type="smallint", nullable=false)
-     * @Assert\NotBlank(groups={"edit"}, message="Workload exercises cannot be blank.")
+     * @Assert\NotBlank(groups={"edit","add"}, message="Workload exercises cannot be blank.")
      */
     public $workloadExercises = '0';
 

@@ -84,6 +84,7 @@ class StudentAssessmentService
      * @param Student $studentEntity
      * @param Subject $subjectEntity
      * @return StudentAssessment
+     * @throws ValidatorException
      */
     public function addStudentAssessment($studentAssessmentData, Student $studentEntity, Subject $subjectEntity){
 
@@ -93,6 +94,12 @@ class StudentAssessmentService
         $studentAssessmentEntity->setWorkloadLectures($studentAssessmentData['workloadLectures']);
         $studentAssessmentEntity->setWorkloadExercises($studentAssessmentData['workloadExercises']);
         $studentAssessmentEntity->setAssessment($studentAssessmentData['assessment']);
+
+        $errors = $this->validator->validate($studentAssessmentEntity, null, array('add'));
+
+        if(count($errors) > 0){
+            throw new ValidatorException($errors);
+        }
 
         $this->studentAssessmentManager->addStudentAssessment($studentAssessmentEntity);
         $this->studentAssessmentManager->saveChanges();

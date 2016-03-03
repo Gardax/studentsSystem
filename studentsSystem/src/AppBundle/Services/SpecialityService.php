@@ -47,12 +47,19 @@ class SpecialityService
     /**
      * @param $specialityData
      * @return Speciality
+     * @throws ValidatorException
      */
     public function addSpeciality($specialityData){
 
         $specialityEntity = new Speciality();
         $specialityEntity->setSpecialityLongName($specialityData['longName']);
         $specialityEntity->setSpecialityShortName($specialityData['shortName']);
+
+        $errors = $this->validator->validate($specialityEntity, null, array('add'));
+
+        if(count($errors) > 0) {
+            throw new ValidatorException($errors);
+        }
 
         $this->specialityManager->addSpeciality($specialityEntity);
         $this->specialityManager->saveChanges();
@@ -96,7 +103,7 @@ class SpecialityService
 
         $specialities = $this->specialityManager->getSpecialities($start, $end, $filters, $getCount);
         if(!$specialities){
-            throw new NotFoundHttpException("No specialities found.");
+            throw new BadRequestHttpException("No specialities found.");
         }
         return $specialities;
     }
@@ -109,9 +116,6 @@ class SpecialityService
 
         $speciality = $this->specialityManager->getSpecialityById($id);
 
-        if(!$speciality){
-            throw new Exception("No specialities found.");
-        }
         return $speciality;
     }
 

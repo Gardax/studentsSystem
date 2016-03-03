@@ -15,7 +15,7 @@ class Course
 {
     /**
      * @ORM\Column(type="string", length=25, unique=true)
-     * @Assert\NotBlank(groups={"edit"}, message="Name cannot be blank.")
+     * @Assert\NotBlank(groups={"edit", "add"}, message="Name cannot be blank.")
      */
     protected $name;
 
@@ -61,6 +61,5 @@ class Course
     {
         $this->id = $id;
     }
-
 
 }

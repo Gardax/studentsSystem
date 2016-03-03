@@ -22,13 +22,13 @@ class Speciality
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank(groups={"edit"}, message="The long name cannot be blank.")
+     * @Assert\NotBlank(groups={"edit","add"}, message="The long name cannot be blank.")
      */
     protected $specialityLongName;
 
     /**
      * @ORM\Column(type="string", length=16, nullable=true)
-     * @Assert\NotBlank(groups={"edit"}, message="Short name cannot be blank.")
+     * @Assert\NotBlank(groups={"edit","add"}, message="Short name cannot be blank.")
      */
     protected $specialityShortName;
 

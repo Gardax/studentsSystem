@@ -5,6 +5,10 @@ var studentsPageController = (function(){
     var currentOrder = [];
     var lastPage =1;
     var $errorsContainer;
+    var filterByName;
+    var filterByEmail;
+    var filterByFacultyNumber;
+    var studentSearchButton;
 
     var container;
 
@@ -14,6 +18,11 @@ var studentsPageController = (function(){
     var studentsLastPageButton;
 
     function initialize(containerElement) {
+        filterByName = $("#studentName");
+        filterByEmail =$("#studentEmail");
+        filterByFacultyNumber = $("#studentFacultyNumber");
+        studentSearchButton = $("#studentSearchButton");
+
         container = containerElement;
         $errorsContainer = $("#errorsContainer");
         $errorsContainer.text("");
@@ -42,6 +51,18 @@ var studentsPageController = (function(){
             loadPage(lastPage, currentOrder, currentFilters );
         });
 
+        studentSearchButton.on("click", function(event){
+            event.preventDefault();
+            loadPage(1, [], getFilterValues());
+        });
+
+    }
+
+    function getFilterValues(){
+        return {
+            'facultyNumber': filterByFacultyNumber.val(),
+            'email' : filterByEmail.val()
+        };
     }
 
     function manageButtonsState(){
@@ -60,7 +81,6 @@ var studentsPageController = (function(){
             studentsLastPageButton.prop('disabled', true);
         }
     }
-
 
     function loadPage(page, order, filters) {
         studentsPageService.getUsers(page, order, filters,
