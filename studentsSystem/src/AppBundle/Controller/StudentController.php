@@ -72,12 +72,15 @@ class StudentController extends Controller
         ];
 
         if($getFullInfo) {
-            $subjects = [];
-            foreach ($studentEntities[0]->getStudentAssessments() as $studentAssessment) {
-                $subjects[] = new SubjectModel($studentAssessment->getSubject());
+            $subjectsService = $this->get('subject_service');
+            $allSubjects = $subjectsService->getAllSubjects();
+
+            $subjectModels = [];
+            foreach ($allSubjects as $subject) {
+                $subjectModels[] = new SubjectModel($subject);
             }
 
-            $data['subjects'] = $subjects;
+            $data['subjects'] = $subjectModels;
         }
 
         return new JsonResponse($data);

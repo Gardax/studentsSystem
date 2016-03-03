@@ -39,8 +39,8 @@ class StudentManager
         $queryString = "SELECT ";
 
         if(!$getCount) {
-            $queryString .= "s";
-            $queryString .= $getFullInfo ? ", sa, c, spec, sbj" : "";
+            $queryString .= "s, c, spec";
+            $queryString .= $getFullInfo ? ", sa, sbj" : "";
             $queryString .= " FROM AppBundle:Student s";
         }
         else {

@@ -77,9 +77,13 @@ class SubjectService
      * @return array|mixed
      */
     public function getSubjects($page,$pageSize,$name = null,$getCount=false){
+        $start = 0;
+        $end = 0;
 
-        $start = ($page -1) *$pageSize;
-        $end = $start + $pageSize;
+        if($page !== "all") {
+            $start = ($page -1) *$pageSize;
+            $end = $start + $pageSize;
+        }
 
         $subjects = $this->subjectManager->getSubjects($start,$end,$name,$getCount);
         if(!$subjects){

@@ -59,6 +59,11 @@ class StudentAssessmentModel
     public $subjectName;
 
     /**
+     * @var int
+     */
+    public $subjectId;
+
+    /**
      * StudentAssessmentModel constructor.
      * @param StudentAssessment $studentAssessment
      */
@@ -67,11 +72,28 @@ class StudentAssessmentModel
         $this->setExerciseAttended($studentAssessment->getWorkloadExercises());
         $this->setLectureAttended($studentAssessment->getWorkloadLectures());
         $this->setAssessment($studentAssessment->getAssessment());
-        $this->setExerciseTotal($studentAssessment->getSubject()->getWorkloadExercises());
-        $this->setLectureTotal($studentAssessment->getSubject()->getWorkloadLectures());
+//        $this->setExerciseTotal($studentAssessment->getSubject()->getWorkloadExercises());
+//        $this->setLectureTotal($studentAssessment->getSubject()->getWorkloadLectures());
         $this->setStudentFirstName($studentAssessment->getStudent()->getFirstName());
         $this->setStudentLastName($studentAssessment->getStudent()->getLastName());
         $this->setSubjectName($studentAssessment->getSubject()->getName());
+        $this->setSubjectId($studentAssessment->getSubject()->getId());
+    }
+
+    /**
+     * @return int
+     */
+    public function getSubjectId()
+    {
+        return $this->subjectId;
+    }
+
+    /**
+     * @param int $subjectId
+     */
+    public function setSubjectId($subjectId)
+    {
+        $this->subjectId = $subjectId;
     }
 
     /**

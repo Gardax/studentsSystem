@@ -94,7 +94,7 @@ class SubjectManager
         $query = $em->createQuery($queryString)
             ->setParameters($parameters);
 
-        if(!$getCount) {
+        if(!$getCount && $start && $end) {
             $query->setFirstResult($start)
                 ->setMaxResults($end);
         }

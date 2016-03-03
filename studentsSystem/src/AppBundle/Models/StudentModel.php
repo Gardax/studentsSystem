@@ -89,14 +89,13 @@ class StudentModel
         $this->setEmail($student->getEmail());
         $this->setFacultyNumber($student->getFacultyNumber());
         $this->setEducationForm($student->getEducationForm());
+        $this->setCourseName($student->getCourse()->getName());
+        $this->setSpecialityName($student->getSpeciality()->getSpecialityLongName());
+        $this->setShortSpecialityName($student->getSpeciality()->getSpecialityShortName());
 
         if($buildWithFullInfo) {
-            $this->setCourseName($student->getCourse()->getName());
-            $this->setSpecialityName($student->getSpeciality()->getSpecialityLongName());
-            $this->setShortSpecialityName($student->getSpeciality()->getSpecialityShortName());
-
             foreach($student->getStudentAssessments() as $studentAssessment) {
-                $this->studentAssessments[] = new StudentAssessmentModel($studentAssessment);
+                $this->studentAssessments[$studentAssessment->getSubject()->getId()] = new StudentAssessmentModel($studentAssessment);
             }
         }
     }

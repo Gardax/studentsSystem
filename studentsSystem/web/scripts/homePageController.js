@@ -7,14 +7,16 @@ var homePageController = (function(){
     var $errorsContainer;
 
     var container;
+    var subjectsContainer;
 
     var homeFirstPageButton;
     var homePreviousPageButton;
     var homeNextPageButton;
     var homeLastPageButton;
 
-    function initizlize(containerElement) {
+    function initialize(containerElement, subjectsContainerElement) {
         container = containerElement;
+        subjectsContainer = subjectsContainerElement;
         $errorsContainer = $("#errorsContainer");
         $errorsContainer.text("");
         atachEvents();
@@ -65,6 +67,29 @@ var homePageController = (function(){
                 $errorsContainer.text(error.responseJSON.errorMessage);
             }
         );
+
+        populateSubjects();
+    }
+
+    function populateSubjects(){
+        disciplinesPageService.getUsers('all', [], [],
+            function(data){
+                var subjects = generateSubjectsElements(data.subjects);
+                subjectsContainer.html(subjects);
+            },
+            function (error) {
+
+            });
+    }
+
+    function generateSubjectsElements(subjects) {
+        var html = "";
+        for(var i = 0; i < subjects.length;i++) {
+            html += "<input type='checkbox' value='" + subjects[i].id + "' id='subject" + subjects[i].id + "'>" +
+                "<label for='subject" + subjects[i].id + "'>" + subjects[i].name + "</label>"
+        }
+
+        return html;
     }
 
     function manageButtonsState(){
@@ -115,7 +140,8 @@ var homePageController = (function(){
              "<th>Упражнения</th>"+
              "</tr>"+
              "</thead><tbody>";
-         var student, j,average,attendedLecture,totalLectures ,attendedExcercise,totalExcercise;
+         var student, j,average,attendedLecture,totalLectures ,attendedExcercise,totalExcercise, currentSubject;
+         var currentSubjectStudentLectureAttended, currentSubjectStudentExercisesAttended, currentSubjectStudentAssesment, assesmentsCount;
 
          for(i = 0; i < usersData.students.length;i++){
              attendedLecture =0;
@@ -123,25 +149,40 @@ var homePageController = (function(){
              totalLectures =0;
              attendedExcercise=0;
              totalExcercise = 0;
+             assesmentsCount = 0;
+
              student = usersData.students[i];
              table += "<tr>"+
              "<td>"+student.id+"</td>"+
              "<td>"+student.firstName +" "+student.lastName+"("+student.facultyNumber+")</td>"+
              "<td>"+student.courseName+" "+student.shortSpecialityName+"</td>";
 
-             for(j = 0; j < student.studentAssessments.length;j++){
-                 table += "<td>"+student.studentAssessments[j].lectureAttended+"("+student.studentAssessments[j].lectureTotal+")</td>"+
-                     "<td>"+student.studentAssessments[j].exerciseAttended+"("+student.studentAssessments[j].exerciseTotal+")</td>"+
-                     "<td>"+student.studentAssessments[j].assessment+"</td>";
+             for(j = 0; j < usersData.subjects.length;j++){
+                 currentSubject = usersData.subjects[j];
+                 currentSubjectStudentLectureAttended = 0;
+                 currentSubjectStudentExercisesAttended = 0;
+                 currentSubjectStudentAssesment = '-';
+                 if("undefined" != typeof (student.studentAssessments[currentSubject.id])) {
+                     currentSubjectStudentLectureAttended = student.studentAssessments[currentSubject.id].lectureAttended;
+                     currentSubjectStudentExercisesAttended = student.studentAssessments[currentSubject.id].exerciseAttended;
+                     currentSubjectStudentAssesment = student.studentAssessments[currentSubject.id].assessment;
+                 }
 
-                 average +=  parseInt(student.studentAssessments[j].assessment);
-                 attendedLecture += parseInt(student.studentAssessments[j].lectureAttended);
-                 totalLectures += parseInt(student.studentAssessments[j].lectureTotal);
-                 attendedExcercise += parseInt(student.studentAssessments[j].exerciseAttended);
-                 totalExcercise += parseInt(student.studentAssessments[j].exerciseTotal);
+                 table += "<td>" + currentSubjectStudentLectureAttended + "(" + currentSubject.workloadLectures + ")</td>"+
+                     "<td>" + currentSubjectStudentExercisesAttended + "(" + currentSubject.workloadExercises + ")</td>"+
+                     "<td>" + currentSubjectStudentAssesment + "</td>";
 
+                 if(currentSubjectStudentAssesment != "-") {
+                     average +=  parseInt(currentSubjectStudentAssesment);
+                     attendedLecture += parseInt(currentSubjectStudentLectureAttended);
+                     totalLectures += parseInt(currentSubject.workloadLectures);
+                     attendedExcercise += parseInt(currentSubjectStudentExercisesAttended);
+                     totalExcercise += parseInt(currentSubject.workloadExercises);
+                     assesmentsCount++;
+                 }
              }
-             table += "<td>"+ average/student.studentAssessments.length+"</td>"+
+
+             table += "<td>"+ average/assesmentsCount+"</td>"+
                  "<td>"+attendedLecture+"("+totalLectures+")</td>"+
                  "<td>"+attendedExcercise+"("+totalExcercise+")</td>";
 
@@ -154,6 +195,6 @@ var homePageController = (function(){
 
     return {
         loadPage: loadPage,
-        initialize: initizlize
+        initialize: initialize
     };
 }());
