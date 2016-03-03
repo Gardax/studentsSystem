@@ -6,6 +6,7 @@ use AppBundle\Exceptions\ValidatorException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -17,16 +18,21 @@ class ExceptionListener
 
         $response = new JsonResponse([
             'errorMessage'=>$event->getException()->getMessage(),
-            'stackTrace' => $event->getException()->getTraceAsString()
+            'stackTrace' => $event->getException()->getTraceAsString(),
+            'type' => get_class($exception)
         ]);
 
 
-        if ($exception instanceof HttpExceptionInterface) {
-            $response->setStatusCode($exception->getStatusCode());
+        if ($exception instanceof AccessDeniedHttpException){
+            $response->setData(['errorMessage'=>'You don\'t have permissions to do this.']);
+            $response->setStatusCode(Response::HTTP_FORBIDDEN);
         }
         else if($exception instanceof AuthenticationException){
             $response->setData(['errorMessage'=>'You don\'t have permissions to do this.']);
             $response->setStatusCode(Response::HTTP_FORBIDDEN);
+        }
+        else if ($exception instanceof HttpExceptionInterface) {
+            $response->setStatusCode($exception->getStatusCode());
         }
         else if ($exception instanceof InvalidFormException ){
             $errors = [];
