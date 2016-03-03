@@ -13,6 +13,7 @@ var studentsPageController = (function(){
     var pagingButtons;
     var studentCourse;
     var studentSpecialities;
+    var studentCurrentPageContainer;
 
     var container;
     var coursesContainer;
@@ -28,6 +29,7 @@ var studentsPageController = (function(){
         filterByEmail =$("#studentEmail");
         filterByFacultyNumber = $("#studentFacultyNumber");
         studentSearchButton = $("#studentSearchButton");
+        studentCurrentPageContainer = $(".studentCurrentPage");
         studentCourse = $("#studentCourse");
         studentSpecialities = $("#studentSpecialities");
         container = containerElement;
@@ -132,6 +134,8 @@ var studentsPageController = (function(){
                 if(data.totalCount % data.itemsPerPage != 0) {
                     lastPage++;
                 }
+
+                studentCurrentPageContainer.text(currentPage);
 
                 manageButtonsState();
                 studentsTable.show();

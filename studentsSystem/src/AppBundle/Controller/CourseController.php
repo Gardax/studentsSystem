@@ -115,7 +115,6 @@ class CourseController extends Controller
     /**
      * @Route("/course/{page}", defaults={"page" = null})]
      * @Method({"GET"})
-     * @Security("has_role('ROLE_TEACHER')")
      *
      * @param Request $request
      * @param $page

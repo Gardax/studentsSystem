@@ -35,7 +35,6 @@ class StudentController extends Controller
     /**
      * @Route("/student/{page}", defaults={"page" = 1})]
      * @Method({"GET"})
-     * @Security("has_role('ROLE_TEACHER')")
      * @param Request $request
      * @param $page
      * @return JsonResponse

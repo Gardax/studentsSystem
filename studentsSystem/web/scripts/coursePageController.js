@@ -8,6 +8,7 @@ var coursePageController = (function(){
     var errorsContainer;
     var searchInput;
     var searchButton;
+    var courseCurrentPageContainer;
 
     var pagingButtons;
     var courseTable;
@@ -30,6 +31,7 @@ var coursePageController = (function(){
         container = containerElement;
         errorsContainer = $("#errorsContainer");
         searchInput = $("#nameSearch");
+        courseCurrentPageContainer = $(".courseCurrentPage");
         searchButton = $("#searchButton");
         pagingButtons = $(".paging");
         errorsContainer.text("");
@@ -133,6 +135,8 @@ var coursePageController = (function(){
                 if(data.totalCount % data.itemsPerPage != 0) {
                     lastPage++;
                 }
+
+                courseCurrentPageContainer.text(currentPage);
 
                 manageButtonsState();
 

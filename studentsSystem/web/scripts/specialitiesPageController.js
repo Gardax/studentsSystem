@@ -9,6 +9,7 @@ var specialitiesPageController = (function(){
     var $specialitiesSearchButton;
     var $pagingButtons;
     var $specialitiesTable;
+    var $specialitiesCurrentPageContainer;
 
     var container;
 
@@ -23,6 +24,7 @@ var specialitiesPageController = (function(){
         $searchInput = $("#disciplinesSearch");
         $specialitiesSearchButton = $("#specialitiesSearchButton");
         $pagingButtons = $(".paging");
+        $specialitiesCurrentPageContainer = $(".specialitiesCurrentPage");
         $specialitiesTable = $("#specialitiesTable");
         $errorsContainer.text("");
         atachEvents();
@@ -68,6 +70,8 @@ var specialitiesPageController = (function(){
                 if(data.totalCount % data.itemsPerPage != 0) {
                     lastPage++;
                 }
+
+                $specialitiesCurrentPageContainer.text(currentPage);
 
                 manageButtonsState();
                 $pagingButtons.show();

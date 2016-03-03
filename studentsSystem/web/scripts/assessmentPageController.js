@@ -10,6 +10,7 @@ var assessmentPageController = (function() {
     var container;
     var pagingButtons;
     var assessmentTable;
+    var assessmentCurrentPageContainer;
 
     var assessmentFirstPageButton;
     var assessmentPreviousPageButton;
@@ -22,6 +23,7 @@ var assessmentPageController = (function() {
         container = containerElement;
         errorsContainer = $("#errorsContainer");
         pagingButtons = $(".paging");
+        assessmentCurrentPageContainer = $(".assessmentCurrentPage");
         assessmentTable = $("#assessmentTable");
         assessmentStudentName = $("#assessmentsName");
         errorsContainer.text("");
@@ -86,6 +88,8 @@ var assessmentPageController = (function() {
                 if (data.totalCount % data.itemsPerPage != 0) {
                     lastPage++;
                 }
+
+                assessmentCurrentPageContainer.text(currentPage);
 
                 manageButtonsState();
                 pagingButtons.show();

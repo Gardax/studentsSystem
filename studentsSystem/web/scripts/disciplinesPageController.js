@@ -10,6 +10,7 @@ var disciplinesPageController = (function(){
     var disciplinesSearchButton;
     var pagingButtons;
     var disciplinesTable;
+    var disciplineCurrentPageContainer;
 
     var container;
 
@@ -22,6 +23,7 @@ var disciplinesPageController = (function(){
         container = containerElement;
         errorsContainer = $("#errorsContainer");
         disciplinesSearch = $("#disciplinesSearch");
+        disciplineCurrentPageContainer = $(".disciplineCurrentPage");
         disciplinesSearchButton = $("#disciplinesSearchButton");
         pagingButtons = $(".paging");
         disciplinesTable = $("#disciplinesTable");
@@ -75,6 +77,8 @@ var disciplinesPageController = (function(){
                 if(data.totalCount % data.itemsPerPage != 0) {
                     lastPage++;
                 }
+
+                disciplineCurrentPageContainer.text(currentPage);
 
                 manageButtonsState();
                 pagingButtons.show();

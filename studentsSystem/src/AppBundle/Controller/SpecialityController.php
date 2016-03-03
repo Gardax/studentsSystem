@@ -54,7 +54,6 @@ class SpecialityController extends Controller
     /**
      * @Route("/speciality/{page}", defaults={"page" = null})]
      * @Method({"GET"})
-     * @Security("has_role('ROLE_TEACHER')")
      *
      * @param Request $request
      * @param $page
