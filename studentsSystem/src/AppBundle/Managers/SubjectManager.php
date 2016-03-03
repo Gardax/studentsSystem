@@ -94,7 +94,7 @@ class SubjectManager
         $query = $em->createQuery($queryString)
             ->setParameters($parameters);
 
-        if(!$getCount && $start && $end) {
+        if(!$getCount && $end) {
             $query->setFirstResult($start)
                 ->setMaxResults($end);
         }
@@ -112,6 +112,19 @@ class SubjectManager
         $subject = $this->entityManager->getRepository("AppBundle:Subject")->find($id);
 
         return $subject;
+    }
+
+    /**
+     * @param array $ids
+     * @return Subject[]
+     */
+    public function getSubjectsByIds($ids) {
+        $query = "SELECT s FROM AppBundle:Subject s WHERE s.id IN (:subjectIds)";
+
+        $query = $this->entityManager->createQuery($query)
+            ->setParameter('subjectIds', $ids);
+
+        return $query->getResult();
     }
 
     /**

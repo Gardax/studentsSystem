@@ -80,8 +80,8 @@ class SubjectService
         $start = 0;
         $end = 0;
 
-        if($page !== "all") {
-            $start = ($page -1) *$pageSize;
+        if($page != "all") {
+            $start = ($page -1) * $pageSize;
             $end = $start + $pageSize;
         }
 
@@ -90,7 +90,16 @@ class SubjectService
             throw new NotFoundHttpException("No subjects found.");
         }
         return $subjects;
+    }
 
+    /**
+     * @param $ids
+     * @return \AppBundle\Entity\Subject[]
+     */
+    public function getSubjectsByIds($ids) {
+        $subjects = $this->subjectManager->getSubjectsByIds($ids);
+
+        return $subjects;
     }
 
     /**

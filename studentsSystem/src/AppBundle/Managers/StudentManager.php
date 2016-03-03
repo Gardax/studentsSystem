@@ -58,19 +58,19 @@ class StudentManager
 
         $queryString .= " WHERE 1=1 ";
 
-        if(isset($filters['firstName']) && $filters['firstName']) {
-            $queryString .= " AND s.firstName LIKE :username";
-            $parameters['username'] = $filters['firstName'] . "%";
+        if(isset($filters['name']) && $filters['name']) {
+            $queryString .= " AND CONCAT(CONCAT(s.firstName, ' '), s.lastName) LIKE :name";
+            $parameters['name'] = $filters['name'] . "%";
         }
 
-        if(isset($filters['speciality']) && $filters['speciality']){
-            $queryString .= " AND spec.id = :speciality";
-            $parameters['speciality'] = $filters['speciality'];
+        if(isset($filters['specialityId']) && $filters['specialityId']){
+            $queryString .= " AND spec.id = :specialityId";
+            $parameters['specialityId'] = $filters['specialityId'];
         }
 
-        if(isset($filters['course']) && $filters['course']){
-            $queryString .= " AND c.id = :course";
-            $parameters['course'] = $filters['course'];
+        if(isset($filters['courseId']) && $filters['courseId']){
+            $queryString .= " AND c.id = :courseId";
+            $parameters['courseId'] = $filters['courseId'];
         }
 
         if(isset($filters['email']) && $filters['email']){

@@ -13,8 +13,17 @@ var homePageController = (function(){
     var homePreviousPageButton;
     var homeNextPageButton;
     var homeLastPageButton;
+    var homePageSearchButton;
+
+    var nameFilterInput;
+    var specialityFilterInput;
+    var courseFilterInput;
 
     function initialize(containerElement, subjectsContainerElement) {
+        nameFilterInput = $('#nameInput');
+        specialityFilterInput = $('#specialtyHome');
+        courseFilterInput = $('#coursesSelectElement');
+
         container = containerElement;
         subjectsContainer = subjectsContainerElement;
         $errorsContainer = $("#errorsContainer");
@@ -27,26 +36,40 @@ var homePageController = (function(){
         homePreviousPageButton = $(".homePreviousPageButton");
         homeNextPageButton = $(".homeNextPageButton");
         homeLastPageButton = $(".homeLastPageButton");
+        homePageSearchButton = $("#homePageSearchButton");
 
         homePreviousPageButton.on("click",function(){
-            loadPage(currentPage - 1, currentOrder, currentFilters );
+            loadStudentsTable(currentPage - 1, currentOrder, currentFilters );
         });
 
         homeNextPageButton.on("click",function(){
-            loadPage(currentPage + 1, currentOrder, currentFilters );
+            loadStudentsTable(currentPage + 1, currentOrder, currentFilters );
         });
 
         homeFirstPageButton.on("click",function(){
-            loadPage(1, currentOrder, currentFilters );
+            loadStudentsTable(1, currentOrder, currentFilters );
         });
 
         homeLastPageButton.on("click",function(){
-            loadPage(lastPage, currentOrder, currentFilters );
+            loadStudentsTable(lastPage, currentOrder, currentFilters );
+        });
+
+        homePageSearchButton.on("click", function (event) {
+            event.preventDefault();
+            var filters = generateFilters();
+
+            loadStudentsTable(1, currentOrder, filters);
+
         });
 
     }
 
     function loadPage(page, order, filters) {
+        loadStudentsTable(page, order, filters);
+        populateSubjects();
+    }
+
+    function loadStudentsTable(page, order, filters){
         homePageService.getUsers(page, order, filters,
             function(data){
                 currentPage = page;
@@ -67,8 +90,6 @@ var homePageController = (function(){
                 $errorsContainer.text(error.responseJSON.errorMessage);
             }
         );
-
-        populateSubjects();
     }
 
     function populateSubjects(){
@@ -82,10 +103,26 @@ var homePageController = (function(){
             });
     }
 
+    function generateFilters(){
+        var subjectIds = [];
+        var checkedSubjects = subjectsContainer.find('input:checked');
+
+        for(var i = 0; i < checkedSubjects.length; i++) {
+            subjectIds.push($(checkedSubjects[i]).val());
+        }
+
+        return {
+            'name': nameFilterInput.val(),
+            'specialityId': specialityFilterInput.val(),
+            'courseId': courseFilterInput.val(),
+            'subjectIds': subjectIds
+        }
+    }
+
     function generateSubjectsElements(subjects) {
         var html = "";
         for(var i = 0; i < subjects.length;i++) {
-            html += "<input type='checkbox' value='" + subjects[i].id + "' id='subject" + subjects[i].id + "'>" +
+            html += "<input type='checkbox' value='" + subjects[i].id + "' id='subject" + subjects[i].id + "'" + ((i < 3) ? "checked=checked" : "") +">" +
                 "<label for='subject" + subjects[i].id + "'>" + subjects[i].name + "</label>"
         }
 
@@ -162,7 +199,7 @@ var homePageController = (function(){
                  currentSubjectStudentLectureAttended = 0;
                  currentSubjectStudentExercisesAttended = 0;
                  currentSubjectStudentAssesment = '-';
-                 if("undefined" != typeof (student.studentAssessments[currentSubject.id])) {
+                 if(student.studentAssessments &&  ("undefined" != typeof (student.studentAssessments[currentSubject.id]))) {
                      currentSubjectStudentLectureAttended = student.studentAssessments[currentSubject.id].lectureAttended;
                      currentSubjectStudentExercisesAttended = student.studentAssessments[currentSubject.id].exerciseAttended;
                      currentSubjectStudentAssesment = student.studentAssessments[currentSubject.id].assessment;
@@ -182,7 +219,7 @@ var homePageController = (function(){
                  }
              }
 
-             table += "<td>"+ average/assesmentsCount+"</td>"+
+             table += "<td>"+ ((assesmentsCount != 0) ? average/assesmentsCount : "-") + "</td>"+
                  "<td>"+attendedLecture+"("+totalLectures+")</td>"+
                  "<td>"+attendedExcercise+"("+totalExcercise+")</td>";
 

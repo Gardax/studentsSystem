@@ -45,9 +45,9 @@ class StudentController extends Controller
         $service = $this->get('student_service');
 
         $filters = [
-            'username'  => $request->query->get('username'),
-            'speciality' => $request->query->get('speciality'),
-            'course' => $request->query->get('course'),
+            'name'  => $request->query->get('name'),
+            'specialityId' => $request->query->get('specialityId'),
+            'courseId' => $request->query->get('courseId'),
             'email' => $request->query->get('email'),
             'facultyNumber' => $request->query->get('facultyNumber')
         ];
@@ -72,8 +72,15 @@ class StudentController extends Controller
         ];
 
         if($getFullInfo) {
+            $subjectIds = $request->query->get('subjectIds');
+
             $subjectsService = $this->get('subject_service');
-            $allSubjects = $subjectsService->getAllSubjects();
+            if($subjectIds) {
+                $allSubjects = $subjectsService->getSubjectsByIds($subjectIds);
+            }
+            else {
+                $allSubjects = $subjectsService->getSubjects(1, 3);
+            }
 
             $subjectModels = [];
             foreach ($allSubjects as $subject) {

@@ -65,6 +65,7 @@ var studentsPageController = (function(){
 
     function getFilterValues(){
         return {
+            'name': filterByName.val(),
             'facultyNumber': filterByFacultyNumber.val(),
             'email' : filterByEmail.val()
         };
