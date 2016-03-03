@@ -99,17 +99,15 @@ class StudentAssessmentController extends Controller
 
         $studentAssessmentService = $this->get('student_assessment_service');
 
-        $studentId = $request->query->get('studentId');
-        $subjectId = $request->query->get('subjectId');
-
         $filters = [
             'studentId'  => $request->query->get('studentId'),
             'subjectId' => $request->query->get('subjectId'),
+            'name' => $request->query->get('name')
 
         ];
 
         $studentAssessmentEntities = $studentAssessmentService->getStudentAssessments(
-            $page, self::PAGE_SIZE, $studentId,$subjectId);
+            $page, self::PAGE_SIZE, $filters);
 
         $studentAssessmentModels = array();
         foreach ($studentAssessmentEntities as $studentAssessment) {
