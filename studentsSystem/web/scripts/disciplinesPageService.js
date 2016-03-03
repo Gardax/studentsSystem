@@ -10,8 +10,15 @@ var disciplinesPageService = (function(){
         httpRequester.getJSON(url,success,error,complete);
     }
 
+    function getAllDisciplines(success,error,complete){
+        var url = config.API_URL+"subject/" + 1 ;
+
+        httpRequester.getJSON(url,success,error,complete);
+    }
+
     return {
-        getUsers : getUsers
+        getUsers : getUsers,
+        getAllDisciplines : getAllDisciplines
     };
 
 }());

@@ -8,8 +8,16 @@ var specialitiesPageService = (function(){
         httpRequester.getJSON(url,success,error,complete);
     }
 
+    function getAllSpecialities(success, error, complete){
+        var url = config.API_URL + "speciality/" + 1;
+
+        httpRequester.getJSON(url,success,error,complete);
+    }
+
     return {
-        getUsers : getUsers
+        getUsers : getUsers,
+        getAllSpecialities : getAllSpecialities
+
     };
 
 }());

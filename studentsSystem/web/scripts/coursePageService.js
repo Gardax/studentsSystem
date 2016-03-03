@@ -1,11 +1,17 @@
 var coursePageService = (function(){
-
+//TODO: fix the names
     function getUsers(page,order,filters,success,error,complete){
         var url = config.API_URL + "course/" + page;
 
         if (Object.keys(filters).length !== 0) {
             url += "?" + $.param(filters);
         }
+
+        httpRequester.getJSON(url,success,error,complete);
+    }
+
+    function getAllCourses(success,error,complete) {
+        var url = config.API_URL + "course/" + 1;
 
         httpRequester.getJSON(url,success,error,complete);
     }
@@ -18,7 +24,8 @@ var coursePageService = (function(){
 
     return {
         getUsers : getUsers,
-        addCourse: addCourse
+        addCourse: addCourse,
+        getAllCourses: getAllCourses
     };
 
 }());

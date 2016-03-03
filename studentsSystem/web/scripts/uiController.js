@@ -135,8 +135,13 @@ var uiController = (function(){
     }
 
     function loadStudentsTable(){
+        var studentsCoursesSelect = $("#studentCourse");
         var studentsTable = $("#studentsTable");
-        studentsPageController.initialize(studentsTable);
+        var studentSpecialitiesSelect = $("#studentSpecialities");
+
+        studentsPageController.initialize(studentsTable, studentsCoursesSelect, studentSpecialitiesSelect);
+
+
         studentsPageController.loadPage(1, [], []);
     }
 
@@ -165,7 +170,9 @@ var uiController = (function(){
     }
     function loadAssessment(){
         var studentAssessment = $("#assessmentTable");
-        assessmentPageController.initialize(studentAssessment);
+        var assessmentDisciplineSelect = $("#disciplineAssessment");
+
+        assessmentPageController.initialize(studentAssessment ,assessmentDisciplineSelect);
 
         assessmentPageController.loadPage(1, [], []);
     }

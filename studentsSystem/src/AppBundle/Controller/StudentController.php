@@ -237,7 +237,7 @@ class StudentController extends Controller
 
         $studentEntity = $studentService->getStudentById($id);
 
-        $studentModel = new StudentModel($studentEntity);
+        $studentModel = new StudentModel($studentEntity, true);
 
         return new JsonResponse($studentModel);
     }

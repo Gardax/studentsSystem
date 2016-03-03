@@ -6,6 +6,7 @@ var assessmentPageController = (function() {
 
     var $errorsContainer;
 
+    var assessmentDisciplineSelect;
     var container;
 
     var assessmentFirstPageButton;
@@ -13,7 +14,8 @@ var assessmentPageController = (function() {
     var assessmentNextPageButton;
     var assessmentLastPageButton;
 
-    function initialize(containerElement) {
+    function initialize(containerElement ,assessmentElement) {
+        assessmentDisciplineSelect = assessmentElement;
         container = containerElement;
         $errorsContainer = $("#errorsContainer");
         $errorsContainer.text("");
@@ -65,6 +67,23 @@ var assessmentPageController = (function() {
                 $errorsContainer.text(error.responseJSON.errorMessage);
             }
         );
+
+        disciplinesPageService.getAllDisciplines(
+            function(data) {
+                var option = generateAssessmentsOptions(data);
+                assessmentDisciplineSelect.html(option);
+            }
+        );
+
+
+    }
+
+    function generateAssessmentsOptions(data){
+        var option = "";
+        for(var i = 0 ; i < data.subjects.length ; i++ ){
+            option += "<option value='"+data.subjects[i].id+"'>"+data.subjects[i].name +"</option>";
+        }
+        return option;
     }
 
     function manageButtonsState() {

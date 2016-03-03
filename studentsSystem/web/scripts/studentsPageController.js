@@ -11,19 +11,24 @@ var studentsPageController = (function(){
     var studentSearchButton;
 
     var container;
+    var coursesContainer;
+    var specialitiesContainer;
 
     var studentsFirstPageButton;
     var studentsPreviousPageButton;
     var studentsNextPageButton;
     var studentsLastPageButton;
 
-    function initialize(containerElement) {
+    function initialize(containerElement, coursesElement, specialitiesElement) {
         filterByName = $("#studentName");
         filterByEmail =$("#studentEmail");
         filterByFacultyNumber = $("#studentFacultyNumber");
         studentSearchButton = $("#studentSearchButton");
 
         container = containerElement;
+        coursesContainer = coursesElement;
+        specialitiesContainer = specialitiesElement;
+
         $errorsContainer = $("#errorsContainer");
         $errorsContainer.text("");
         atachEvents();
@@ -35,7 +40,7 @@ var studentsPageController = (function(){
         studentsNextPageButton = $(".studentsNextPageButton");
         studentsLastPageButton = $(".studentsLastPageButton");
 
-        studentsPreviousPageButton.on("click",function(){
+        studentsPreviousPageButton.on("click",function(event){
             loadPage(currentPage - 1, currentOrder, currentFilters );
         });
 
@@ -88,7 +93,6 @@ var studentsPageController = (function(){
                 currentPage = page;
                 currentFilters = filters;
                 currentOrder = order;
-
                 lastPage = parseInt(data.totalCount / data.itemsPerPage);
                 if(data.totalCount % data.itemsPerPage != 0) {
                     lastPage++;
@@ -103,6 +107,43 @@ var studentsPageController = (function(){
                 $errorsContainer.text(error.responseJSON.errorMessage);
             }
         );
+
+        coursePageService.getAllCourses(
+            function(data){
+                var options = generateCourseOptions(data);
+                coursesContainer.html(options);
+            },
+            function(error){
+                $errorsContainer.text(error.responseJSON.errorMessage);
+            }
+        );
+
+        specialitiesPageService.getAllSpecialities(
+            function(data){
+                var options = generateSpecialitiesOptions(data);
+                specialitiesContainer.html(options);
+            },
+            function(error){
+                $errorsContainer.text(error.responseJSON.errorMessage);
+            }
+        );
+
+    }
+
+    function generateSpecialitiesOptions(data){
+        var specialitiesOptions = "";
+        for(var i = 0; i < data.specialities.length; i++){
+            specialitiesOptions += "<option value='"+data.specialities[i].id+"'>"+data.specialities[i].specialityLongName +"</option>";
+        }
+        return specialitiesOptions;
+    }
+
+    function generateCourseOptions(data){
+        var options = "";
+        for(var i =0; i < data.courses.length ; i++){
+             options += "<option value='"+data.courses[i].id+"'>"+data.courses[i].name +"</option>";
+        }
+        return options;
     }
 
     function generateUsersTable(usersData){
@@ -121,7 +162,7 @@ var studentsPageController = (function(){
                 "<td>"+usersData.students[i].firstName+" "+usersData.students[i].lastName+"</td>"+
                 "<td>"+usersData.students[i].email+"</td>"+
                 "<td>"+usersData.students[i].facultyNumber+"</td>"+
-                "<td class='edit'></td>"+
+                "<td class='edit' data-id='" + usersData.students[i].id + "'></td>"+
                 "<td class='delete'></td>";
         }
         table += "</tbody></table>";
