@@ -4,11 +4,15 @@ var studentsPageController = (function(){
     var currentFilters = [];
     var currentOrder = [];
     var lastPage =1;
-    var $errorsContainer;
+    var errorsContainer;
     var filterByName;
     var filterByEmail;
     var filterByFacultyNumber;
     var studentSearchButton;
+    var studentsTable;
+    var pagingButtons;
+    var studentCourse;
+    var studentSpecialities;
 
     var container;
     var coursesContainer;
@@ -24,13 +28,15 @@ var studentsPageController = (function(){
         filterByEmail =$("#studentEmail");
         filterByFacultyNumber = $("#studentFacultyNumber");
         studentSearchButton = $("#studentSearchButton");
-
+        studentCourse = $("#studentCourse");
+        studentSpecialities = $("#studentSpecialities");
         container = containerElement;
         coursesContainer = coursesElement;
         specialitiesContainer = specialitiesElement;
-
-        $errorsContainer = $("#errorsContainer");
-        $errorsContainer.text("");
+        pagingButtons = $(".paging");
+        studentsTable = $("#studentsTable");
+        errorsContainer = $("#errorsContainer");
+        errorsContainer.text("");
         atachEvents();
     }
 
@@ -41,24 +47,24 @@ var studentsPageController = (function(){
         studentsLastPageButton = $(".studentsLastPageButton");
 
         studentsPreviousPageButton.on("click",function(event){
-            loadPage(currentPage - 1, currentOrder, currentFilters );
+            populateStudentsTable(currentPage - 1, currentOrder, currentFilters );
         });
 
         studentsNextPageButton.on("click",function(){
-            loadPage(currentPage + 1, currentOrder, currentFilters );
+            populateStudentsTable(currentPage + 1, currentOrder, currentFilters );
         });
 
         studentsFirstPageButton.on("click",function(){
-            loadPage(1, currentOrder, currentFilters );
+            populateStudentsTable(1, currentOrder, currentFilters );
         });
 
         studentsLastPageButton.on("click",function(){
-            loadPage(lastPage, currentOrder, currentFilters );
+            populateStudentsTable(lastPage, currentOrder, currentFilters );
         });
 
         studentSearchButton.on("click", function(event){
             event.preventDefault();
-            loadPage(1, [], getFilterValues());
+            populateStudentsTable(1, [], getFilterValues());
         });
 
     }
@@ -67,7 +73,9 @@ var studentsPageController = (function(){
         return {
             'name': filterByName.val(),
             'facultyNumber': filterByFacultyNumber.val(),
-            'email' : filterByEmail.val()
+            'email' : filterByEmail.val(),
+            'courseId' : studentCourse.val(),
+            'specialityId' : studentSpecialities.val()
         };
     }
 
@@ -89,6 +97,32 @@ var studentsPageController = (function(){
     }
 
     function loadPage(page, order, filters) {
+        populateStudentsTable(page, order, filters);
+
+        coursePageService.getAllCourses(
+            function(data){
+                var options = generateCourseOptions(data);
+                coursesContainer.html(options);
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+            }
+        );
+
+        specialitiesPageService.getAllSpecialities(
+            function(data){
+                var options = generateSpecialitiesOptions(data);
+                specialitiesContainer.html(options);
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+
+            }
+        );
+
+    }
+
+    function populateStudentsTable(page, order, filters){
         studentsPageService.getUsers(page, order, filters,
             function(data){
                 currentPage = page;
@@ -100,39 +134,22 @@ var studentsPageController = (function(){
                 }
 
                 manageButtonsState();
-
+                studentsTable.show();
+                pagingButtons.show();
+                errorsContainer.text("");
                 var table = generateUsersTable(data);
                 container.html(table);
             },
             function(error){
-                $errorsContainer.text(error.responseJSON.errorMessage);
+                errorsContainer.text(error.responseJSON.errorMessage);
+                studentsTable.hide();
+                pagingButtons.hide();
             }
         );
-
-        coursePageService.getAllCourses(
-            function(data){
-                var options = generateCourseOptions(data);
-                coursesContainer.html(options);
-            },
-            function(error){
-                $errorsContainer.text(error.responseJSON.errorMessage);
-            }
-        );
-
-        specialitiesPageService.getAllSpecialities(
-            function(data){
-                var options = generateSpecialitiesOptions(data);
-                specialitiesContainer.html(options);
-            },
-            function(error){
-                $errorsContainer.text(error.responseJSON.errorMessage);
-            }
-        );
-
     }
 
     function generateSpecialitiesOptions(data){
-        var specialitiesOptions = "";
+        var specialitiesOptions = "<option value='0'>Всички</option>";
         for(var i = 0; i < data.specialities.length; i++){
             specialitiesOptions += "<option value='"+data.specialities[i].id+"'>"+data.specialities[i].specialityLongName +"</option>";
         }
@@ -140,7 +157,7 @@ var studentsPageController = (function(){
     }
 
     function generateCourseOptions(data){
-        var options = "";
+        var options = "<option value='0'>Всички</option>";
         for(var i =0; i < data.courses.length ; i++){
              options += "<option value='"+data.courses[i].id+"'>"+data.courses[i].name +"</option>";
         }

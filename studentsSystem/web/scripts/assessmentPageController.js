@@ -4,21 +4,27 @@ var assessmentPageController = (function() {
     var currentOrder = [];
     var lastPage = 1;
 
-    var $errorsContainer;
-
+    var errorsContainer;
+    var assessmentStudentName;
     var assessmentDisciplineSelect;
     var container;
+    var pagingButtons;
+    var assessmentTable;
 
     var assessmentFirstPageButton;
     var assessmentPreviousPageButton;
     var assessmentNextPageButton;
     var assessmentLastPageButton;
+    var assessmentSearchButton;
 
     function initialize(containerElement ,assessmentElement) {
         assessmentDisciplineSelect = assessmentElement;
         container = containerElement;
-        $errorsContainer = $("#errorsContainer");
-        $errorsContainer.text("");
+        errorsContainer = $("#errorsContainer");
+        pagingButtons = $(".paging");
+        assessmentTable = $("#assessmentTable");
+        assessmentStudentName = $("assessmentStudentName");
+        errorsContainer.text("");
         atachEvents();
     }
 
@@ -27,6 +33,7 @@ var assessmentPageController = (function() {
         assessmentPreviousPageButton = $(".assessmentPreviousPageButton");
         assessmentNextPageButton = $(".assessmentNextPageButton");
         assessmentLastPageButton = $(".assessmentLastPageButton");
+        assessmentSearchButton = $("#assessmentSearchButton");
 
         assessmentPreviousPageButton.on("click", function () {
             loadPage(currentPage - 1, currentOrder, currentFilters);
@@ -43,10 +50,32 @@ var assessmentPageController = (function() {
         assessmentLastPageButton.on("click", function () {
             loadPage(lastPage, currentOrder, currentFilters);
         });
+        assessmentSearchButton.on("click", function(event){
+            event.preventDefault();
+            loadAssessments(1, [], getFilterValues());
+        });
 
     }
 
+    function getFilterValues(){
+        return {
+            //'name' : assessmentsName.val(),
+            'subjectId' : assessmentDisciplineSelect.val()
+        };
+    }
+
     function loadPage(page, order, filters) {
+        loadAssessments(page, order, filters);
+
+        disciplinesPageService.getAllDisciplines(
+            function(data) {
+                var option = generateAssessmentsOptions(data);
+                assessmentDisciplineSelect.html(option);
+            }
+        );
+    }
+
+    function loadAssessments(page, order, filters) {
         assessmentPageService.getUsers(page, order, filters,
             function (data) {
                 currentPage = page;
@@ -64,18 +93,11 @@ var assessmentPageController = (function() {
                 container.html(table);
             },
             function (error) {
-                $errorsContainer.text(error.responseJSON.errorMessage);
+                errorsContainer.text(error.responseJSON.errorMessage);
+                pagingButtons.hide();
+                assessmentTable.hide();
             }
         );
-
-        disciplinesPageService.getAllDisciplines(
-            function(data) {
-                var option = generateAssessmentsOptions(data);
-                assessmentDisciplineSelect.html(option);
-            }
-        );
-
-
     }
 
     function generateAssessmentsOptions(data){
