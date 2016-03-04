@@ -97,9 +97,15 @@ class SpecialityService
      * @return array|mixed
      */
     public function getSpecialities($page, $pageSize, $filters, $getCount=false){
+        $start = 0;
+        $end = 0;
 
-        $start = ($page -1) *$pageSize;
-        $end = $start + $pageSize;
+        if($page != 'all') {
+            $page = ($page < 1) ? 1 : $page;
+            $start = ($page - 1) * $pageSize;
+            $end = $start + $pageSize;
+        }
+
 
         $specialities = $this->specialityManager->getSpecialities($start, $end, $filters, $getCount);
         if(!$specialities){

@@ -81,6 +81,7 @@ class SubjectService
         $end = 0;
 
         if($page != "all") {
+            $page = ($page < 1) ? 1 : $page;
             $start = ($page -1) * $pageSize;
             $end = $start + $pageSize;
         }

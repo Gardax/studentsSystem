@@ -117,7 +117,7 @@ class StudentService
      * @return Student[]
      */
     public function getStudents($page, $pageSize, $filters, $getFullInfo, $getCount=false ){
-
+        $page = ($page < 1) ? 1 : $page;
         $start = ((int)$page - 1) * $pageSize;
         $end = $start + $pageSize;
 

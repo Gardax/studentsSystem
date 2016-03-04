@@ -81,7 +81,7 @@ class SpecialityController extends Controller
             'specialities' => $specialityModels,
             'totalCount' => $totalCount,
             'page' => $page,
-            'itemsPerPage' => self::PAGE_SIZE,
+            'itemsPerPage' => ($page == 'all') ? 'all' : self::PAGE_SIZE,
         ];
 
         return new JsonResponse($data);

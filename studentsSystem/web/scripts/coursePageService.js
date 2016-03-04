@@ -22,7 +22,7 @@ var coursePageService = (function(){
     }
 
     function getAllCourses(success,error,complete) {
-        var url = config.API_URL + "course/" + 1;
+        var url = config.API_URL + "course/all";
 
         httpRequester.getJSON(url,success,error,complete);
     }

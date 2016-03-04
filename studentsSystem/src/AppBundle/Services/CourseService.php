@@ -77,9 +77,13 @@ class CourseService
      * @return array|mixed
      */
     public function getCourses($page, $pageSize, $name = null, $getCount = false){
-        $page = ($page < 1) ? 1 : $page;
-        $start = ($page -1) *$pageSize;
-        $end = $start + $pageSize;
+        $start = 0;
+        $end = 0;
+        if($page != 'all') {
+            $page = ($page < 1) ? 1 : $page;
+            $start = ($page -1) *$pageSize;
+            $end = $start + $pageSize;
+        }
 
         $courses = $this->courseManager->getCourses($start,$end,$name,$getCount);
         if(!$courses){
