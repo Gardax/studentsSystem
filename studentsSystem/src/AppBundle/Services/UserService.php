@@ -5,6 +5,7 @@ use AppBundle\Exceptions\ValidatorException;
 use AppBundle\Managers\UserManager;
 use AppBundle\Entity\User;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -157,7 +158,7 @@ class UserService implements UserProviderInterface
         $user = $this->userManager->getUserById($id);
 
         if(!$user){
-            throw new BadRequestHttpException("There is no user with this id.");
+            throw new NotFoundHttpException("There is no user with this id.");
         }
 
         return $user;

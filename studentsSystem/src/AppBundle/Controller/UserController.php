@@ -75,15 +75,12 @@ class UserController extends Controller
      * @param $page
      * @return JsonResponse
      */
-    public function getUsersAction(Request $request, $page)
-    {
-
+    public function getUsersAction(Request $request, $page){
         $userService = $this->get('user_service');
 
         $filters = [
             'username'  => $request->query->get('username'),
-            'email' => $request->query->get('email'),
-
+            'email' => $request->query->get('email')
         ];
 
         $userEntities = $userService->getUsers($page, self::PAGE_SIZE, $filters);
@@ -136,11 +133,9 @@ class UserController extends Controller
      * @return JsonResponse
      */
     public function getUserById(Request $request, $id){
-
         $userService = $this->get('user_service');
 
         $userEntity = $userService->getUserById($id);
-
         $userModel = new UserModel($userEntity);
 
         return new JsonResponse($userModel);

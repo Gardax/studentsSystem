@@ -121,38 +121,24 @@ class StudentController extends Controller
         $facultyNumber = $request->request->get('facultyNumber');
         $email = $request->request->get('email');
 
-        $courseEntity = $courseService->getCourseById($request->request->get('courseId'));
-        $specialityEntity = $specialityService->getSpecialityById($request->request->get('specialityId'));
-
-        $studentEmail = $studentService->getStudentByEmail($request->request->get('email'));
-        $studentFacultyNumber = $studentService->getStudentByFacultyNumber($request->request->get('facultyNumber'));
-
-        if(!$courseEntity){
-            if(!$courseId){
-                throw new BadRequestHttpException("You must add course.");
-            }
-            throw new BadRequestHttpException("There is no course with this id.");
+        if(!$courseId){
+            throw new BadRequestHttpException("You must specify course.");
+        }
+        if(!$specialityId){
+            throw new BadRequestHttpException("You must specify speciality.");
         }
 
-        if(!$specialityEntity){
-            if(!$specialityId){
-                throw new BadRequestHttpException("You must add speciality.");
-            }
-            throw new BadRequestHttpException("There is no speciality with this id.");
+        $courseEntity = $courseService->getCourseById($courseId);
+        $specialityEntity = $specialityService->getSpecialityById($specialityId);
+
+        $studentByEmail = $studentService->getStudentByEmail($email);
+        if($studentByEmail) {
+            throw new BadRequestHttpException("There is other user with the same email.");
         }
 
-        if($studentEmail){
-            if(!$email){
-                throw new BadRequestHttpException("You must add email.");
-            }
-            throw new BadRequestHttpException("The email already exists.");
-        }
-
-        if($studentFacultyNumber){
-            if(!$facultyNumber){
-                throw new BadRequestHttpException("You must add a faculty number.");
-            }
-            throw new BadRequestHttpException("This faculty number already exists.");
+        $studentByFacultyNumber = $studentService->getStudentByFacultyNumber($facultyNumber);
+        if($studentByFacultyNumber) {
+            throw new BadRequestHttpException("There is other user with the same faculty number.");
         }
 
         $studentEntity = $studentService->addStudent($studentData, $courseEntity, $specialityEntity);
@@ -191,41 +177,27 @@ class StudentController extends Controller
         $facultyNumber = $request->request->get('facultyNumber');
         $email = $request->request->get('email');
 
-        $courseEntity = $courseService->getCourseById($request->request->get('courseId'));
-        $specialityEntity = $specialityService->getSpecialityById($request->request->get('specialityId'));
-
-        $studentEmail = $studentService->getStudentByEmail($request->request->get('email'));
-        $studentFacultyNumber = $studentService->getStudentByFacultyNumber($request->request->get('facultyNumber'));
-
-        if(!$courseEntity){
-            if(!$courseId){
-                throw new BadRequestHttpException("You must add course.");
-            }
-            throw new BadRequestHttpException("There is no course with this id.");
+        if(!$courseId){
+            throw new BadRequestHttpException("You must specify course.");
         }
-
-        if(!$specialityEntity){
-            if(!$specialityId){
-                throw new BadRequestHttpException("You must add speciality.");
-            }
-            throw new BadRequestHttpException("There is no speciality with this id.");
-        }
-
-        if($studentEmail){
-            if(!$email){
-                throw new BadRequestHttpException("You must add email.");
-            }
-            throw new BadRequestHttpException("The email already exists.");
-        }
-
-        if($studentFacultyNumber){
-            if(!$facultyNumber){
-                throw new BadRequestHttpException("You must add a faculty number.");
-            }
-            throw new BadRequestHttpException("This faculty number already exists.");
+        if(!$specialityId){
+            throw new BadRequestHttpException("You must specify speciality.");
         }
 
         $studentEntity = $studentService->getStudentById($id);
+
+        $courseEntity = $courseService->getCourseById($courseId);
+        $specialityEntity = $specialityService->getSpecialityById($specialityId);
+
+        $studentByEmail = $studentService->getStudentByEmail($email);
+        if($studentByEmail && $studentByEmail->getId() != $studentEntity->getId()) {
+            throw new BadRequestHttpException("There is other user with the same email.");
+        }
+
+        $studentByFacultyNumber = $studentService->getStudentByFacultyNumber($facultyNumber);
+        if($studentByFacultyNumber && $studentByFacultyNumber->getId() != $studentEntity->getId()) {
+            throw new BadRequestHttpException("There is other user with the same faculty number.");
+        }
 
         $studentService->updateStudent($studentEntity,$courseEntity,$specialityEntity,$studentData);
 

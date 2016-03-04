@@ -17,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class SpecialityController
@@ -132,8 +133,11 @@ class SpecialityController extends Controller
         ];
 
         $specialityEntity = $specialityService->getSpecialityById($id);
+        if(!$specialityEntity) {
+            throw new NotFoundHttpException('Speciality not found.');
+        }
 
-        $specialityService->updateSpeciality($specialityEntity,$specialityData);
+        $specialityService->updateSpeciality($specialityEntity, $specialityData);
 
         $specialityModel = new SpecialityModel($specialityEntity);
 
@@ -153,10 +157,12 @@ class SpecialityController extends Controller
         $specialityService = $this->get('speciality_service');
 
         $specialityEntity = $specialityService->getSpecialityById($id);
+        if(!$specialityEntity) {
+            throw new NotFoundHttpException('Speciality not found.');
+        }
 
         $specialityModel = new SpecialityModel($specialityEntity);
 
         return new JsonResponse($specialityModel);
     }
-
 }

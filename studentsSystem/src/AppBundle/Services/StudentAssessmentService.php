@@ -60,7 +60,7 @@ class StudentAssessmentService
             $start, $end, $filters, $getCount);
 
         if(!$studentAssessments){
-            throw new BadRequestHttpException("No student assessments found.");
+            throw new NotFoundHttpException("No student assessments found.");
         }
         return $studentAssessments;
     }
@@ -74,7 +74,7 @@ class StudentAssessmentService
         $studentAssessment = $this->studentAssessmentManager->getStudentAssessmentById($id);
 
         if(!$studentAssessment){
-            throw new BadRequestHttpException("There are no student assessment with this id.");
+            throw new NotFoundHttpException("There are no student assessment with this id.");
         }
         return $studentAssessment;
     }
@@ -102,7 +102,6 @@ class StudentAssessmentService
         }
 
         $this->studentAssessmentManager->addStudentAssessment($studentAssessmentEntity);
-        $this->studentAssessmentManager->saveChanges();
 
         return $studentAssessmentEntity;
 

@@ -24,7 +24,6 @@ class UserManager
     }
 
     public function getUsers($start, $end, $filters = [], $getCount = false){
-
         $em = $this->entityManager;
 
         $parameters = [];

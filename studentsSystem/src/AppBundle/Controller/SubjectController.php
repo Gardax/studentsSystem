@@ -63,9 +63,7 @@ class SubjectController extends Controller
      * @param $page
      * @return JsonResponse
      */
-    public function getSubjectsAction(Request $request, $page)
-    {
-
+    public function getSubjectsAction(Request $request, $page) {
         $subjectService = $this->get('subject_service');
 
         $name = $request->query->get('name');
@@ -140,7 +138,7 @@ class SubjectController extends Controller
 
         $subjectModel = new SubjectModel($subjectEntity);
 
-        return new  JsonResponse($subjectModel);
+        return new JsonResponse($subjectModel);
     }
 
     /**
@@ -152,7 +150,6 @@ class SubjectController extends Controller
      * @return JsonResponse
      */
     public function getSubjectById(Request $request, $id){
-
         $subjectService = $this->get('subject_service');
 
         $subjectEntity = $subjectService->getSubjectById($id);

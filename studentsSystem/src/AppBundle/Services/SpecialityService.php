@@ -45,7 +45,7 @@ class SpecialityService
     }
 
     /**
-     * @param $specialityData
+     * @param array $specialityData
      * @return Speciality
      * @throws ValidatorException
      */
@@ -62,7 +62,6 @@ class SpecialityService
         }
 
         $this->specialityManager->addSpeciality($specialityEntity);
-        $this->specialityManager->saveChanges();
 
         return $specialityEntity;
     }
@@ -74,7 +73,6 @@ class SpecialityService
      * @throws ValidatorException
      */
     public function updateSpeciality(Speciality $speciality, $specialityData){
-
         $speciality->setSpecialityLongName($specialityData['longName']);
         $speciality->setSpecialityShortName($specialityData['shortName']);
 
@@ -119,8 +117,10 @@ class SpecialityService
      * @return Speciality|null|object
      */
     public function getSpecialityById($id){
-
         $speciality = $this->specialityManager->getSpecialityById($id);
+        if(!$speciality){
+            throw new BadRequestHttpException("There is no speciality with this id.");
+        }
 
         return $speciality;
     }

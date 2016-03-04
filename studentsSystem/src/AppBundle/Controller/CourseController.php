@@ -46,9 +46,9 @@ class CourseController extends Controller
             'name' => $request->request->get('name'),
         ];
 
-        $courseName = $courseService->getCourseName($request->request->get('name'));
+        $existingCourse = $courseService->getCourseByName($courseData['name']);
 
-        if($courseName){
+        if($existingCourse){
             throw new BadRequestHttpException("There is already a course with this name.");
         }
 
@@ -58,7 +58,7 @@ class CourseController extends Controller
         return new JsonResponse($courseModel);
     }
     /**
-     * @Route("/course/edit/{id}", name="updateCourseById")
+     * @Route("/course/edit/{id}", name="updateCourse")
      * @Method("PUT")
      * @Security("has_role('ROLE_ADMIN')")
      *
@@ -80,7 +80,7 @@ class CourseController extends Controller
             throw new BadRequestHttpException("There is no course with this id.");
         }
 
-        $courseService->updateCourse($courseEntity,$courseData);
+        $courseService->updateCourse($courseEntity, $courseData);
 
         $courseModel = new CourseModel($courseEntity);
 
@@ -102,11 +102,10 @@ class CourseController extends Controller
 
         $courseEntity = $courseService->getCourseById($id);
 
-        $result = self::FAIL;
-
-        if ($courseEntity) {
-            $result = $courseService->deleteCourse($courseEntity);
+        if(!$courseEntity) {
+            throw new BadRequestHttpException('Course not found.');
         }
+        $result = $courseService->deleteCourse($courseEntity);
 
         $success = $result ? self::SUCCESS : self::FAIL;
         return new JsonResponse(["success" => $success]);
@@ -120,9 +119,7 @@ class CourseController extends Controller
      * @param $page
      * @return JsonResponse
      */
-    public function getCoursesAction(Request $request, $page)
-    {
-
+    public function getCoursesAction(Request $request, $page) {
         $courseService = $this->get('course_service');
 
         $name = $request->query->get('name');
@@ -155,11 +152,9 @@ class CourseController extends Controller
      * @return JsonResponse
      */
     public function getCourseByIdAction(Request $request, $id){
-
         $courseService = $this->get('course_service');
 
         $courseEntity = $courseService->getCourseById($id);
-
         $courseModel = new CourseModel($courseEntity);
 
         return new JsonResponse($courseModel);

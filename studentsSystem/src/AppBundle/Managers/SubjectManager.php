@@ -104,8 +104,8 @@ class SubjectManager
     }
 
     /**
-     * @param $id
-     * @return Subject|null|object
+     * @param int $id
+     * @return Subject|null
      */
     public function getSubjectById($id)
     {

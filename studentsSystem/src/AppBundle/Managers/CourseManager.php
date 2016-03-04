@@ -56,8 +56,7 @@ class CourseManager
      * @param $id
      * @return Course|null|object
      */
-    public function getCourseById($id)
-    {
+    public function getCourseById($id) {
         $course = $this->entityManager->getRepository("AppBundle:Course")->find($id);
 
         return $course;
@@ -71,7 +70,6 @@ class CourseManager
      * @return array|mixed
      */
     public function getCourses($start, $end, $name = null, $getCount = false){
-
         $em = $this->entityManager;
 
         $parameters = [];
@@ -105,16 +103,16 @@ class CourseManager
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return Course
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getCourseName($name)
+    public function getCourseByName($name)
     {
         $query = $this->entityManager->createQuery(
             "SELECT co
              FROM AppBundle:Course co
-             WHERE co.name LIKE :name"
+             WHERE co.name = :name"
         )
             ->setParameters([
                 "name" => $name

@@ -88,7 +88,6 @@ class StudentService
      * @throws ValidatorException
      */
     public function updateStudent(Student $student, Course $course, Speciality $speciality, $studentData){
-
         $student->setCourse($course);
         $student->setSpeciality($speciality);
         $student->setFirstName($studentData['firstName']);
@@ -135,10 +134,10 @@ class StudentService
     public function getStudentById($id){
 
         $student = $this->studentManager->getStudentById($id);
-
         if(!$student){
-            throw new BadRequestHttpException("No student found.");
+            throw new NotFoundHttpException("No student found.");
         }
+
         return $student;
     }
 
@@ -147,7 +146,6 @@ class StudentService
      * @return Student
      */
     public function getStudentByEmail($email){
-
         $studentEmail = $this->studentManager->getStudentByEmail($email);
 
         return $studentEmail;

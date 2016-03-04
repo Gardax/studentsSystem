@@ -46,16 +46,15 @@ class SubjectService
     }
 
     /**
-     * @param $id
-     * @return Subject|null|object
+     * @param int $id
+     * @return Subject|null
      */
     public function getSubjectById($id){
-
         $subject = $this->subjectManager->getSubjectById($id);
-
         if(!$subject){
-            throw new BadRequestHttpException("No subject found.");
+            throw new NotFoundHttpException("No subject found.");
         }
+
         return $subject;
     }
 
@@ -122,7 +121,6 @@ class SubjectService
         }
 
         $this->subjectManager->addSubject($subjectEntity);
-        $this->subjectManager->saveChanges();
 
         return $subjectEntity;
 
@@ -135,7 +133,6 @@ class SubjectService
      * @throws ValidatorException
      */
     public function updateSubject(Subject $subject, $subjectData){
-
         $subject->setName($subjectData['name']);
         $subject->setWorkloadLectures($subjectData['workloadLectures']);
         $subject->setWorkloadExercises($subjectData['workloadExercises']);

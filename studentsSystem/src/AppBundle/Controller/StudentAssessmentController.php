@@ -94,9 +94,7 @@ class StudentAssessmentController extends Controller
      * @param $page
      * @return JsonResponse
      */
-    public function getStudentAssessmentsAction(Request $request, $page)
-    {
-
+    public function getStudentAssessmentsAction(Request $request, $page) {
         $studentAssessmentService = $this->get('student_assessment_service');
 
         $filters = [
@@ -106,8 +104,7 @@ class StudentAssessmentController extends Controller
 
         ];
 
-        $studentAssessmentEntities = $studentAssessmentService->getStudentAssessments(
-            $page, self::PAGE_SIZE, $filters);
+        $studentAssessmentEntities = $studentAssessmentService->getStudentAssessments($page, self::PAGE_SIZE, $filters);
 
         $studentAssessmentModels = array();
         foreach ($studentAssessmentEntities as $studentAssessment) {
@@ -115,8 +112,7 @@ class StudentAssessmentController extends Controller
             $studentAssessmentModels[] = $model;
         }
 
-        $totalCount = $studentAssessmentService->getStudentAssessments(
-            $page, self::PAGE_SIZE, $filters, true);
+        $totalCount = $studentAssessmentService->getStudentAssessments($page, self::PAGE_SIZE, $filters, true);
 
         $data = [
             'studentAssessments' => $studentAssessmentModels,
@@ -159,23 +155,22 @@ class StudentAssessmentController extends Controller
         $studentEntity = $studentService->getStudentById($studentId);
 
         if(!$subjectId){
-            throw new BadRequestHttpException('No student id.');
+            throw new BadRequestHttpException('No subject id.');
         }
         $subjectEntity = $subjectService->getSubjectById($subjectId);
-
 
         $studentAssessmentEntity = $studentAssessmentService->getStudentAssessmentById($id);
 
         $studentAssessmentService->updateStudentAssessment(
-            $studentAssessmentEntity,$studentEntity,$subjectEntity,$studentAssessmentData);
+            $studentAssessmentEntity, $studentEntity, $subjectEntity, $studentAssessmentData);
 
         $studentAssessmentModel = new StudentAssessmentModel($studentAssessmentEntity);
 
-        return new  JsonResponse($studentAssessmentModel);
+        return new JsonResponse($studentAssessmentModel);
     }
 
     /**
-     * @Route("/assessmentId/{id}")]
+     * @Route("/assessment/single/{id}")
      * @Method({"GET"})
      *
      * @param Request $request
@@ -183,11 +178,9 @@ class StudentAssessmentController extends Controller
      * @return JsonResponse
      */
     public function getUserById(Request $request, $id){
-
         $studentAssessmentService = $this->get('student_assessment_service');
 
         $studentAssessmentEntity = $studentAssessmentService->getStudentAssessmentById($id);
-
         $studentAssessmentModel = new StudentAssessmentModel($studentAssessmentEntity);
 
         return new JsonResponse($studentAssessmentModel);

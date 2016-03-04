@@ -58,7 +58,7 @@ class CourseService
 
         $errors = $this->validator->validate($courseEntity, null, array('add'));
 
-        if(count($errors) > 0){
+        if(count($errors) > 0) {
             throw new ValidatorException($errors);
         }
 
@@ -98,8 +98,10 @@ class CourseService
      * @return Course|null|object
      */
     public function getCourseById($id){
-
         $course = $this->courseManager->getCourseById($id);
+        if(!$course) {
+            throw new BadRequestHttpException("There is no course with this id.");
+        }
 
         return $course;
     }
@@ -111,7 +113,6 @@ class CourseService
      * @throws ValidatorException
      */
     public function updateCourse(Course $course, $courseData){
-
         $course->setName($courseData['name']);
 
         $errors = $this->validator->validate($course, null, array('edit'));
@@ -136,12 +137,12 @@ class CourseService
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return Course
      */
-    public function getCourseName($name){
+    public function getCourseByName($name){
 
-        $courseName = $this->courseManager->getCourseName($name);
+        $courseName = $this->courseManager->getCourseByName($name);
 
         return $courseName;
     }
