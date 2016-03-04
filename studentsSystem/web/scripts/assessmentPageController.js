@@ -18,7 +18,7 @@ var assessmentPageController = (function() {
     var assessmentLastPageButton;
     var assessmentSearchButton;
 
-    function initialize(containerElement ,assessmentElement) {
+    function initializeAssessmentsPage(containerElement ,assessmentElement) {
         assessmentDisciplineSelect = assessmentElement;
         container = containerElement;
         errorsContainer = $("#errorsContainer");
@@ -27,10 +27,10 @@ var assessmentPageController = (function() {
         assessmentTable = $("#assessmentTable");
         assessmentStudentName = $("#assessmentsName");
         errorsContainer.text("");
-        atachEvents();
+        attachEvents();
     }
 
-    function atachEvents() {
+    function attachEvents() {
         assessmentFirstPageButton = $(".assessmentFirstPageButton");
         assessmentPreviousPageButton = $(".assessmentPreviousPageButton");
         assessmentNextPageButton = $(".assessmentNextPageButton");
@@ -66,10 +66,10 @@ var assessmentPageController = (function() {
         };
     }
 
-    function loadPage(page, order, filters) {
+    function loadAssessmentsPage(page, order, filters) {
         loadAssessments(page, order, filters);
 
-        disciplinesPageService.getAllDisciplines(
+        subjectsPageService.getAllSubjects(
             function(data) {
                 var option = generateAssessmentsOptions(data);
                 assessmentDisciplineSelect.html(option);
@@ -78,7 +78,7 @@ var assessmentPageController = (function() {
     }
 
     function loadAssessments(page, order, filters) {
-        assessmentPageService.getUsers(page, order, filters,
+        assessmentPageService.getAssessments(page, order, filters,
             function (data) {
                 currentPage = page;
                 currentFilters = filters;
@@ -96,7 +96,8 @@ var assessmentPageController = (function() {
                 assessmentTable.show();
                 assessmentCurrentPageContainer.show();
                 errorsContainer.text("");
-                var table = generateUsersTable(data);
+
+                var table = generateAssessmentsTable(data);
                 container.html(table);
             },
             function (error) {
@@ -132,7 +133,7 @@ var assessmentPageController = (function() {
             assessmentLastPageButton.prop('disabled', true);
         }
     }
-    function generateUsersTable(usersData) {
+    function generateAssessmentsTable(usersData) {
         var table = "<table border='1'>" +
             "<thead>" +
             "<tr>" +
@@ -168,7 +169,7 @@ var assessmentPageController = (function() {
     return table;
 }
     return {
-        loadPage: loadPage,
-        initialize: initialize
+        loadAssessmentsPage: loadAssessmentsPage,
+        initializeAssessmentsPage: initializeAssessmentsPage
     };
 }());

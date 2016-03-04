@@ -1,6 +1,6 @@
 var assessmentPageService = (function(){
 
-    function getUsers(page,order,filters,success,error,complete){
+    function getAssessments(page,order,filters,success,error,complete){
         var url = config.API_URL+"assessment/"+page;
 
         if (Object.keys(filters).length !== 0) {
@@ -11,7 +11,7 @@ var assessmentPageService = (function(){
     }
 
     return {
-        getUsers : getUsers
+        getAssessments : getAssessments
     };
 
 }());

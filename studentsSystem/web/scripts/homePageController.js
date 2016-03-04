@@ -4,10 +4,10 @@ var homePageController = (function(){
     var currentOrder = [];
     var lastPage =1;
     var paging;
-    var homeCurrentPageContainer;
+
 
     var errorsContainer;
-
+    var homeCurrentPageContainer;
     var container;
     var subjectsContainer;
 
@@ -22,7 +22,7 @@ var homePageController = (function(){
     var specialityFilterInput;
     var courseFilterInput;
 
-    function initialize(containerElement, subjectsContainerElement) {
+    function initializeHomePage(containerElement, subjectsContainerElement) {
         nameFilterInput = $('#nameInput');
         specialityFilterInput = $('#specialtiesSelectElement');
         courseFilterInput = $('#coursesSelectElement');
@@ -34,10 +34,10 @@ var homePageController = (function(){
 
         errorsContainer = $("#errorsContainer");
         errorsContainer.text("");
-        atachEvents();
+        attachEvents();
     }
 
-    function atachEvents(){
+    function attachEvents(){
         homeFirstPageButton = $(".homeFirstPageButton");
         homePreviousPageButton = $(".homePreviousPageButton");
         homeNextPageButton = $(".homeNextPageButton");
@@ -106,7 +106,7 @@ var homePageController = (function(){
     function generateSpecialitiesOptions(data){
         var specialitiesOptions = "<option value='0'>Всички</option>";
         for(var i = 0; i < data.specialities.length; i++){
-            specialitiesOptions += "<option value='"+data.specialities[i].id+"'>"+data.specialities[i].specialityLongName +"</option>";
+            specialitiesOptions += "<option value='" + data.specialities[i].id + "'>" + data.specialities[i].specialityLongName + "</option>";
         }
         return specialitiesOptions;
     }
@@ -114,13 +114,13 @@ var homePageController = (function(){
     function generateCourseOptions(data){
         var options = "<option value='0'>Всички</option>";
         for(var i =0; i < data.courses.length ; i++){
-            options += "<option value='"+data.courses[i].id+"'>"+data.courses[i].name +"</option>";
+            options += "<option value='" + data.courses[i].id + "'>" + data.courses[i].name + "</option>";
         }
         return options;
     }
 
     function loadStudentsTable(page, order, filters){
-        homePageService.getUsers(page, order, filters,
+        homePageService.getStudents(page, order, filters,
             function(data){
                 currentPage = page;
                 currentFilters = filters;
@@ -139,7 +139,7 @@ var homePageController = (function(){
                 container.show();
                 errorsContainer.text("");
 
-                var table = generateUsersTable(data);
+                var table = generateStudentsTable(data);
                 container.html(table);
             },
             function(error){
@@ -152,7 +152,7 @@ var homePageController = (function(){
     }
 
     function populateSubjects(){
-        disciplinesPageService.getUsers('all', [], [],
+        subjectsPageService.getSubjects('all', [], [],
             function(data){
                 var subjects = generateSubjectsElements(data.subjects);
                 subjectsContainer.html(subjects);
@@ -205,7 +205,7 @@ var homePageController = (function(){
         }
     }
 
-     function generateUsersTable(usersData){
+     function generateStudentsTable(data){
          var table = "<table border='1'>" +
              "<thead>" +
              "<tr>" +
@@ -214,19 +214,19 @@ var homePageController = (function(){
              "<th colspan='2'>" +
              "</th>" +
              "<th colspan='";
-         var colspan = (usersData.subjects.length*3)+3;
+         var colspan = (data.subjects.length*3)+3;
          table+=colspan;
          table += "'";
          table += ">Предмети (хорариум и оценки)</th></tr><tr><th></th><th colspan='2'></th>";
-         for(var i = 0; i < usersData.subjects.length;i++){
-            table += "<th colspan='3'>"+usersData.subjects[i].name+"</th>";
+         for(var i = 0; i < data.subjects.length;i++){
+            table += "<th colspan='3'>"+data.subjects[i].name+"</th>";
          }
          table += "<th colspan='3'>Общо</th></tr>";
          table += "<tr>" +
              "<th>#</th>" +
              "<th>Име,Фамилия</th>" +
              "<th>Курс</th>";
-         for(i = 0; i< usersData.subjects.length; i++){
+         for(i = 0; i< data.subjects.length; i++){
              table +=   "<th>Лекции</th>" +
                         "<th>Упражнения</th>" +
                         "<th>Оценка</th>";
@@ -239,7 +239,7 @@ var homePageController = (function(){
          var student, j,average,attendedLecture,totalLectures ,attendedExcercise,totalExcercise, currentSubject;
          var currentSubjectStudentLectureAttended, currentSubjectStudentExercisesAttended, currentSubjectStudentAssesment, assesmentsCount;
 
-         for(i = 0; i < usersData.students.length;i++){
+         for(i = 0; i < data.students.length;i++){
              attendedLecture =0;
              average =0;
              totalLectures =0;
@@ -247,14 +247,14 @@ var homePageController = (function(){
              totalExcercise = 0;
              assesmentsCount = 0;
 
-             student = usersData.students[i];
-             table += "<tr>"+
-             "<td>"+student.id+"</td>"+
-             "<td>"+student.firstName +" "+student.lastName+"("+student.facultyNumber+")</td>"+
-             "<td>"+student.courseName+" "+student.shortSpecialityName+"</td>";
+             student = data.students[i];
+             table += "<tr>" +
+             "<td>" + student.id + "</td>" +
+             "<td>" + student.firstName + " " + student.lastName + "(" + student.facultyNumber + ")</td>" +
+             "<td>" + student.courseName + " " + student.shortSpecialityName + "</td>";
 
-             for(j = 0; j < usersData.subjects.length;j++){
-                 currentSubject = usersData.subjects[j];
+             for(j = 0; j < data.subjects.length;j++){
+                 currentSubject = data.subjects[j];
                  currentSubjectStudentLectureAttended = 0;
                  currentSubjectStudentExercisesAttended = 0;
                  currentSubjectStudentAssesment = '-';
@@ -278,9 +278,9 @@ var homePageController = (function(){
                  }
              }
 
-             table += "<td>"+ ((assesmentsCount != 0) ? average/assesmentsCount : "-") + "</td>"+
-                 "<td>"+attendedLecture+"("+totalLectures+")</td>"+
-                 "<td>"+attendedExcercise+"("+totalExcercise+")</td>";
+             table += "<td>"+ ((assesmentsCount != 0) ? average/assesmentsCount : "-") + "</td>" +
+                 "<td>" + attendedLecture+"(" + totalLectures+")</td>" +
+                 "<td>" + attendedExcercise+"(" + totalExcercise + ")</td>";
 
              table += "</tr>";
          }
@@ -291,6 +291,6 @@ var homePageController = (function(){
 
     return {
         loadPage: loadPage,
-        initialize: initialize
+        initializeHomePage: initializeHomePage
     };
 }());

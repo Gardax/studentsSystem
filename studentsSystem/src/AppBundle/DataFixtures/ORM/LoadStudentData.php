@@ -349,15 +349,6 @@ class LoadStudentData implements FixtureInterface, ContainerAwareInterface
 
         $manager->persist($sa6);
 
-        $sa7 = new StudentAssessment();
-        $sa7->setWorkloadExercises(40);
-        $sa7->setWorkloadLectures(20);
-        $sa7->setAssessment(6);
-        $sa7->setSubject($subject6);
-        $sa7->setStudent($student7);
-
-        $manager->persist($sa7);
-
         $manager->flush();
     }
 }

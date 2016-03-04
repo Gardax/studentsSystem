@@ -1,6 +1,6 @@
-var disciplinesPageService = (function(){
+var subjectsPageService = (function(){
 
-    function getDisciplines(page,order,filters,success,error,complete){
+    function getSubjects(page,order,filters,success,error,complete){
         var url = config.API_URL + "subject/" + page;
 
         if (Object.keys(filters).length !== 0) {
@@ -10,15 +10,15 @@ var disciplinesPageService = (function(){
         httpRequester.getJSON(url,success,error,complete);
     }
 
-    function getAllDisciplines(success,error,complete){
+    function getAllSubjects(success,error,complete){
         var url = config.API_URL+"subject/" + 1 ;
 
         httpRequester.getJSON(url,success,error,complete);
     }
 
     return {
-        getDisciplines : getDisciplines,
-        getAllDisciplines : getAllDisciplines
+        getSubjects : getSubjects,
+        getAllSubjects : getAllSubjects
     };
 
 }());

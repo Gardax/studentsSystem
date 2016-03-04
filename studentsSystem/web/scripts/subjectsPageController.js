@@ -4,70 +4,72 @@ var disciplinesPageController = (function(){
     var currentFilters = [];
     var currentOrder = [];
     var lastPage =1;
-    var errorsContainer;
 
-    var disciplinesSearch;
-    var disciplinesSearchButton;
-    var pagingButtons;
-    var disciplinesTable;
-    var disciplineCurrentPageContainer;
+    var subjectsSearch;
+    var subjectsSearchButton;
+
+    var subjectsTable;
 
     var container;
+    var errorsContainer;
+    var subjectsCurrentPageContainer;
 
-    var disciplineFirstPageButton;
-    var disciplinePreviousPageButton;
-    var disciplineNextPageButton;
-    var disciplineLastPageButton;
+    var pagingButtons;
 
-    function initizlize(containerElement) {
+    var subjectsFirstPageButton;
+    var subjectsPreviousPageButton;
+    var subjectsNextPageButton;
+    var subjectsLastPageButton;
+
+    function initializeSubjectPage(containerElement) {
         container = containerElement;
         errorsContainer = $("#errorsContainer");
-        disciplinesSearch = $("#disciplinesSearch");
-        disciplineCurrentPageContainer = $(".disciplineCurrentPage");
-        disciplinesSearchButton = $("#disciplinesSearchButton");
+        subjectsSearch = $("#disciplinesSearch");
+        subjectsCurrentPageContainer = $(".disciplineCurrentPage");
+        subjectsSearchButton = $("#disciplinesSearchButton");
         pagingButtons = $(".paging");
-        disciplinesTable = $("#disciplinesTable");
+        subjectsTable = $("#disciplinesTable");
         errorsContainer.text("");
-        atachEvents();
+        attachEvents();
     }
 
-    function atachEvents(){
-        disciplineFirstPageButton = $(".disciplineFirstPageButton");
-        disciplinePreviousPageButton = $(".disciplinePreviousPageButton");
-        disciplineNextPageButton = $(".disciplineNextPageButton");
-        disciplineLastPageButton = $(".disciplineLastPageButton");
+    function attachEvents(){
+        subjectsFirstPageButton = $(".disciplineFirstPageButton");
+        subjectsPreviousPageButton = $(".disciplinePreviousPageButton");
+        subjectsNextPageButton = $(".disciplineNextPageButton");
+        subjectsLastPageButton = $(".disciplineLastPageButton");
 
-        disciplinePreviousPageButton.on("click",function(){
-            loadPage(currentPage - 1, currentOrder, currentFilters );
+        subjectsPreviousPageButton.on("click",function(){
+            loadSubjectsPage(currentPage - 1, currentOrder, currentFilters );
         });
 
-        disciplineNextPageButton.on("click",function(){
-            loadPage(currentPage + 1, currentOrder, currentFilters );
+        subjectsNextPageButton.on("click",function(){
+            loadSubjectsPage(currentPage + 1, currentOrder, currentFilters );
         });
 
-        disciplineFirstPageButton.on("click",function(){
-            loadPage(1, currentOrder, currentFilters );
+        subjectsFirstPageButton.on("click",function(){
+            loadSubjectsPage(1, currentOrder, currentFilters );
         });
 
-        disciplineLastPageButton.on("click",function(){
-            loadPage(lastPage, currentOrder, currentFilters );
+        subjectsLastPageButton.on("click",function(){
+            loadSubjectsPage(lastPage, currentOrder, currentFilters );
         });
 
-        disciplinesSearchButton.on("click", function(event){
+        subjectsSearchButton.on("click", function(event){
             event.preventDefault();
-            loadPage(1, [], getFilterValues());
+            loadSubjectsPage(1, [], getFilterValues());
         });
 
     }
 
     function getFilterValues(){
         return {
-            'name': disciplinesSearch.val()
+            'name': subjectsSearch.val()
         };
     }
 
-    function loadPage(page, order, filters) {
-        disciplinesPageService.getUsers(page, order, filters,
+    function loadSubjectsPage(page, order, filters) {
+        subjectsPageService.getSubjects(page, order, filters,
             function(data){
                 currentPage = page;
                 currentFilters = filters;
@@ -78,21 +80,21 @@ var disciplinesPageController = (function(){
                     lastPage++;
                 }
 
-                disciplineCurrentPageContainer.text(currentPage);
+                subjectsCurrentPageContainer.text(currentPage);
 
                 manageButtonsState();
                 pagingButtons.show();
-                disciplineCurrentPageContainer.show();
-                disciplinesTable.show();
+                subjectsCurrentPageContainer.show();
+                subjectsTable.show();
                 errorsContainer.text("");
-                var table = generateUsersTable(data);
+                var table = generateSubjectsTable(data);
                 container.html(table);
             },
             function(error){
                 errorsContainer.text(error.responseJSON.errorMessage);
                 pagingButtons.hide();
-                disciplinesTable.hide();
-                disciplineCurrentPageContainer.hide();
+                subjectsTable.hide();
+                subjectsCurrentPageContainer.hide();
             }
         );
     }
@@ -102,39 +104,39 @@ var disciplinesPageController = (function(){
     function manageButtonsState(){
         pagingButtons.show();
 
-        disciplineFirstPageButton.prop('disabled', false);
-        disciplinePreviousPageButton.prop('disabled', false);
-        disciplineNextPageButton.prop('disabled', false);
-        disciplineLastPageButton.prop('disabled', false);
+        subjectsFirstPageButton.prop('disabled', false);
+        subjectsPreviousPageButton.prop('disabled', false);
+        subjectsNextPageButton.prop('disabled', false);
+        subjectsLastPageButton.prop('disabled', false);
 
         if(currentPage == 1) {
-            disciplineFirstPageButton.prop('disabled', true);
-            disciplinePreviousPageButton.prop('disabled', true);
+            subjectsFirstPageButton.prop('disabled', true);
+            subjectsPreviousPageButton.prop('disabled', true);
         }
 
         if(currentPage == lastPage) {
-            disciplineNextPageButton.prop('disabled', true);
-            disciplineLastPageButton.prop('disabled', true);
+            subjectsNextPageButton.prop('disabled', true);
+            subjectsLastPageButton.prop('disabled', true);
         }
     }
 
 
-    function generateUsersTable(usersData){
+    function generateSubjectsTable(usersData){
         var table = "<table border='1'>" +
             "<thead>" +
-            "<th>#</th>"+
-            "<th>Име на дисциплината</th>"+
-            "<th>Хорариум(Л)</th>"+
-            "<th>Хорариум(У)</th>"+
-            "<th colspan='2'>Операции</th>"+
+            "<th>#</th>" +
+            "<th>Име на дисциплината</th>" +
+            "<th>Хорариум(Л)</th>" +
+            "<th>Хорариум(У)</th>" +
+            "<th colspan='2'>Операции</th>" +
             "</thead><tbody>";
         for(var i = 0; i < usersData.subjects.length; i++){
-            table += "<tr>"+
-                    "<td>"+usersData.subjects[i].id+"</td>"+
-                    "<td>"+usersData.subjects[i].name+"</td>"+
-                    "<td>"+usersData.subjects[i].workloadLectures+"</td>"+
-                    "<td>"+usersData.subjects[i].workloadExercises+"</td>"+
-                    "<td class='edit'></td>"+
+            table += "<tr>" +
+                    "<td>" + usersData.subjects[i].id + "</td>" +
+                    "<td>" + usersData.subjects[i].name + "</td>" +
+                    "<td>" + usersData.subjects[i].workloadLectures + "</td>" +
+                    "<td>" + usersData.subjects[i].workloadExercises + "</td>" +
+                    "<td class='edit'></td>" +
                     "<td class='delete'></td>";
         }
         table += "</tbody></table>";
@@ -142,7 +144,7 @@ var disciplinesPageController = (function(){
     }
 
     return {
-        loadPage: loadPage,
-        initizlize: initizlize
+        loadSubjectsPage: loadSubjectsPage,
+        initializeSubjectPage: initializeSubjectPage
     };
 }());

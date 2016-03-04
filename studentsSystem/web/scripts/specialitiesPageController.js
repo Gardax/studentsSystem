@@ -4,21 +4,22 @@ var specialitiesPageController = (function(){
     var currentOrder = [];
     var lastPage =1;
 
-    var $errorsContainer;
     var $searchInput;
-    var $specialitiesSearchButton;
-    var $pagingButtons;
     var $specialitiesTable;
-    var $specialitiesCurrentPageContainer;
 
     var container;
+    var $specialitiesCurrentPageContainer;
+    var $errorsContainer;
+
+    var $specialitiesSearchButton;
+    var $pagingButtons;
 
     var specialitiesFirstPageButton;
     var specialitiesPreviousPageButton;
     var specialitiesNextPageButton;
     var specialitiesLastPageButton;
 
-    function initialize(containerElement) {
+    function initializeSpecialitiesPage(containerElement) {
         container = containerElement;
         $errorsContainer = $("#errorsContainer");
         $searchInput = $("#disciplinesSearch");
@@ -27,40 +28,40 @@ var specialitiesPageController = (function(){
         $specialitiesCurrentPageContainer = $(".specialitiesCurrentPage");
         $specialitiesTable = $("#specialitiesTable");
         $errorsContainer.text("");
-        atachEvents();
+        attachEvents();
     }
 
-    function atachEvents(){
+    function attachEvents(){
         specialitiesFirstPageButton = $(".specialitiesFirstPageButton");
         specialitiesPreviousPageButton = $(".specialitiesPreviousPageButton");
         specialitiesNextPageButton = $(".specialitiesNextPageButton");
         specialitiesLastPageButton = $(".specialitiesLastPageButton");
 
         specialitiesPreviousPageButton.on("click",function(){
-            loadPage(currentPage - 1, currentOrder, currentFilters );
+            loadSpecialitiesPage(currentPage - 1, currentOrder, currentFilters );
         });
 
         specialitiesNextPageButton.on("click",function(){
-            loadPage(currentPage + 1, currentOrder, currentFilters );
+            loadSpecialitiesPage(currentPage + 1, currentOrder, currentFilters );
         });
 
         specialitiesFirstPageButton.on("click",function(){
-            loadPage(1, currentOrder, currentFilters );
+            loadSpecialitiesPage(1, currentOrder, currentFilters );
         });
 
         specialitiesLastPageButton.on("click",function(){
-            loadPage(lastPage, currentOrder, currentFilters );
+            loadSpecialitiesPage(lastPage, currentOrder, currentFilters );
         });
 
         $specialitiesSearchButton.on("click", function(event){
             event.preventDefault();
-            loadPage(1, [], getFilterValues());
+            loadSpecialitiesPage(1, [], getFilterValues());
         });
 
     }
 
-    function loadPage(page, order, filters) {
-        specialitiesPageService.getUsers(page, order, filters,
+    function loadSpecialitiesPage(page, order, filters) {
+        specialitiesPageService.getSpecialities(page, order, filters,
             function(data){
                 currentPage = page;
                 currentFilters = filters;
@@ -117,17 +118,17 @@ var specialitiesPageController = (function(){
     function generateUsersTable(usersData){
         var table = "<table border='1'>" +
             "<thead>" +
-            "<th>#</th>"+
-            "<th>Пълно име</th>"+
-            "<th>Абравиатура</th>"+
-            "<th colspan='2'>Операции</th>"+
+            "<th>#</th>" +
+            "<th>Пълно име</th>" +
+            "<th>Абравиатура</th>" +
+            "<th colspan='2'>Операции</th>" +
             "</thead><tbody>";
         for(var i = 0; i < usersData.specialities.length; i++){
-            table += "<tr>"+
-                "<td>"+usersData.specialities[i].id+"</td>"+
-                "<td>"+usersData.specialities[i].specialityLongName+"</td>"+
-                "<td>"+usersData.specialities[i].specialityShortName+"</td>"+
-                "<td class='edit'></td>"+
+            table += "<tr>" +
+                "<td>" + usersData.specialities[i].id + "</td>" +
+                "<td>" + usersData.specialities[i].specialityLongName + "</td>" +
+                "<td>" + usersData.specialities[i].specialityShortName + "</td>" +
+                "<td class='edit'></td>" +
                 "<td class='delete'></td>";
         }
         table += "</tbody></table>";
@@ -135,7 +136,7 @@ var specialitiesPageController = (function(){
     }
 
     return {
-        loadPage: loadPage,
-        initialize : initialize
+        loadSpecialitiesPage: loadSpecialitiesPage,
+        initializeSpecialitiesPage : initializeSpecialitiesPage
     };
 }());

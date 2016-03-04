@@ -1,6 +1,5 @@
 var coursePageService = (function(){
-//TODO: fix the names
-    function getUsers(page,order,filters,success,error,complete){
+    function getCourses(page,order,filters,success,error,complete){
         var url = config.API_URL + "course/" + page;
 
         if (Object.keys(filters).length !== 0) {
@@ -23,7 +22,7 @@ var coursePageService = (function(){
     }
 
     return {
-        getUsers : getUsers,
+        getCourses : getCourses,
         addCourse: addCourse,
         getAllCourses: getAllCourses
     };

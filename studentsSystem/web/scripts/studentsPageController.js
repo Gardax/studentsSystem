@@ -4,45 +4,49 @@ var studentsPageController = (function(){
     var currentFilters = [];
     var currentOrder = [];
     var lastPage =1;
+
+    var container;
     var errorsContainer;
+    var coursesContainer;
+    var specialitiesContainer;
+    var studentCurrentPageContainer;
+
     var filterByName;
     var filterByEmail;
     var filterByFacultyNumber;
-    var studentSearchButton;
     var studentsTable;
-    var pagingButtons;
     var studentCourse;
     var studentSpecialities;
-    var studentCurrentPageContainer;
-
-    var container;
-    var coursesContainer;
-    var specialitiesContainer;
 
     var studentsFirstPageButton;
     var studentsPreviousPageButton;
     var studentsNextPageButton;
     var studentsLastPageButton;
 
+    var pagingButtons;
+    var studentSearchButton;
+
     function initialize(containerElement, coursesElement, specialitiesElement) {
         filterByName = $("#studentName");
         filterByEmail =$("#studentEmail");
         filterByFacultyNumber = $("#studentFacultyNumber");
-        studentSearchButton = $("#studentSearchButton");
         studentCurrentPageContainer = $(".studentCurrentPage");
         studentCourse = $("#studentCourse");
         studentSpecialities = $("#studentSpecialities");
+
         container = containerElement;
         coursesContainer = coursesElement;
         specialitiesContainer = specialitiesElement;
+
+        studentSearchButton = $("#studentSearchButton");
         pagingButtons = $(".paging");
         studentsTable = $("#studentsTable");
         errorsContainer = $("#errorsContainer");
         errorsContainer.text("");
-        atachEvents();
+        attachEvents();
     }
 
-    function atachEvents(){
+    function attachEvents(){
         studentsFirstPageButton = $(".studentsFirstPageButton");
         studentsPreviousPageButton = $(".studentsPreviousPageButton");
         studentsNextPageButton = $(".studentsNextPageButton");
@@ -98,7 +102,7 @@ var studentsPageController = (function(){
         }
     }
 
-    function loadPage(page, order, filters) {
+    function loadStudentsPage(page, order, filters) {
         populateStudentsTable(page, order, filters);
 
         coursePageService.getAllCourses(
@@ -125,7 +129,7 @@ var studentsPageController = (function(){
     }
 
     function populateStudentsTable(page, order, filters){
-        studentsPageService.getUsers(page, order, filters,
+        studentsPageService.getAllStudents(page, order, filters,
             function(data){
                 currentPage = page;
                 currentFilters = filters;
@@ -157,7 +161,7 @@ var studentsPageController = (function(){
     function generateSpecialitiesOptions(data){
         var specialitiesOptions = "<option value='0'>Всички</option>";
         for(var i = 0; i < data.specialities.length; i++){
-            specialitiesOptions += "<option value='"+data.specialities[i].id+"'>"+data.specialities[i].specialityLongName +"</option>";
+            specialitiesOptions += "<option value='" + data.specialities[i].id + "'>" + data.specialities[i].specialityLongName + "</option>";
         }
         return specialitiesOptions;
     }
@@ -165,7 +169,7 @@ var studentsPageController = (function(){
     function generateCourseOptions(data){
         var options = "<option value='0'>Всички</option>";
         for(var i =0; i < data.courses.length ; i++){
-             options += "<option value='"+data.courses[i].id+"'>"+data.courses[i].name +"</option>";
+             options += "<option value='" + data.courses[i].id+"'>" + data.courses[i].name + "</option>";
         }
         return options;
     }
@@ -174,19 +178,19 @@ var studentsPageController = (function(){
         var table =
                 "<table border='1'>" +
                 "<thead>" +
-                "<th>#</th>"+
-                "<th>Име</th>"+
-                "<th>E-mail</th>"+
-                "<th>Факултетен номер</th>"+
-                "<th colspan='2'>Операции</th>"+
+                "<th>#</th>" +
+                "<th>Име</th>" +
+                "<th>E-mail</th>" +
+                "<th>Факултетен номер</th>" +
+                "<th colspan='2'>Операции</th>" +
                 "</thead><tbody>";
         for(var i = 0; i < usersData.students.length; i++){
             table += "<tr>"+
-                "<td>"+usersData.students[i].id+"</td>"+
-                "<td>"+usersData.students[i].firstName+" "+usersData.students[i].lastName+"</td>"+
-                "<td>"+usersData.students[i].email+"</td>"+
-                "<td>"+usersData.students[i].facultyNumber+"</td>"+
-                "<td class='edit' data-id='" + usersData.students[i].id + "'></td>"+
+                "<td>" + usersData.students[i].id + "</td>" +
+                "<td>" + usersData.students[i].firstName + " " + usersData.students[i].lastName + "</td>" +
+                "<td>" + usersData.students[i].email + "</td>" +
+                "<td>" + usersData.students[i].facultyNumber + "</td>" +
+                "<td class='edit' data-id='" + usersData.students[i].id + "'></td>" +
                 "<td class='delete'></td>";
         }
         table += "</tbody></table>";
@@ -194,7 +198,7 @@ var studentsPageController = (function(){
     }
 
     return {
-        loadPage: loadPage,
+        loadStudentsPage: loadStudentsPage,
         initialize: initialize
     };
 }());

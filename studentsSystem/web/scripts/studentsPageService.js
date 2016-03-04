@@ -1,6 +1,6 @@
 var studentsPageService = (function(){
 
-    function getUsers(page,order,filters,success,error,complete){
+    function getAllStudents(page,order,filters,success,error,complete){
         var url = config.API_URL + "student/" + page;
 
         if (Object.keys(filters).length !== 0) {
@@ -10,7 +10,7 @@ var studentsPageService = (function(){
     }
 
     return {
-        getUsers : getUsers
+        getAllStudents : getAllStudents
     };
 
 }());

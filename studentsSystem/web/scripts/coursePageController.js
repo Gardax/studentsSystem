@@ -18,7 +18,7 @@ var coursePageController = (function(){
     var addCourseButton;
 
     var container;
-    var $maincontainer;
+    var mainContainer;
 
     var courseFirstPageButton;
     var coursePreviousPageButton;
@@ -26,8 +26,8 @@ var coursePageController = (function(){
     var courseLastPageButton;
 
 
-    function initizlize(containerElement) {
-        $maincontainer = $("#mainContainer");
+    function initializeCoursePage(containerElement) {
+        mainContainer = $("#mainContainer");
         container = containerElement;
         errorsContainer = $("#errorsContainer");
         searchInput = $("#nameSearch");
@@ -37,38 +37,38 @@ var coursePageController = (function(){
         errorsContainer.text("");
         addNewCourse = $("#addNewCourse");
         courseTable = $(".courseTable");
-        atachEvents();
+        attachEvents();
     }
 
-    function atachEvents(){
+    function attachEvents(){
         courseFirstPageButton = $(".courseFirstPageButton");
         coursePreviousPageButton = $(".coursePreviousPageButton");
         courseNextPageButton = $(".courseNextPageButton");
         courseLastPageButton = $(".courseLastPageButton");
 
         coursePreviousPageButton.on("click",function(){
-            loadPage(currentPage - 1, currentOrder, currentFilters );
+            populateCoursePage(currentPage - 1, currentOrder, currentFilters );
         });
 
         courseNextPageButton.on("click",function(){
-            loadPage(currentPage + 1, currentOrder, currentFilters );
+            populateCoursePage(currentPage + 1, currentOrder, currentFilters );
         });
 
         courseFirstPageButton.on("click",function(){
-            loadPage(1, currentOrder, currentFilters );
+            populateCoursePage(1, currentOrder, currentFilters );
         });
 
         courseLastPageButton.on("click",function(){
-            loadPage(lastPage, currentOrder, currentFilters );
+            populateCoursePage(lastPage, currentOrder, currentFilters );
         });
 
         searchButton.on("click", function(event){
             event.preventDefault();
-            loadPage(1, [], getFilterValues());
+            populateCoursePage(1, [], getFilterValues());
         });
 
         addNewCourse.on("click",function(){
-            $maincontainer.load("/pages/coursesAdd.html", function(){
+            mainContainer.load("/pages/coursesAdd.html", function(){
                 addCourseButton = $("#addCourseButton");
                 courseAddCourseNameInput = $("#courseAddCourseNameInput");
                 addCourseButton.on("click",function(event){
@@ -124,8 +124,8 @@ var coursePageController = (function(){
         }
     }
 
-    function loadPage(page, order, filters) {
-        coursePageService.getUsers(page, order, filters,
+    function populateCoursePage(page, order, filters) {
+        coursePageService.getCourses(page, order, filters,
             function(data){
                 currentPage = page;
                 currentFilters = filters;
@@ -160,17 +160,17 @@ var coursePageController = (function(){
         var table = "<table border='1'>"+
             "<thead>" +
             "<tr>" +
-            "<th>#</th>"+
-            "<th>Курс</th>"+
-            "<th>Име</th>"+
-            "<th colspan='2'>Операции</th>"+
+            "<th>#</th>" +
+            "<th>Курс</th>" +
+            "<th>Име</th>" +
+            "<th colspan='2'>Операции</th>" +
             "</thead><tbody>";
             for(var i = 0; i < usersData.courses.length; i++){
                 var student = usersData.courses[i];
-                table += "<tr>"+
-                "<td>"+student.id+"</td>"+
-                "<td>"+student.name+"</td>"+
-                "<td class='edit'></td>"+
+                table += "<tr>" +
+                "<td>" + student.id + "</td>" +
+                "<td>" + student.name + "</td>" +
+                "<td class='edit'></td>" +
                 "<td class='delete'></td>";
             }
 
@@ -181,7 +181,7 @@ var coursePageController = (function(){
 
 
     return {
-        loadPage: loadPage,
-        initialize: initizlize
+        populateCoursePage: populateCoursePage,
+        initializeCoursePage: initializeCoursePage
     };
 }());

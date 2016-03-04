@@ -4,34 +4,40 @@ var userPageController = (function(){
     var currentFilters = [];
     var currentOrder = [];
     var lastPage =1;
+
+    var userCurrentPageContainer;
     var errorsContainer;
-    var pagingButtons;
     var container;
+
     var userTable;
     var studentName;
     var studentEmail;
-    var userSearchButton;
-    var userCurrentPageContainer;
 
     var userFirstPageButton;
     var userPreviousPageButton;
     var userNextPageButton;
     var userLastPageButton;
+    var userSearchButton;
+    var pagingButtons;
 
-    function initialize(containerElement) {
-        container = containerElement;
-        pagingButtons = $(".paging");
-        userSearchButton = $("#userSearchButton");
-        errorsContainer = $("#errorsContainer");
+    function initializeUserPage(containerElement) {
         studentName = $("#studentName");
-        userCurrentPageContainer = $(".userCurrentPage");
         studentEmail = $("#studentEmail");
         userTable = $("#userTable");
+
+        container = containerElement;
+
+        userCurrentPageContainer = $(".userCurrentPage");
+        errorsContainer = $("#errorsContainer");
         errorsContainer.text("");
-        atachEvents();
+
+        pagingButtons = $(".paging");
+        userSearchButton = $("#userSearchButton");
+
+        attachEvents();
     }
 
-    function atachEvents(){
+    function attachEvents(){
         userFirstPageButton = $(".userFirstPageButton");
         userPreviousPageButton = $(".userPreviousPageButton");
         userNextPageButton = $(".userNextPageButton");
@@ -39,24 +45,24 @@ var userPageController = (function(){
 
 
         userPreviousPageButton.on("click",function(){
-            loadPage(currentPage - 1, currentOrder, currentFilters );
+            loadUserPage(currentPage - 1, currentOrder, currentFilters );
         });
 
         userNextPageButton.on("click",function(){
-            loadPage(currentPage + 1, currentOrder, currentFilters );
+            loadUserPage(currentPage + 1, currentOrder, currentFilters );
         });
 
         userFirstPageButton.on("click",function(){
-            loadPage(1, currentOrder, currentFilters );
+            loadUserPage(1, currentOrder, currentFilters );
         });
 
         userLastPageButton.on("click",function(){
-            loadPage(lastPage, currentOrder, currentFilters );
+            loadUserPage(lastPage, currentOrder, currentFilters );
         });
 
         userSearchButton.on("click", function(event){
             event.preventDefault();
-            loadPage(1, [], getFilterValues());
+            loadUserPage(1, [], getFilterValues());
         });
 
     }
@@ -68,8 +74,8 @@ var userPageController = (function(){
         };
     }
 
-    function loadPage(page, order, filters) {
-        userPageService.getUsers(page, order, filters,
+    function loadUserPage(page, order, filters) {
+        userPageService.getAllUsers(page, order, filters,
             function(data){
                 currentPage = page;
                 currentFilters = filters;
@@ -80,14 +86,14 @@ var userPageController = (function(){
                     lastPage++;
                 }
 
-                userCurrentPageContainer.text(currentPage);
-
                 manageButtonsState();
                 userTable.show();
                 pagingButtons.show();
                 userCurrentPageContainer.show();
+                userCurrentPageContainer.text(currentPage);
                 errorsContainer.text("");
-                var table = generateUsersTable(data);
+
+                var table = populateUsersTable(data);
                 container.html(table);
             },
             function(error){
@@ -119,22 +125,22 @@ var userPageController = (function(){
 
 
 
-    function generateUsersTable(usersData){
+    function populateUsersTable(usersData){
         var table = "<table border='1'>" +
             "<thead>" +
-            "<th>#</th>"+
-            "<th>Потребителско име</th>"+
-            "<th>E-mail</th>"+
-            "<th>Роля</th>"+
-            "<th colspan='2'>Операции</th>"+
+            "<th> # </th>" +
+            "<th> Потребителско име </th>" +
+            "<th> E-mail </th>" +
+            "<th> Роля </th>" +
+            "<th colspan='2'>Операции</th>" +
             "</thead><tbody>";
         for(var i = 0; i < usersData.users.length; i++){
-            table += "<tr>"+
-                "<td>"+usersData.users[i].id+"</td>"+
-                "<td>"+usersData.users[i].username+"</td>"+
-                "<td>"+usersData.users[i].email+"</td>"+
-                "<td>"+usersData.users[i].roleName+"</td>"+
-                "<td class='edit'></td>"+
+            table += "<tr>" +
+                "<td>"+usersData.users[i].id + "</td>" +
+                "<td>"+usersData.users[i].username + "</td>" +
+                "<td>"+usersData.users[i].email + "</td>" +
+                "<td>"+usersData.users[i].roleName + "</td>" +
+                "<td class='edit'></td>" +
                 "<td class='delete'></td>";
         }
         table += "</tbody></table>";
@@ -142,7 +148,7 @@ var userPageController = (function(){
     }
 
     return {
-        loadPage: loadPage,
-        initialize: initialize
+        loadUserPage: loadUserPage,
+        initializeUserPage: initializeUserPage
     };
 }());

@@ -60,8 +60,8 @@ var uiController = (function(){
         });
 
         $specialitiesButton.on("click", function () {
-            $maincontainer.load("/pages/disciplines.html", function () {
-                loadDisciplinesTable();
+            $maincontainer.load("/pages/subjects.html", function () {
+                loadSubjectTable();
             });
 
         });
@@ -117,6 +117,7 @@ var uiController = (function(){
             if(loginService.getRole() == "Admin") {
                 $users.show();
             }
+
             $studentAssessment.show();
             $exitButton.show();
 
@@ -134,8 +135,8 @@ var uiController = (function(){
     function userTable(){
         var userTable = $("#userTable");
 
-        userPageController.initialize(userTable);
-        userPageController.loadPage(1, [], []);
+        userPageController.initializeUserPage(userTable);
+        userPageController.loadUserPage(1, [], []);
 
     }
 
@@ -147,29 +148,29 @@ var uiController = (function(){
         studentsPageController.initialize(studentsTable, studentsCoursesSelect, studentSpecialitiesSelect);
 
 
-        studentsPageController.loadPage(1, [], []);
+        studentsPageController.loadStudentsPage(1, [], []);
     }
 
     function loadSpecialitiesTable(){
         var specialitiesTable = $("#specialitiesTable");
 
-        specialitiesPageController.initialize(specialitiesTable);
-        specialitiesPageController.loadPage(1, [], []);
+        specialitiesPageController.initializeSpecialitiesPage(specialitiesTable);
+        specialitiesPageController.loadSpecialitiesPage(1, [], []);
 
     }
 
     function loadCourseTable(){
         var courseTable = $("#courseTable");
 
-        coursePageController.initialize(courseTable);
-        coursePageController.loadPage(1, [], []);
+        coursePageController.initializeCoursePage(courseTable);
+        coursePageController.populateCoursePage(1, [], []);
     }
 
-    function loadDisciplinesTable(){
-        var disciplinesTable = $("#disciplinesTable");
-        disciplinesPageController.initizlize(disciplinesTable);
+    function loadSubjectTable(){
+        var subjectsTable = $("#disciplinesTable");
+        disciplinesPageController.initializeSubjectPage(subjectsTable);
 
-        disciplinesPageController.loadPage(1, [], []);
+        disciplinesPageController.loadSubjectsPage(1, [], []);
 
 
     }
@@ -177,15 +178,15 @@ var uiController = (function(){
         var studentAssessment = $("#assessmentTable");
         var assessmentDisciplineSelect = $("#disciplineAssessment");
 
-        assessmentPageController.initialize(studentAssessment ,assessmentDisciplineSelect);
+        assessmentPageController.initializeAssessmentsPage(studentAssessment ,assessmentDisciplineSelect);
 
-        assessmentPageController.loadPage(1, [], []);
+        assessmentPageController.loadAssessmentsPage(1, [], []);
     }
 
     function loadTable(){
         var userTable = $("#userTable");
         var subjectsContainerElement = $("#subjectsContainer");
-        homePageController.initialize(userTable, subjectsContainerElement);
+        homePageController.initializeHomePage(userTable, subjectsContainerElement);
 
         homePageController.loadPage(1, [], []);
     }
