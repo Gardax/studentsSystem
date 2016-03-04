@@ -24,20 +24,24 @@ var disciplinesPageController = (function(){
     function initializeSubjectPage(containerElement) {
         container = containerElement;
         errorsContainer = $("#errorsContainer");
-        subjectsSearch = $("#disciplinesSearch");
-        subjectsCurrentPageContainer = $(".disciplineCurrentPage");
-        subjectsSearchButton = $("#disciplinesSearchButton");
+        subjectsSearch = $("#subjectsSearch");
+        subjectsCurrentPageContainer = $(".subjectCurrentPage");
+        subjectsSearchButton = $("#subjectsSearchButton");
         pagingButtons = $(".paging");
-        subjectsTable = $("#disciplinesTable");
+        subjectsTable = $("#subjectsTable");
         errorsContainer.text("");
         attachEvents();
     }
 
     function attachEvents(){
-        subjectsFirstPageButton = $(".disciplineFirstPageButton");
-        subjectsPreviousPageButton = $(".disciplinePreviousPageButton");
-        subjectsNextPageButton = $(".disciplineNextPageButton");
-        subjectsLastPageButton = $(".disciplineLastPageButton");
+        subjectsFirstPageButton = $(".subjectFirstPageButton");
+        subjectsPreviousPageButton = $(".subjectPreviousPageButton");
+        subjectsNextPageButton = $(".subjectNextPageButton");
+        subjectsLastPageButton = $(".subjectLastPageButton");
+
+        subjectsFirstPageButton.on("click",function(){
+            loadSubjectsPage(1, currentOrder, currentFilters );
+        });
 
         subjectsPreviousPageButton.on("click",function(){
             loadSubjectsPage(currentPage - 1, currentOrder, currentFilters );
@@ -45,10 +49,6 @@ var disciplinesPageController = (function(){
 
         subjectsNextPageButton.on("click",function(){
             loadSubjectsPage(currentPage + 1, currentOrder, currentFilters );
-        });
-
-        subjectsFirstPageButton.on("click",function(){
-            loadSubjectsPage(1, currentOrder, currentFilters );
         });
 
         subjectsLastPageButton.on("click",function(){
@@ -87,6 +87,7 @@ var disciplinesPageController = (function(){
                 subjectsCurrentPageContainer.show();
                 subjectsTable.show();
                 errorsContainer.text("");
+
                 var table = generateSubjectsTable(data);
                 container.html(table);
             },

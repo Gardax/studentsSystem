@@ -1,5 +1,5 @@
 var uiController = (function(){
-    var $maincontainer;
+    var $mainContainer;
     var $homeButton;
     var $coursesButton;
     var $specialitiesButton;
@@ -12,7 +12,7 @@ var uiController = (function(){
     var $usernameSpan;
 
     function initialize() {
-        $maincontainer = $("#mainContainer");
+        $mainContainer = $("#mainContainer");
         $homeButton = $("#homeButton");
         $coursesButton = $("#coursesButton");
         $specialitiesButton = $("#specialitiesButton");
@@ -32,49 +32,49 @@ var uiController = (function(){
         $homeButton.on("click", loadHomePage);
 
         $loginButton.on("click", function () {
-            $maincontainer.load("/pages/loginForm.html", function () {
+            $mainContainer.load("/pages/loginForm.html", function () {
                 loginController.initialize();
             });
         });
 
 
         $users.on("click", function () {
-            $maincontainer.load("/pages/user.html", function () {
+            $mainContainer.load("/pages/user.html", function () {
                 userTable();
             });
 
         });
 
         $studentAssessment.on("click", function () {
-            $maincontainer.load("/pages/assessments.html", function () {
+            $mainContainer.load("/pages/assessments.html", function () {
                 loadAssessment();
             });
 
         });
 
         $coursesButton.on("click", function () {
-            $maincontainer.load("/pages/courses.html", function () {
+            $mainContainer.load("/pages/courses.html", function () {
                 loadCourseTable();
             });
 
         });
 
         $specialitiesButton.on("click", function () {
-            $maincontainer.load("/pages/subjects.html", function () {
+            $mainContainer.load("/pages/subjects.html", function () {
                 loadSubjectTable();
             });
 
         });
 
         $subjectsButton.on("click", function () {
-            $maincontainer.load("/pages/specialities.html", function () {
+            $mainContainer.load("/pages/specialities.html", function () {
                 loadSpecialitiesTable();
             });
 
         });
 
         $students.on("click", function () {
-            $maincontainer.load("/pages/students.html", function () {
+            $mainContainer.load("/pages/students.html", function () {
                 loadStudentsTable();
             });
         });
@@ -127,7 +127,7 @@ var uiController = (function(){
     }
 
     function loadHomePage() {
-        $maincontainer.load("/pages/home.html", function () {
+        $mainContainer.load("/pages/home.html", function () {
             loadTable();
         });
     }
@@ -167,7 +167,7 @@ var uiController = (function(){
     }
 
     function loadSubjectTable(){
-        var subjectsTable = $("#disciplinesTable");
+        var subjectsTable = $("#subjectsTable");
         disciplinesPageController.initializeSubjectPage(subjectsTable);
 
         disciplinesPageController.loadSubjectsPage(1, [], []);
