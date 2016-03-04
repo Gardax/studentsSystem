@@ -76,17 +76,17 @@ class Student
     protected $educationForm = '';
 
 
-    /** @ORM\OneToMany(targetEntity="StudentAssessment", mappedBy="student")
+    /** @ORM\OneToMany(targetEntity="StudentAssessment", mappedBy="student", cascade={"remove"})
      */
     protected $studentAssessments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Course")
+     * @ORM\ManyToOne(targetEntity="Course", inversedBy="students")
      */
     protected $course;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Speciality")
+     * @ORM\ManyToOne(targetEntity="Speciality", inversedBy="students")
      */
     protected $speciality;
 

@@ -25,6 +25,8 @@ var coursePageController = (function(){
     var courseNextPageButton;
     var courseLastPageButton;
 
+    var currentEditCourseId;
+
 
     function initializeCoursePage(containerElement) {
         mainContainer = $("#mainContainer");
@@ -68,27 +70,85 @@ var coursePageController = (function(){
         });
 
         addNewCourse.on("click",function(){
-            mainContainer.load("/pages/coursesAdd.html", function(){
-                addCourseButton = $("#addCourseButton");
-                courseAddCourseNameInput = $("#courseAddCourseNameInput");
+            loadAddEditForm(addCourseHandler);
+        });
+
+        courseTable.on('click', function(e) {
+            var element = $(e.target);
+            var courseId = element.attr('data-id');
+            if(element.hasClass('edit')) {
+                currentEditCourseId = courseId;
+                loadAddEditForm(editCourseHandler);
+            }
+            else if(element.hasClass('delete')) {
+                var response = confirm('Сигурен ли сте, че искате да изтриете този курс?');
+                if(response) {
+                    coursePageService.deleteCourse(courseId, function(){
+                            var pageToGo = (currentPage == lastPage) ? --currentPage : currentPage;
+                            if(pageToGo < 1) {
+                                pageToGo = 1;
+                            }
+                            populateCoursePage(pageToGo, currentOrder, currentFilters );
+                        },
+                        function(error){
+                            errorsContainer.text(error.responseJSON.errorMessage);
+                        }
+                    );
+                }
+            }
+        });
+
+    }
+
+    function loadAddEditForm(handler) {
+        mainContainer.load("/pages/coursesAdd.html", function() {
+            addCourseButton = $("#addCourseButton");
+            courseAddCourseNameInput = $("#courseAddCourseNameInput");
+
+            handler();
+        });
+    }
+
+    function addCourseHandler() {
+        addCourseButton.on("click", function (event) {
+            event.preventDefault();
+            errorsContainer.text('');
+
+            var data = getFormData();
+            coursePageService.addCourse(data, function () {
+                    uiController.loadCoursePage();
+                },
+                function (error) {
+                    printErrors(error.responseJSON.errors);
+                });
+        });
+    }
+
+    function editCourseHandler() {
+        var courseFormHeader = $("#courseFormHeader");
+        courseFormHeader.text("Редактиране на курс");
+        addCourseButton.val("Редактирай");
+
+        coursePageService.getCourseById(currentEditCourseId,function(data) {
+                courseAddCourseNameInput.val(data.name);
                 addCourseButton.on("click",function(event){
                     event.preventDefault();
                     var data = getFormData();
+                    coursePageService.updateCourse(currentEditCourseId, data, function(){
 
-                    coursePageService.addCourse(data, function(){
-                        //TODO: Load table with all courses.
-                        alert("added");
+                        uiController.loadCoursePage();
                     },
-                    function(){
-                        //TODO: sHOw error
-                        alert("error");
-                    });
+                    function (error) {
+                        printErrors(error.responseJSON.errors);
+                        }
+                    );
 
-                })
-            });
-
-        });
-
+                });
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+            }
+        );
 
     }
 
@@ -137,6 +197,7 @@ var coursePageController = (function(){
                 }
 
                 courseCurrentPageContainer.text(currentPage);
+                errorsContainer.text('');
 
                 courseCurrentPageContainer.show();
                 manageButtonsState();
@@ -170,8 +231,8 @@ var coursePageController = (function(){
                 table += "<tr>" +
                 "<td>" + student.id + "</td>" +
                 "<td>" + student.name + "</td>" +
-                "<td class='edit'></td>" +
-                "<td class='delete'></td>";
+                "<td class='edit' data-id='" + student.id + "'></td>" +
+                "<td class='delete' data-id='" + student.id + "'></td>";
             }
 
 
@@ -179,6 +240,13 @@ var coursePageController = (function(){
         return table;
     }
 
+    function printErrors(errors) {
+        for(var e in errors) {
+            if(errors.hasOwnProperty(e)) {
+                errorsContainer.append('<p>' + errors[e] + '</p>');
+            }
+        }
+    }
 
     return {
         populateCoursePage: populateCoursePage,

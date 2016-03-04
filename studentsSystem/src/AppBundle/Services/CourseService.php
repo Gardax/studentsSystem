@@ -77,7 +77,7 @@ class CourseService
      * @return array|mixed
      */
     public function getCourses($page, $pageSize, $name = null, $getCount = false){
-
+        $page = ($page < 1) ? 1 : $page;
         $start = ($page -1) *$pageSize;
         $end = $start + $pageSize;
 

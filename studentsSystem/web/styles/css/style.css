@@ -68,6 +68,6 @@ table{
     min-width: 20%;
 }
 
-#addNewCourse{
+#addNewCourse, #addNewSpeciality{
     margin-left: 50%;
 }

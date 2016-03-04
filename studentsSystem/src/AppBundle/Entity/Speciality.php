@@ -32,6 +32,11 @@ class Speciality
      */
     protected $specialityShortName;
 
+    /**
+     * @var @ORM\OneToMany(targetEntity="Student", mappedBy="speciality", cascade={"remove"})
+     */
+    protected $students;
+
     public function __construct()
     {
     }
@@ -84,4 +89,11 @@ class Speciality
         $this->specialityShortName = $specialityShortName;
     }
 
+    /**
+     * @return Student[]
+     */
+    public function getStudents()
+    {
+        return $this->students;
+    }
 }

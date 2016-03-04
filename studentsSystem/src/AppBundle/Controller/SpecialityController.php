@@ -29,7 +29,7 @@ class SpecialityController extends Controller
     const FAIL = 0;
 
     /**
-     * @Route("/add/speciality" , name="addSpeciality")
+     * @Route("/speciality/add" , name="addSpeciality")
      * @Method({"POST"})
      * @Security("has_role('ROLE_ADMIN')")
      *
@@ -96,7 +96,7 @@ class SpecialityController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function deleteSubjectAction(Request $request, $id)
+    public function deleteSpecialityAction(Request $request, $id)
     {
         $specialityService = $this->get("speciality_service");
 
@@ -141,14 +141,14 @@ class SpecialityController extends Controller
     }
 
     /**
-     * @Route("/specialityId/{id}")]
+     * @Route("/speciality/single/{id}")]
      * @Method({"GET"})
      *
      * @param Request $request
      * @param $id
      * @return JsonResponse
      */
-    public function getSpecialityById(Request $request, $id){
+    public function getSpecialityByIdAction(Request $request, $id){
 
         $specialityService = $this->get('speciality_service');
 

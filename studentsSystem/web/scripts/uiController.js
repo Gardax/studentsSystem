@@ -52,12 +52,7 @@ var uiController = (function(){
 
         });
 
-        $coursesButton.on("click", function () {
-            $mainContainer.load("/pages/courses.html", function () {
-                loadCourseTable();
-            });
-
-        });
+        $coursesButton.on("click", loadCoursePage);
 
         $specialitiesButton.on("click", function () {
             $mainContainer.load("/pages/subjects.html", function () {
@@ -132,6 +127,20 @@ var uiController = (function(){
         });
     }
 
+    function loadCoursePage () {
+        $mainContainer.load("/pages/courses.html", function () {
+            loadCourseTable();
+        });
+
+    }
+
+    function loadSpecialityPage() {
+        $mainContainer.load("/pages/specialities.html", function () {
+            loadSpecialitiesTable();
+        });
+
+    }
+
     function userTable(){
         var userTable = $("#userTable");
 
@@ -194,6 +203,8 @@ var uiController = (function(){
     return {
         initializeNavigation: initializeNavigation,
         updateLayout: updateLayout,
-        initialize: initialize
+        initialize: initialize,
+        loadCoursePage: loadCoursePage,
+        loadSpecialitiesPage : loadSpecialityPage
     };
 }());

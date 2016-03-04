@@ -26,6 +26,11 @@ class Course
      */
     protected $id;
 
+    /**
+     * @var @ORM\OneToMany(targetEntity="Student", mappedBy="course", cascade={"remove"})
+     */
+    protected $students;
+
     public function __construct()
     {
     }
@@ -62,4 +67,11 @@ class Course
         $this->id = $id;
     }
 
+    /**
+     * @return Student[]
+     */
+    public function getStudents()
+    {
+        return $this->students;
+    }
 }

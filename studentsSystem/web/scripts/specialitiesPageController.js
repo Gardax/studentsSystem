@@ -5,29 +5,40 @@ var specialitiesPageController = (function(){
     var lastPage =1;
 
     var $searchInput;
-    var $specialitiesTable;
+    var specialitiesTable;
 
     var container;
     var $specialitiesCurrentPageContainer;
-    var $errorsContainer;
+    var errorsContainer;
+    var mainContainer;
+    var addNewSpeciality;
 
     var $specialitiesSearchButton;
     var $pagingButtons;
+    var addSpecialityButton;
+    var specialityAddSpecialityNameInput;
+    var specialitiesAddShortName;
 
     var specialitiesFirstPageButton;
     var specialitiesPreviousPageButton;
     var specialitiesNextPageButton;
     var specialitiesLastPageButton;
 
+    var currentEditSpecialityId;
+
     function initializeSpecialitiesPage(containerElement) {
+        mainContainer = $("#mainContainer");
+
         container = containerElement;
-        $errorsContainer = $("#errorsContainer");
+
+        addNewSpeciality = $("#addNewSpeciality");
+        errorsContainer = $("#errorsContainer");
         $searchInput = $("#disciplinesSearch");
         $specialitiesSearchButton = $("#specialitiesSearchButton");
         $pagingButtons = $(".paging");
         $specialitiesCurrentPageContainer = $(".specialitiesCurrentPage");
-        $specialitiesTable = $("#specialitiesTable");
-        $errorsContainer.text("");
+        specialitiesTable = $("#specialitiesTable");
+        errorsContainer.text("");
         attachEvents();
     }
 
@@ -58,7 +69,92 @@ var specialitiesPageController = (function(){
             loadSpecialitiesPage(1, [], getFilterValues());
         });
 
+        addNewSpeciality.on("click", function(){
+            loadAddEditForm(addSpecialityHandler);
+        });
+
+        specialitiesTable.on('click', function(e) {
+            var element = $(e.target);
+            var specialityId = element.attr('data-id');
+            if(element.hasClass('edit')) {
+                currentEditSpecialityId = specialityId;
+                loadAddEditForm(editSpecialityHandler);
+            }
+            else if(element.hasClass('delete')) {
+                var response = confirm('Сигурен ли сте, че искате да изтриете тази специалност?');
+                if(response) {
+                    specialitiesPageService.deleteSpeciality(specialityId, function(){
+                            var pageToGo = (currentPage == lastPage) ? --currentPage : currentPage;
+                            if(pageToGo < 1) {
+                                pageToGo = 1;
+                            }
+                            loadSpecialitiesPage(pageToGo, currentOrder, currentFilters);
+                        },
+                        function(error){
+                            errorsContainer.text(error.responseJSON.errorMessage);
+                        }
+                    );
+                }
+            }
+        });
+
     }
+
+    function loadAddEditForm(handler) {
+        mainContainer.load("/pages/specialitiesAdd.html", function() {
+            addSpecialityButton = $("#addSpecialityButton");
+            specialityAddSpecialityNameInput = $("#specialitiesAddFullName");
+            specialitiesAddShortName = $("#specialitiesAddShortName");
+
+            handler();
+        });
+    }
+
+    function addSpecialityHandler() {
+        addSpecialityButton.on("click", function (event) {
+            event.preventDefault();
+            errorsContainer.text('');
+
+            var data = getFormData();
+            specialitiesPageService.addSpeciality(data, function () {
+                    uiController.loadSpecialitiesPage();
+                },
+                function (error) {
+                    printErrors(error.responseJSON.errors);
+                });
+        });
+    }
+
+    function editSpecialityHandler() {
+        var specialityFormHeader = $("#specialityFormHeader");
+        specialityFormHeader.text("Редактиране на специалност");
+        addSpecialityButton.val("Редактирай");
+
+        specialitiesPageService.getSpecialityById(currentEditSpecialityId, function(data) {
+                specialityAddSpecialityNameInput.val(data.specialityLongName);
+                specialitiesAddShortName.val(data.specialityShortName);
+
+                addSpecialityButton.on("click",function(event){
+                    event.preventDefault();
+
+                    var data = getFormData();
+                    specialitiesPageService.updateSpeciality(currentEditSpecialityId, data, function(){
+                            uiController.loadSpecialitiesPage();
+                        },
+                        function (error) {
+                            printErrors(error.responseJSON.errors);
+                        }
+                    );
+
+                });
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+            }
+        );
+
+    }
+
 
     function loadSpecialitiesPage(page, order, filters) {
         specialitiesPageService.getSpecialities(page, order, filters,
@@ -76,20 +172,28 @@ var specialitiesPageController = (function(){
 
                 manageButtonsState();
                 $pagingButtons.show();
-                $specialitiesTable.show();
+                specialitiesTable.show();
                 $specialitiesCurrentPageContainer.show();
-                $errorsContainer.text("");
+                errorsContainer.text("");
 
                 var table = generateUsersTable(data);
                 container.html(table);
             },
             function(error){
-                $errorsContainer.text(error.responseJSON.errorMessage);
+                errorsContainer.text(error.responseJSON.errorMessage);
                 $pagingButtons.hide();
-                $specialitiesTable.hide();
+                specialitiesTable.hide();
                 $specialitiesCurrentPageContainer.hide();
             }
         );
+    }
+
+
+    function getFormData(){
+        return {
+            'longName': specialityAddSpecialityNameInput.val(),
+            'shortName' : specialitiesAddShortName.val()
+        };
     }
 
     function getFilterValues(){
@@ -128,11 +232,19 @@ var specialitiesPageController = (function(){
                 "<td>" + usersData.specialities[i].id + "</td>" +
                 "<td>" + usersData.specialities[i].specialityLongName + "</td>" +
                 "<td>" + usersData.specialities[i].specialityShortName + "</td>" +
-                "<td class='edit'></td>" +
-                "<td class='delete'></td>";
+                "<td class='edit' data-id='" + usersData.specialities[i].id + "'></td>" +
+                "<td class='delete' data-id='" + usersData.specialities[i].id + "'></td>";
         }
         table += "</tbody></table>";
         return table;
+    }
+
+    function printErrors(errors) {
+        for(var e in errors) {
+            if(errors.hasOwnProperty(e)) {
+                errorsContainer.append('<p>' + errors[e] + '</p>');
+            }
+        }
     }
 
     return {

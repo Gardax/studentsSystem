@@ -59,7 +59,7 @@ class CourseController extends Controller
     }
     /**
      * @Route("/course/edit/{id}", name="updateCourseById")
-     * @Method("POST")
+     * @Method("PUT")
      * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
@@ -147,7 +147,7 @@ class CourseController extends Controller
     }
 
     /**
-     * @Route("/courseId/{id}")]
+     * @Route("/course/single/{id}")]
      * @Method({"GET"})
      *
      * @param Request $request
