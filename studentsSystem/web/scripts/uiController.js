@@ -54,12 +54,7 @@ var uiController = (function(){
 
         $coursesButton.on("click", loadCoursePage);
 
-        $specialitiesButton.on("click", function () {
-            $mainContainer.load("/pages/subjects.html", function () {
-                loadSubjectTable();
-            });
-
-        });
+        $specialitiesButton.on("click", loadSubjectsPage);
 
         $subjectsButton.on("click", function () {
             $mainContainer.load("/pages/specialities.html", function () {
@@ -127,11 +122,16 @@ var uiController = (function(){
         });
     }
 
-    function loadCoursePage () {
+    function loadCoursePage() {
         $mainContainer.load("/pages/courses.html", function () {
             loadCourseTable();
         });
+    }
 
+    function loadSubjectsPage() {
+        $mainContainer.load("/pages/subjects.html", function () {
+            loadSubjectTable();
+        });
     }
 
     function loadSpecialityPage() {
@@ -205,6 +205,7 @@ var uiController = (function(){
         updateLayout: updateLayout,
         initialize: initialize,
         loadCoursePage: loadCoursePage,
-        loadSpecialitiesPage : loadSpecialityPage
+        loadSpecialitiesPage : loadSpecialityPage,
+        loadSubjectsPage: loadSubjectsPage
     };
 }());

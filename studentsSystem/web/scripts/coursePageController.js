@@ -120,7 +120,8 @@ var coursePageController = (function(){
                 },
                 function (error) {
                     printErrors(error.responseJSON.errors);
-                });
+                }
+            );
         });
     }
 

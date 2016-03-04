@@ -5,11 +5,14 @@ var disciplinesPageController = (function(){
     var currentOrder = [];
     var lastPage =1;
 
+    var currentEditSubjectId;
+
     var subjectsSearch;
     var subjectsSearchButton;
 
     var subjectsTable;
 
+    var mainContainer;
     var container;
     var errorsContainer;
     var subjectsCurrentPageContainer;
@@ -21,7 +24,15 @@ var disciplinesPageController = (function(){
     var subjectsNextPageButton;
     var subjectsLastPageButton;
 
+    var addNewSubjectButton;
+
+    var addSubjectButton;
+    var subjectNameInput;
+    var subjectWorkLoadLecturesInput;
+    var subjectWorkLoadExercisesInput
+
     function initializeSubjectPage(containerElement) {
+        mainContainer = $("#mainContainer");
         container = containerElement;
         errorsContainer = $("#errorsContainer");
         subjectsSearch = $("#subjectsSearch");
@@ -29,6 +40,8 @@ var disciplinesPageController = (function(){
         subjectsSearchButton = $("#subjectsSearchButton");
         pagingButtons = $(".paging");
         subjectsTable = $("#subjectsTable");
+        addNewSubjectButton = $("#addNewSubject");
+
         errorsContainer.text("");
         attachEvents();
     }
@@ -60,6 +73,100 @@ var disciplinesPageController = (function(){
             loadSubjectsPage(1, [], getFilterValues());
         });
 
+        addNewSubjectButton.on("click",function(){
+            loadAddEditForm(addSubjectHandler);
+        });
+
+        subjectsTable.on('click', function(e) {
+            var element = $(e.target);
+            var subjectId = element.attr('data-id');
+            if(element.hasClass('edit')) {
+                currentEditSubjectId = subjectId;
+                loadAddEditForm(editSubjectHandler);
+            }
+            else if(element.hasClass('delete')) {
+                var response = confirm('Сигурен ли сте, че искате да изтриете тази дисциплина?');
+                if(response) {
+                    subjectsPageService.deleteSubject(currentEditSubjectId, function(){
+                            var pageToGo = (currentPage == lastPage) ? --currentPage : currentPage;
+                            if(pageToGo < 1) {
+                                pageToGo = 1;
+                            }
+                            loadSubjectsPage(pageToGo, currentOrder, currentFilters );
+                        },
+                        function(error){
+                            errorsContainer.text(error.responseJSON.errorMessage);
+                        }
+                    );
+                }
+            }
+        });
+    }
+
+    function loadAddEditForm(handler) {
+        mainContainer.load("/pages/subjectsAdd.html", function() {
+            addSubjectButton = $("#addSubjectButton");
+            subjectNameInput = $("#disciplineNameInput");
+            subjectWorkLoadLecturesInput = $("#disciplineWorkLoadLecturesInput");
+            subjectWorkLoadExercisesInput = $("#disciplineWorkLoadExerciseInput");
+
+            handler();
+        });
+    }
+
+    function addSubjectHandler() {
+        addSubjectButton.on('click', function(event) {
+            event.preventDefault();
+            errorsContainer.text('');
+
+            var data = getFormData();
+            subjectsPageService.addSubject(data, function () {
+                    uiController.loadSubjectsPage();
+                },
+                function (error) {
+                    printErrors(error.responseJSON.errors);
+                }
+            );
+        });
+    }
+
+    function editSubjectHandler() {
+        var subjectFormHeader = $("#subjectFormHeader");
+        subjectFormHeader.text("Редактиране на дисциплина");
+        addSubjectButton.val("Редактирай");
+
+        subjectsPageService.getSubjectById(currentEditSubjectId,
+            function(data) {
+                subjectNameInput.val(data.name);
+                subjectWorkLoadLecturesInput.val(data.workloadLectures);
+                subjectWorkLoadExercisesInput.val(data.workloadExercises);
+
+                addSubjectButton.on("click",function(event){
+                    event.preventDefault();
+
+                    var data = getFormData();
+                    subjectsPageService.updateSubject(currentEditSubjectId, data,
+                        function(){
+                            uiController.loadSubjectsPage();
+                        },
+                        function (error) {
+                            printErrors(error.responseJSON.errors);
+                        }
+                    );
+                });
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+            }
+        );
+    }
+
+    function getFormData() {
+        return {
+            'name' : subjectNameInput.val(),
+            'workloadLectures': subjectWorkLoadLecturesInput.val(),
+            'workloadExercises': subjectWorkLoadExercisesInput.val()
+        };
     }
 
     function getFilterValues(){
@@ -137,11 +244,19 @@ var disciplinesPageController = (function(){
                     "<td>" + usersData.subjects[i].name + "</td>" +
                     "<td>" + usersData.subjects[i].workloadLectures + "</td>" +
                     "<td>" + usersData.subjects[i].workloadExercises + "</td>" +
-                    "<td class='edit'></td>" +
-                    "<td class='delete'></td>";
+                    "<td class='edit' data-id='" + usersData.subjects[i].id + "'></td>" +
+                    "<td class='delete' data-id='" + usersData.subjects[i].id + "'></td>";
         }
         table += "</tbody></table>";
         return table;
+    }
+
+    function printErrors(errors) {
+        for(var e in errors) {
+            if(errors.hasOwnProperty(e)) {
+                errorsContainer.append('<p>' + errors[e] + '</p>');
+            }
+        }
     }
 
     return {

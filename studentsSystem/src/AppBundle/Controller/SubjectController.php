@@ -32,7 +32,7 @@ class SubjectController extends Controller
     const FAIL = 0;
 
     /**
-     * @Route("/add/subject" , name="addSubject")
+     * @Route("/subject/add" , name="addSubject")
      * @Method({"POST"})
      * @Security("has_role('ROLE_ADMIN')")
      *
@@ -116,7 +116,7 @@ class SubjectController extends Controller
 
     /**
      * @Route("/subject/edit/{id}", name="updateSubjectById")
-     * @Method("POST")
+     * @Method("PUT")
      * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
@@ -130,7 +130,13 @@ class SubjectController extends Controller
 
         $subjectEntity = $subjectService->getSubjectById($id);
 
-        $subjectService->updateSubject($subjectEntity,$request->request->get('subject'));
+        $subjectData = [
+            'name' => $request->request->get('name'),
+            'workloadLectures' => $request->request->get('workloadLectures'),
+            'workloadExercises' => $request->request->get('workloadExercises'),
+        ];
+
+        $subjectService->updateSubject($subjectEntity, $subjectData);
 
         $subjectModel = new SubjectModel($subjectEntity);
 
@@ -138,7 +144,7 @@ class SubjectController extends Controller
     }
 
     /**
-     * @Route("/subjectId/{id}")]
+     * @Route("/subject/single/{id}")]
      * @Method({"GET"})
      *
      * @param Request $request
