@@ -82,6 +82,7 @@ var disciplinesPageController = (function(){
 
                 manageButtonsState();
                 pagingButtons.show();
+                disciplineCurrentPageContainer.show();
                 disciplinesTable.show();
                 errorsContainer.text("");
                 var table = generateUsersTable(data);
@@ -91,6 +92,7 @@ var disciplinesPageController = (function(){
                 errorsContainer.text(error.responseJSON.errorMessage);
                 pagingButtons.hide();
                 disciplinesTable.hide();
+                disciplineCurrentPageContainer.hide();
             }
         );
     }

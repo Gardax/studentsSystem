@@ -138,6 +138,7 @@ var coursePageController = (function(){
 
                 courseCurrentPageContainer.text(currentPage);
 
+                courseCurrentPageContainer.show();
                 manageButtonsState();
 
                 var table = generateUsersTable(data);
@@ -148,6 +149,7 @@ var coursePageController = (function(){
                 pagingButtons.hide();
                 addNewCourse.hide();
                 courseTable.hide();
+                courseCurrentPageContainer.hide();
             }
         );
     }

@@ -85,6 +85,7 @@ var userPageController = (function(){
                 manageButtonsState();
                 userTable.show();
                 pagingButtons.show();
+                userCurrentPageContainer.show();
                 errorsContainer.text("");
                 var table = generateUsersTable(data);
                 container.html(table);
@@ -93,6 +94,7 @@ var userPageController = (function(){
                 errorsContainer.text(error.responseJSON.errorMessage);
                 userTable.hide();
                 pagingButtons.hide();
+                userCurrentPageContainer.hide();
             }
         );
     }

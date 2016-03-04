@@ -76,6 +76,7 @@ var specialitiesPageController = (function(){
                 manageButtonsState();
                 $pagingButtons.show();
                 $specialitiesTable.show();
+                $specialitiesCurrentPageContainer.show();
                 $errorsContainer.text("");
 
                 var table = generateUsersTable(data);
@@ -85,6 +86,7 @@ var specialitiesPageController = (function(){
                 $errorsContainer.text(error.responseJSON.errorMessage);
                 $pagingButtons.hide();
                 $specialitiesTable.hide();
+                $specialitiesCurrentPageContainer.hide();
             }
         );
     }

@@ -4,6 +4,7 @@ var homePageController = (function(){
     var currentOrder = [];
     var lastPage =1;
     var paging;
+    var homeCurrentPageContainer;
 
     var errorsContainer;
 
@@ -14,6 +15,7 @@ var homePageController = (function(){
     var homePreviousPageButton;
     var homeNextPageButton;
     var homeLastPageButton;
+
     var homePageSearchButton;
 
     var nameFilterInput;
@@ -25,6 +27,7 @@ var homePageController = (function(){
         specialityFilterInput = $('#specialtiesSelectElement');
         courseFilterInput = $('#coursesSelectElement');
         paging = $(".paging");
+        homeCurrentPageContainer = $(".homeCurrentPage");
 
         container = containerElement;
         subjectsContainer = subjectsContainerElement;
@@ -128,8 +131,11 @@ var homePageController = (function(){
                     lastPage++;
                 }
 
+                homeCurrentPageContainer.text(currentPage);
+
                 manageButtonsState();
                 paging.show();
+                homeCurrentPageContainer.show();
                 container.show();
                 errorsContainer.text("");
 
@@ -140,6 +146,7 @@ var homePageController = (function(){
                 errorsContainer.text(error.responseJSON.errorMessage);
                 paging.hide();
                 container.hide();
+                homeCurrentPageContainer.hide();
             }
         );
     }

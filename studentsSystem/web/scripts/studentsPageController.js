@@ -140,6 +140,7 @@ var studentsPageController = (function(){
                 manageButtonsState();
                 studentsTable.show();
                 pagingButtons.show();
+                studentCurrentPageContainer.show();
                 errorsContainer.text("");
                 var table = generateUsersTable(data);
                 container.html(table);
@@ -148,6 +149,7 @@ var studentsPageController = (function(){
                 errorsContainer.text(error.responseJSON.errorMessage);
                 studentsTable.hide();
                 pagingButtons.hide();
+                studentCurrentPageContainer.hide();
             }
         );
     }

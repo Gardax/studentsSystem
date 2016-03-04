@@ -94,6 +94,7 @@ var assessmentPageController = (function() {
                 manageButtonsState();
                 pagingButtons.show();
                 assessmentTable.show();
+                assessmentCurrentPageContainer.show();
                 errorsContainer.text("");
                 var table = generateUsersTable(data);
                 container.html(table);
@@ -102,6 +103,7 @@ var assessmentPageController = (function() {
                 errorsContainer.text(error.responseJSON.errorMessage);
                 pagingButtons.hide();
                 assessmentTable.hide();
+                assessmentCurrentPageContainer.hide();
             }
         );
     }
