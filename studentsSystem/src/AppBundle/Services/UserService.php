@@ -100,7 +100,7 @@ class UserService implements UserProviderInterface
      * @return array|mixed
      */
     public function getUsers($page, $pageSize, $filters, $getCount = false ){
-
+        $page = ($page < 1) ? 1 : $page;
         $start = ($page -1) *$pageSize;
         $end = $start + $pageSize;
 

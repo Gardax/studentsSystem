@@ -11,7 +11,7 @@ var subjectsPageService = (function(){
     }
 
     function getAllSubjects(success,error,complete){
-        var url = config.API_URL+"subject/" + 1 ;
+        var url = config.API_URL+"subject/all";
 
         httpRequester.getJSON(url,success,error,complete);
     }

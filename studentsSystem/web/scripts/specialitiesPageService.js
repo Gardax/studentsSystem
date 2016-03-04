@@ -11,7 +11,7 @@ var specialitiesPageService = (function(){
     }
 
     function getAllSpecialities(success, error, complete){
-        var url = config.API_URL + "speciality/" + 1;
+        var url = config.API_URL + "speciality/all";
 
         httpRequester.getJSON(url,success,error,complete);
     }

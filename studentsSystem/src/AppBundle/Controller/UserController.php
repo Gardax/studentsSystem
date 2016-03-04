@@ -95,12 +95,12 @@ class UserController extends Controller
         }
 
         $totalCount = $userService->getUsers($page, self::PAGE_SIZE, $filters, true);
-//TODO KRISKO FIX THIS NOT STUDENT ASSESSMENTS A USERS AND ROLE !
+
         $data = [
             'users' => $userModels,
             'totalCount' => $totalCount,
             'page' => $page,
-            'itemsPerPage' => self::PAGE_SIZE,
+            'itemsPerPage' => self::PAGE_SIZE
         ];
 
         return new JsonResponse($data);
