@@ -105,7 +105,7 @@ class CourseController extends Controller
         $result = self::FAIL;
 
         if ($courseEntity) {
-            $result = $courseService->deleteCourseById($courseEntity);
+            $result = $courseService->deleteCourse($courseEntity);
         }
 
         $success = $result ? self::SUCCESS : self::FAIL;

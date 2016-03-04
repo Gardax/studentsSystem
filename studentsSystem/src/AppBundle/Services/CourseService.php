@@ -126,12 +126,11 @@ class CourseService
     }
 
     /**
-     * @param $id
+     * @param Course $course
      * @return bool
      */
-    public function deleteCourseById($id){
-
-        $result = $this->courseManager->deleteCourseById($id);
+    public function deleteCourse(Course $course){
+        $result = $this->courseManager->deleteCourse($course);
 
         return $result;
     }

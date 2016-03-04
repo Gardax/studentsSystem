@@ -163,4 +163,14 @@ class StudentService
 
         return $studentFacultyNumber;
     }
+
+    /**
+     * @param Student $student
+     * @return bool
+     */
+    public function deleteStudent(Student $student){
+        $result = $this->studentManager->deleteStudent($student);
+
+        return $result;
+    }
 }

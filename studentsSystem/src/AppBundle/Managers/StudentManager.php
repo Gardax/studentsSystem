@@ -167,4 +167,16 @@ class StudentManager
     public function saveChanges(){
         $this->entityManager->flush();
     }
+
+    /**
+     *
+     * @param Student $student
+     * @return bool
+     */
+    public function deleteStudent(Student $student){
+        $this->entityManager->remove($student);
+        $this->entityManager->flush();
+
+        return true;
+    }
 }

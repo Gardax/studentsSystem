@@ -42,11 +42,11 @@ class CourseManager
 
     /**
      *
-     * @param $id
+     * @param Course $course
      * @return bool
      */
-    public function deleteCourseById($id){
-        $this->entityManager->remove($id);
+    public function deleteCourse(Course $course){
+        $this->entityManager->remove($course);
         $this->entityManager->flush();
 
         return true;

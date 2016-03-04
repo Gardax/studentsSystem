@@ -31,6 +31,8 @@ use AppBundle\Services\StudentService;
 class StudentController extends Controller
 {
     const PAGE_SIZE = 5;
+    const SUCCESS = 1;
+    const FAIL = 0;
 
     /**
      * @Route("/student/{page}", defaults={"page" = 1})]
@@ -240,7 +242,7 @@ class StudentController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function getStudentByIdAction(Request $request, $id){
+    public function getStudentByIdAction(Request $request, $id) {
 
         $studentService = $this->get('student_service');
 
@@ -249,5 +251,24 @@ class StudentController extends Controller
         $studentModel = new StudentModel($studentEntity, true);
 
         return new JsonResponse($studentModel);
+    }
+
+    /**
+     * @Route("/student/delete/{id}", name="deleteStudent")
+     * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function deleteStudentAction(Request $request, $id) {
+        $studentService = $this->get("student_service");
+
+        $studentEntity = $studentService->getStudentById($id);
+        $result = $studentService->deleteStudent($studentEntity);
+
+        $success = $result ? self::SUCCESS : self::FAIL;
+        return new JsonResponse(["success" => $success]);
     }
 }
