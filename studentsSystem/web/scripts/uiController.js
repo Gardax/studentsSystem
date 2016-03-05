@@ -63,11 +63,7 @@ var uiController = (function(){
 
         });
 
-        $students.on("click", function () {
-            $mainContainer.load("/pages/students.html", function () {
-                loadStudentsTable();
-            });
-        });
+        $students.on("click", loadStudentPage);
 
         $exitButton.on("click", function () {
             loginController.logout();
@@ -141,6 +137,12 @@ var uiController = (function(){
 
     }
 
+    function loadStudentPage() {
+        $mainContainer.load("/pages/students.html", function () {
+            loadStudentsTable();
+        });
+    }
+
     function userTable(){
         var userTable = $("#userTable");
 
@@ -205,7 +207,8 @@ var uiController = (function(){
         updateLayout: updateLayout,
         initialize: initialize,
         loadCoursePage: loadCoursePage,
-        loadSpecialitiesPage : loadSpecialityPage,
-        loadSubjectsPage: loadSubjectsPage
+        loadSpecialitiesPage: loadSpecialityPage,
+        loadSubjectsPage: loadSubjectsPage,
+        loadStudentPage: loadStudentPage
     };
 }());

@@ -95,7 +95,7 @@ class StudentController extends Controller
     }
 
     /**
-     * @Route("/add/student" , name="addStudent")
+     * @Route("/student/add" , name="addStudent")
      * @Method({"POST"})
      * @Security("has_role('ROLE_TEACHER')")
      *
@@ -207,7 +207,7 @@ class StudentController extends Controller
     }
 
     /**
-     * @Route("/studentId/{id}")]
+     * @Route("/student/single/{id}")]
      * @Method({"GET"})
      *
      * @param Request $request
