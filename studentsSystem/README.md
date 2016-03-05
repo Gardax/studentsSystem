@@ -32,6 +32,16 @@ sudo chmod a+x /usr/local/bin/symfony
 git clone <url-to-the-repo>
 ```
 
+<h3>Install webkittopdf</h3>
+```
+sudo aptitude install openssl build-essential xorg libssl-dev
+
+wget http://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.9.9-static-amd64.tar.bz2
+tar xvjf wkhtmltopdf-0.9.9-static-amd64.tar.bz2
+sudo mv wkhtmltopdf-amd64 /usr/local/bin/wkhtmltopdf
+sudo chmod +x /usr/local/bin/wkhtmltopdf
+```
+
 <h3>Install depending packages</h3>
 ```
 composer update
