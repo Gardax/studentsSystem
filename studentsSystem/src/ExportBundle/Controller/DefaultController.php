@@ -40,7 +40,6 @@ class DefaultController extends Controller
 
     /**
      * @Route("/courses")
-     * @Security("has_role('ROLE_TEACHER')")
      */
     public function courseAction()
     {
@@ -67,7 +66,6 @@ class DefaultController extends Controller
 
     /**
      * @Route("/specialities")
-     * @Security("has_role('ROLE_TEACHER')")
      */
     public function specialityAction()
     {
@@ -94,7 +92,6 @@ class DefaultController extends Controller
 
     /**
      * @Route("/subjects")
-     * @Security("has_role('ROLE_TEACHER')")
      */
     public function subjectsAction()
     {
@@ -121,7 +118,6 @@ class DefaultController extends Controller
 
     /**
      * @Route("/students")
-     * @Security("has_role('ROLE_TEACHER')")
      */
     public function studentsAction()
     {
@@ -148,7 +144,6 @@ class DefaultController extends Controller
 
     /**
      * @Route("/assessments")
-     * @Security("has_role('ROLE_TEACHER')")
      */
     public function assessmentsAction()
     {
@@ -175,7 +170,6 @@ class DefaultController extends Controller
 
     /**
      * @Route("/users")
-     * @Security("has_role('ROLE_TEACHER')")
      */
     public function usersAction()
     {
