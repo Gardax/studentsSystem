@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<table border="1">
+    <thead>
+    <tr>
+        <td>#</td>
+        <td>Пълно име</td>
+        <td>Абривиатура</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for spec in specialities %}
+        <tr>
+            <td>{{ spec.id }}</td>
+            <td>{{ spec.specialityLongName }}</td>
+            <td>{{ spec.specialityShortName }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

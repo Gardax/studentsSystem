@@ -85,14 +85,20 @@ class StudentManager
         $query = $em->createQuery($queryString)
             ->setParameters($parameters);
 
-        if(!$getCount) {
+        if(!$getCount && $end) {
             $query->setFirstResult($start)
                 ->setMaxResults($end);
         }
 
-        //!!!WARNING!!!
-        //The array slice is a dirty hack to fix a problem with pagination in doctrine!
-        $students = $getCount ? $query->getSingleScalarResult() : array_slice($query->getResult(), 0, $end-$start);
+        $students = null;
+        if($end) {
+            //!!!WARNING!!!
+            //The array slice is a dirty hack to fix a problem with pagination in doctrine!
+            $students = $getCount ? $query->getSingleScalarResult() : array_slice($query->getResult(), 0, $end-$start);
+        }
+        else {
+            $students = $query->getResult();
+        }
 
         return $students;
     }

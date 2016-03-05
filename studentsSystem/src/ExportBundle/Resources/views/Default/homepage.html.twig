@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <table border="1">
+            <thead>
+                <tr>
+                    <td></td>
+                    <td colspan="2"></td>
+                    <td colspan="12">Предмети (хорариум и оценки)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="2"></td>
+                    {% for subject in subjects %}
+                        <td colspan="3">{{ subject.name }}</td>
+                    {% endfor %}
+                    <td colspan="3">Общо</td>
+                </tr>
+                <tr>
+                    <td>#</td>
+                    <td>Име, Фамилия</td>
+                    <td>Курс</td>
+                    {% for subject in subjects %}
+                        <td>Лекции</td>
+                        <td>Упражнения</td>
+                        <td>Оценка</td>
+                    {% endfor %}
+                    <td>Ср. успех</td>
+                    <td>Лекции</td>
+                    <td>Упражнения</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    {% set totalGrades = 0 %}
+                    {% set countGrades = 0 %}
+                    {% set lecturesAttended = 0 %}
+                    {% set exercisesAttended = 0 %}
+                    {% set lecturesTotal = 0 %}
+                    {% set exercisesTotal = 0 %}
+                    <tr>
+                        <td>{{ student.id }}</td>
+                        <td>{{ student.firstName }} {{ student.lastName }} ({{ student.facultyNumber }})</td>
+                        <td>{{ student.course.name }}, {{ student.speciality.specialityShortName }}</td>
+                        {% for subject in subjects %}
+
+                            {% set lecturesTotal = lecturesTotal + subject.workloadLectures %}
+                            {% set exercisesTotal = exercisesTotal + subject.workloadExercises %}
+
+                            {% set found = false %}
+                            {% for studentAssessment in student.studentAssessments %}
+                                {% if studentAssessment.subject.id == subject.id %}
+                                    <td>{{ studentAssessment.workloadLectures }} ({{ subject.workloadLectures }})</td>
+                                    <td>{{ studentAssessment.workloadExercises }} ({{ subject.workloadExercises }})</td>
+                                    <td>{{ studentAssessment.assessment }}</td>
+                                    {% set found = true %}
+                                    {% set totalGrades = totalGrades + studentAssessment.assessment %}
+                                    {% set countGrades = countGrades + 1 %}
+                                    {% set lecturesAttended = lecturesAttended + studentAssessment.workloadLectures %}
+                                    {% set exercisesAttended = exercisesAttended + studentAssessment.workloadExercises %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if found == false %}
+                                <td>0 ({{ subject.workloadLectures }})</td>
+                                <td>0 ({{ subject.workloadExercises }})</td>
+                                <td>-</td>
+                            {% endif %}
+                        {% endfor %}
+                        {% if countGrades != 0 %}
+                            <td>{{ totalGrades / countGrades }}</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                        <td>{{ lecturesAttended }} ({{ lecturesTotal }})</td>
+                        <td>{{ exercisesAttended }} ({{ exercisesTotal }})</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>

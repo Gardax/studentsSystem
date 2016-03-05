@@ -7,3 +7,8 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
     prefix:   /api/
+
+export:
+    resource: "@ExportBundle/Controller/"
+    type:     annotation
+    prefix:   /export

@@ -71,7 +71,7 @@ class StudentAssessmentManager
         $query = $em->createQuery($queryString)
             ->setParameters($parameters);
 
-        if(!$getCount) {
+        if(!$getCount && $end) {
             $query->setFirstResult($start)
                 ->setMaxResults($end);
         }

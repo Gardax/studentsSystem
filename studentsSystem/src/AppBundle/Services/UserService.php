@@ -98,12 +98,17 @@ class UserService implements UserProviderInterface
      * @param $pageSize
      * @param $filters
      * @param bool $getCount
-     * @return array|mixed
+     * @return User[]
      */
-    public function getUsers($page, $pageSize, $filters, $getCount = false ){
-        $page = ($page < 1) ? 1 : $page;
-        $start = ($page -1) *$pageSize;
-        $end = $start + $pageSize;
+    public function getUsers($page, $pageSize, $filters, $getCount = false, $export = false ){
+        $start = 0;
+        $end = 0;
+
+        if(!$export) {
+            $page = ($page < 1) ? 1 : $page;
+            $start = ($page -1) *$pageSize;
+            $end = $start + $pageSize;
+        }
 
         $users = $this->userManager->getUsers($start, $end, $filters, $getCount);
 

@@ -115,10 +115,15 @@ class StudentService
      * @param bool $getCount
      * @return Student[]
      */
-    public function getStudents($page, $pageSize, $filters, $getFullInfo, $getCount=false ){
-        $page = ($page < 1) ? 1 : $page;
-        $start = ((int)$page - 1) * $pageSize;
-        $end = $start + $pageSize;
+    public function getStudents($page, $pageSize, $filters, $getFullInfo, $getCount=false, $export = false ){
+        $start = 0;
+        $end = 0;
+
+        if(!$export) {
+            $page = ($page < 1) ? 1 : $page;
+            $start = ((int)$page - 1) * $pageSize;
+            $end = $start + $pageSize;
+        }
 
         $students = $this->studentManager->getStudents($start, $end, $filters, $getFullInfo, $getCount);
         if(!$students){

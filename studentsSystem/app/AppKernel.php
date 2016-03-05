@@ -21,6 +21,8 @@ class AppKernel extends Kernel
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new UIBundle\UIBundle(),
+            new ExportBundle\ExportBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

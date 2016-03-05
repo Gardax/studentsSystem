@@ -49,12 +49,16 @@ class StudentAssessmentService
      * @param $pageSize
      * @param $filters
      * @param bool $getCount
-     * @return array|mixed
+     * @return StudentAssessment[]
      */
-    public function getStudentAssessments($page, $pageSize, $filters, $getCount = false ){
-        $page = ($page < 1) ? 1 : $page;
-        $start = ($page -1) *$pageSize;
-        $end = $start + $pageSize;
+    public function getStudentAssessments($page, $pageSize, $filters, $getCount = false, $export = false ){
+        $start = 0;
+        $end = 0;
+        if(!$export) {
+            $page = ($page < 1) ? 1 : $page;
+            $start = ($page -1) *$pageSize;
+            $end = $start + $pageSize;
+        }
 
         $studentAssessments = $this->studentAssessmentManager->getStudentAssessments(
             $start, $end, $filters, $getCount);

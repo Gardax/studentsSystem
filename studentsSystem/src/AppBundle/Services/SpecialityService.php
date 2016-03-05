@@ -92,7 +92,7 @@ class SpecialityService
      * @param $pageSize
      * @param array $filters
      * @param bool $getCount
-     * @return array|mixed
+     * @return Speciality[]
      */
     public function getSpecialities($page, $pageSize, $filters, $getCount=false){
         $start = 0;

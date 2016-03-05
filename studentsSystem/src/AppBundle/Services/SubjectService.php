@@ -59,7 +59,7 @@ class SubjectService
     }
 
     /**
-     * @return \AppBundle\Entity\Subject[]|array
+     * @return \AppBundle\Entity\Subject[]
      */
     public function getAllSubjects(){
 

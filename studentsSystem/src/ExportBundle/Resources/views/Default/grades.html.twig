@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<table border="1">
+    <thead>
+    <tr>
+        <td>#</td>
+        <td>Име, Фамилия</td>
+        <td>Дисциплина</td>
+        <td>Оценка</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for grade in assessments %}
+        {% set gradeWord = 'Слаб' %}
+
+        {% if grade.assessment == 3 %}
+            {% set gradeWord = 'Среден' %}
+        {% elseif grade.assessment == 4 %}
+            {% set gradeWord = 'Добър' %}
+        {% elseif grade.assessment == 5 %}
+            {% set gradeWord = 'Мн. Добър' %}
+        {% elseif grade.assessment == 6 %}
+            {% set gradeWord = 'Отличен' %}
+        {% endif %}
+        <tr>
+            <td>{{ grade.id }}</td>
+            <td>{{ grade.student.firstName }}, {{ grade.student.lastName }}</td>
+            <td>{{ grade.subject.name }}</td>
+            <td>{{ gradeWord }}({{ grade.assessment }})</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

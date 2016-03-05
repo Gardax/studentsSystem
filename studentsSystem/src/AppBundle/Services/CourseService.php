@@ -74,7 +74,7 @@ class CourseService
      * @param $pageSize
      * @param null $name
      * @param bool $getCount
-     * @return array|mixed
+     * @return Course[]
      */
     public function getCourses($page, $pageSize, $name = null, $getCount = false){
         $start = 0;
