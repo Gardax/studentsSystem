@@ -223,7 +223,6 @@ var coursePageController = (function(){
             "<thead>" +
             "<tr>" +
             "<th>#</th>" +
-            "<th>Курс</th>" +
             "<th>Име</th>" +
             "<th colspan='2'>Операции</th>" +
             "</thead><tbody>";

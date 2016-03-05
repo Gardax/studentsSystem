@@ -1,26 +1,28 @@
-<h2>Добавяне на студент</h2>
+<h2 id="studentFormHeader">Добавяне на студент</h2>
 <form action="" method="post">
     <fieldset>
         <legend>Данни за потребителя</legend>
-        <label for="studentAddUserName">Потребителско име :</label><input type="text" id="studentAddUserName"><br>
-        <label for="studentAddPassword">Парола :</label><input type="password" id="studentAddPassword"><br>
-        <label for="studentAddPasswordMatch">Парола :</label><input type="password" id="studentAddPasswordMatch"><br>
-        <label for="studentAddEmail">E-mail :</label><input type="text" id="studentAddEmail">
+        <!--<label for="studentAddUserName">Потребителско име :</label><input type="text" id="studentAddUserName"><br>-->
+        <!--<label for="studentAddPassword">Парола :</label><input type="password" id="studentAddPassword"><br>-->
+        <!--<label for="studentAddPasswordMatch">Парола :</label><input type="password" id="studentAddPasswordMatch"><br>-->
+        <!--<label for="studentAddEmail">E-mail :</label><input type="text" id="studentAddEmail">-->
     </fieldset>
     <fieldset>
         <legend>Данни за студент</legend>
         <label for="studentAddFirstName">Собствено име :</label><input type="text" id="studentAddFirstName"><br>
-        <label for="studentAddFamilyName">Фамилия :</label><input type="password" id="studentAddFamilyName"><br>
-        <label for="studentAddFacultyNumber">Факултетен номер :</label><input type="password" id="studentAddFacultyNumber"><br>
+        <label for="studentAddFamilyName">Фамилия :</label><input type="text" id="studentAddFamilyName"><br>
+        <label for="studentAddEmail">E-mail :</label><input type="text" id="studentAddEmail"><br>
+        <label for="studentAddFacultyNumber">Факултетен номер :</label><input type="text" id="studentAddFacultyNumber"><br>
         <label for="studentAddCourse">Курс :</label><select name="" id="studentAddCourse">
 
         </select><br>
         <label for="studentAddGenerateSpeciality">Специалност :</label><select name="" id="studentAddGenerateSpeciality">
-
+            <option value="" id="studentAddGenerateSpecialityOption"></option>
         </select><br>
-        <label for="studentAddGenerateForm">Форма на обучение :</label><select name="" id="studentAddGenerateForm">
-
+        <label for="studentAddGenerateFormOfEducation">Форма на обучение :</label><select name="" id="studentAddGenerateFormOfEducation">
+            <option value="З">Задочно</option>
+            <option value="Р">Редовно</option>
         </select><br>
     </fieldset>
-    <input type="reset" value="Откажи"><input type="submit" value="Добави">
+    <input type="reset" value="Откажи"><input type="submit" value="Добави" id="addStudentButton">
 </form>

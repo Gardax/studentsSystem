@@ -10,6 +10,20 @@ var studentsPageController = (function(){
     var coursesContainer;
     var specialitiesContainer;
     var studentCurrentPageContainer;
+    var addNewStudent;
+    var mainContainer;
+    var studentFormHeader;
+
+    var studentAddUserName;
+    var studentAddPassword;
+    var studentAddPasswordMatch;
+    var studentAddEmail;
+    var studentAddFirstName;
+    var studentAddFamilyName;
+    var studentAddFacultyNumber;
+    var studentAddGenerateSpeciality;
+    var studentAddGenerateFormOfEducation;
+    var studentAddCourse;
 
     var filterByName;
     var filterByEmail;
@@ -17,6 +31,7 @@ var studentsPageController = (function(){
     var studentsTable;
     var studentCourse;
     var studentSpecialities;
+    var currentEditStudentId;
 
     var studentsFirstPageButton;
     var studentsPreviousPageButton;
@@ -25,6 +40,7 @@ var studentsPageController = (function(){
 
     var pagingButtons;
     var studentSearchButton;
+    var addStudentButton;
 
     function initialize(containerElement, coursesElement, specialitiesElement) {
         filterByName = $("#studentName");
@@ -33,12 +49,16 @@ var studentsPageController = (function(){
         studentCurrentPageContainer = $(".studentCurrentPage");
         studentCourse = $("#studentCourse");
         studentSpecialities = $("#studentSpecialities");
+        addStudentButton = $("#addStudentButton");
+        studentFormHeader = $("#studentFormHeader");
 
         container = containerElement;
         coursesContainer = coursesElement;
         specialitiesContainer = specialitiesElement;
+        mainContainer = $("#mainContainer");
 
         studentSearchButton = $("#studentSearchButton");
+        addNewStudent = $("#addNewStudent");
         pagingButtons = $(".paging");
         studentsTable = $("#studentsTable");
         errorsContainer = $("#errorsContainer");
@@ -73,6 +93,139 @@ var studentsPageController = (function(){
             populateStudentsTable(1, [], getFilterValues());
         });
 
+        addNewStudent.on("click",function(){
+            loadAddEditForm(addStudentHandler);
+        });
+
+        studentsTable.on('click', function(e) {
+            var element = $(e.target);
+            var studentId = element.attr('data-id');
+            if(element.hasClass('edit')) {
+                currentEditStudentId = studentId;
+                loadAddEditForm(editStudentHandler);
+            }
+            else if(element.hasClass('delete')) {
+                var response = confirm('Сигурен ли сте, че искате да изтриете този студент?');
+                if(response) {
+                    studentsPageService.deleteStudent(studentId, function(){
+                            var pageToGo = (currentPage == lastPage) ? --currentPage : currentPage;
+                            if(pageToGo < 1) {
+                                pageToGo = 1;
+                            }
+                            populateStudentsTable(pageToGo, currentOrder, currentFilters );
+                        },
+                        function(error){
+                            errorsContainer.text(error.responseJSON.errorMessage);
+                        }
+                    );
+                }
+            }
+        });
+
+    }
+
+    function loadAddEditForm(handler) {
+        mainContainer.load("/pages/studentAdd.html", function() {
+            addStudentButton = $("#addStudentButton");
+            //studentAddUserName = $("#studentAddUserName");
+            //studentAddPassword = $("#studentAddPassword");
+            //studentAddPasswordMatch = $("#studentAddPasswordMatch");
+            studentAddEmail = $("#studentAddEmail");
+            studentAddFirstName = $("#studentAddFirstName");
+            studentAddFamilyName = $("#studentAddFamilyName");
+            studentAddFacultyNumber = $("#studentAddFacultyNumber");
+            studentAddGenerateSpeciality = $("#studentAddGenerateSpeciality");
+            studentAddGenerateFormOfEducation = $("#studentAddGenerateFormOfEducation");
+            studentAddCourse = $("#studentAddCourse");
+
+
+            handler();
+        });
+    }
+
+    function addStudentHandler() {
+        addStudentButton.on("click", function (event) {
+            event.preventDefault();
+            errorsContainer.text('');
+
+            var data = getFormData();
+            studentsPageService.addStudent(data, function () {
+                    uiController.loadStudentPage();
+                },
+                function (error) {
+                    printErrors(error.responseJSON.errors);
+                }
+            );
+        });
+    }
+
+    function editStudentHandler() {
+        var studentFormHeader = $("#studentFormHeader");
+        studentFormHeader.text("Редактиране на студент");
+        addStudentButton.val("Редактирай");
+
+        studentsPageService.getStudentById(currentEditStudentId,function(data) {
+                studentAddFirstName.val(data.firstName);
+                studentAddFamilyName.val(data.lastName);
+                studentAddFacultyNumber.val(data.facultyNumber);
+                studentAddGenerateSpeciality.text(data.specialityName);
+                studentAddEmail.val(data.email);
+
+                coursePageService.getAllCourses(
+                    function(data){
+                        var options = generateCourseOptions(data, true);
+                        studentAddCourse.html(options);
+                    },
+                    function(error){
+                        errorsContainer.text(error.responseJSON.errorMessage);
+                    }
+                );
+
+                specialitiesPageService.getAllSpecialities(
+                    function(data){
+                        var options = generateSpecialitiesOptions(data, true);
+
+                        studentAddGenerateSpeciality.html(options);
+                    },
+                    function(error){
+                        errorsContainer.text(error.responseJSON.errorMessage);
+
+                    }
+                );
+
+
+                addStudentButton.on("click",function(event){
+                    event.preventDefault();
+                    var data = getFormData();
+                    studentsPageService.updateStudent(currentEditStudentId, data, function(){
+
+                            uiController.loadStudentPage();
+                        },
+                        function (error) {
+                            printErrors(error.responseJSON.errors);
+                        }
+                    );
+
+                });
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+            }
+        );
+
+    }
+
+    function getFormData(){
+        return {
+            'firstName': studentAddFirstName.val(),
+            'lastName' : studentAddFamilyName.val(),
+            'facultyNumber' : studentAddFacultyNumber.val(),
+            'email' : studentAddEmail.val(),
+            'courseId' : studentAddCourse.val(),
+            'specialityId' : studentAddGenerateSpeciality.val(),
+            'educationForm' : studentAddGenerateFormOfEducation.val()
+
+        };
     }
 
     function getFilterValues(){
@@ -158,16 +311,16 @@ var studentsPageController = (function(){
         );
     }
 
-    function generateSpecialitiesOptions(data){
-        var specialitiesOptions = "<option value='0'>Всички</option>";
+    function generateSpecialitiesOptions(data, withoutZeroOption){
+        var specialitiesOptions = (!withoutZeroOption ? "<option value='0'>Всички</option>" : "");
         for(var i = 0; i < data.specialities.length; i++){
             specialitiesOptions += "<option value='" + data.specialities[i].id + "'>" + data.specialities[i].specialityLongName + "</option>";
         }
         return specialitiesOptions;
     }
 
-    function generateCourseOptions(data){
-        var options = "<option value='0'>Всички</option>";
+    function generateCourseOptions(data, withoutZeroOption){
+        var options = (!withoutZeroOption ? "<option value='0'>Всички</option>" : "");
         for(var i =0; i < data.courses.length ; i++){
              options += "<option value='" + data.courses[i].id+"'>" + data.courses[i].name + "</option>";
         }
@@ -191,10 +344,18 @@ var studentsPageController = (function(){
                 "<td>" + usersData.students[i].email + "</td>" +
                 "<td>" + usersData.students[i].facultyNumber + "</td>" +
                 "<td class='edit' data-id='" + usersData.students[i].id + "'></td>" +
-                "<td class='delete'></td>";
+                "<td class='delete' data-id='" + usersData.students[i].id + "'></td>";
         }
         table += "</tbody></table>";
         return table;
+    }
+
+    function printErrors(errors) {
+        for(var e in errors) {
+            if(errors.hasOwnProperty(e)) {
+                errorsContainer.append('<p>' + errors[e] + '</p>');
+            }
+        }
     }
 
     return {
