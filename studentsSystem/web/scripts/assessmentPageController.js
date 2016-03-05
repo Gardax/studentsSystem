@@ -11,17 +11,23 @@ var assessmentPageController = (function() {
     var pagingButtons;
     var assessmentTable;
     var assessmentCurrentPageContainer;
+    var addNewAssessment;
+    var mainContainer;
+    var currentEditAssessmentId;
 
     var assessmentFirstPageButton;
     var assessmentPreviousPageButton;
     var assessmentNextPageButton;
     var assessmentLastPageButton;
     var assessmentSearchButton;
+    var addAssessmentButton;
 
     function initializeAssessmentsPage(containerElement ,assessmentElement) {
         assessmentDisciplineSelect = assessmentElement;
         container = containerElement;
+        mainContainer = $("#mainContainer");
         errorsContainer = $("#errorsContainer");
+        addNewAssessment = $("#addNewAssessment");
         pagingButtons = $(".paging");
         assessmentCurrentPageContainer = $(".assessmentCurrentPage");
         assessmentTable = $("#assessmentTable");
@@ -56,6 +62,94 @@ var assessmentPageController = (function() {
             event.preventDefault();
             loadAssessments(1, [], getFilterValues());
         });
+        addNewAssessment.on("click",function(){
+            loadAddEditForm(addAssessmentHandler);
+        });
+        assessmentTable.on('click', function(e) {
+            var element = $(e.target);
+            var assessmentId = element.attr('data-id');
+            if(element.hasClass('edit')) {
+                currentEditAssessmentId = assessmentId;
+                loadAddEditForm(editAssessmentHandler);
+            }
+            else if(element.hasClass('delete')) {
+                var response = confirm('Сигурен ли сте, че искате да изтриете тази оценка?');
+                if(response) {
+                    assessmentPageService.deleteAssessment(assessmentId, function(){
+                            var pageToGo = (currentPage == lastPage) ? --currentPage : currentPage;
+                            if(pageToGo < 1) {
+                                pageToGo = 1;
+                            }
+                            loadAssessments(pageToGo, currentOrder, currentFilters );
+                        },
+                        function(error){
+                            errorsContainer.text(error.responseJSON.errorMessage);
+                        }
+                    );
+                }
+            }
+        });
+
+    }
+
+    function loadAddEditForm(handler) {
+        mainContainer.load("/pages/assessmentAdd.html", function() {
+            addAssessmentButton = $("#addAssessmentButton");
+
+            //assessmentAddCourseNameInput = $("#courseAddCourseNameInput");
+
+            handler();
+        });
+    }
+
+    function addAssessmentHandler() {
+        addAssessmentButton.on("click", function (event) {
+            event.preventDefault();
+            errorsContainer.text('');
+
+            var data = getFormData();
+            assessmentPageService.addAssessment(data, function () {
+                    uiController.loadAssessmentPage();
+                },
+                function (error) {
+                    printErrors(error.responseJSON.errors);
+                }
+            );
+        });
+    }
+
+    function getFormData(){
+        return {
+            //'name': courseAddCourseNameInput.val()
+        };
+    }
+
+    function editAssessmentHandler() {
+        var assessmentFormHeader = $("#assessmentFormHeader");
+        assessmentFormHeader.text("Редактиране на оценка");
+        addAssessmentButton.val("Редактирай");
+
+        assessmentPageService.getAssessmentById(currentEditAssessmentId,function(data) {
+                assessmentName.val(data.name);
+
+                addAssessmentButton.on("click",function(event){
+                    event.preventDefault();
+                    var data = getFormData();
+                    assessmentPageService.updateAssessment(currentEditCourseId, data, function(){
+
+                            uiController.loadCoursePage();
+                        },
+                        function (error) {
+                            printErrors(error.responseJSON.errors);
+                        }
+                    );
+
+                });
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+            }
+        );
 
     }
 
@@ -162,8 +256,8 @@ var assessmentPageController = (function() {
                 table += "Слаб("
             }
             table += assesment.assessment + ")</td>" +
-                "<td class='edit'></td>" +
-                "<td class='delete'></td>";
+                "<td class='edit' data-id='" + assesment.id + "'></td>" +
+                "<td class='delete' data-id='" + assesment.id + "'></td>";
         }
     table += "</tbody></table>";
     return table;

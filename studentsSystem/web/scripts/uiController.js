@@ -143,6 +143,12 @@ var uiController = (function(){
         });
     }
 
+    function loadAssessmentPage() {
+        $mainContainer.load("/pages/assessments.html", function () {
+            loadAssessment();
+        });
+    }
+
     function userTable(){
         var userTable = $("#userTable");
 
@@ -209,6 +215,7 @@ var uiController = (function(){
         loadCoursePage: loadCoursePage,
         loadSpecialitiesPage: loadSpecialityPage,
         loadSubjectsPage: loadSubjectsPage,
-        loadStudentPage: loadStudentPage
+        loadStudentPage: loadStudentPage,
+        loadAssessmentPage: loadAssessmentPage
     };
 }());

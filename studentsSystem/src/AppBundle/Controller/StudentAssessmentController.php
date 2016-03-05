@@ -31,7 +31,7 @@ class StudentAssessmentController extends Controller
     const FAIL = 0;
 
     /**
-     * @Route("/add/assessment" , name="addStudentAssessment")
+     * @Route("/assessment/add" , name="addStudentAssessment")
      * @Method({"POST"})
      * @Security("has_role('ROLE_TEACHER')")
      *
@@ -177,7 +177,7 @@ class StudentAssessmentController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function getUserById(Request $request, $id){
+    public function getAssessmentByIdAction(Request $request, $id){
         $studentAssessmentService = $this->get('student_assessment_service');
 
         $studentAssessmentEntity = $studentAssessmentService->getStudentAssessmentById($id);
