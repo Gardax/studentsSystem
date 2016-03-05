@@ -87,7 +87,7 @@ var disciplinesPageController = (function(){
             else if(element.hasClass('delete')) {
                 var response = confirm('Сигурен ли сте, че искате да изтриете тази дисциплина?');
                 if(response) {
-                    subjectsPageService.deleteSubject(currentEditSubjectId, function(){
+                    subjectsPageService.deleteSubject(subjectId, function(){
                             var pageToGo = (currentPage == lastPage) ? --currentPage : currentPage;
                             if(pageToGo < 1) {
                                 pageToGo = 1;

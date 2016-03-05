@@ -32,7 +32,7 @@ class Subject
      */
     protected $workloadLectures = '0';
 
-    /** @ORM\OneToMany(targetEntity="StudentAssessment", mappedBy="subject")
+    /** @ORM\OneToMany(targetEntity="StudentAssessment", mappedBy="subject", cascade={"remove"})
      *
      */
     protected $studentAssessments;
