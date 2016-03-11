@@ -292,7 +292,7 @@ var studentsPageController = (function(){
                     lastPage++;
                 }
 
-                studentCurrentPageContainer.text(currentPage);
+                studentCurrentPageContainer.text(currentPage + " от " + lastPage);
 
                 manageButtonsState();
                 studentsTable.show();

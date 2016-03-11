@@ -168,7 +168,7 @@ var specialitiesPageController = (function(){
                     lastPage++;
                 }
 
-                $specialitiesCurrentPageContainer.text(currentPage);
+                $specialitiesCurrentPageContainer.text(currentPage + " от " + lastPage);
 
                 manageButtonsState();
                 $pagingButtons.show();

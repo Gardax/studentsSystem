@@ -197,7 +197,7 @@ var coursePageController = (function(){
                     lastPage++;
                 }
 
-                courseCurrentPageContainer.text(currentPage);
+                courseCurrentPageContainer.text(currentPage + " от " + lastPage);
                 errorsContainer.text('');
 
                 courseCurrentPageContainer.show();

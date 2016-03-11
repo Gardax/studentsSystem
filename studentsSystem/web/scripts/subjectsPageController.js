@@ -183,11 +183,12 @@ var disciplinesPageController = (function(){
                 currentOrder = order;
 
                 lastPage = parseInt(data.totalCount / data.itemsPerPage);
+
                 if(data.totalCount % data.itemsPerPage != 0) {
                     lastPage++;
                 }
 
-                subjectsCurrentPageContainer.text(currentPage);
+                subjectsCurrentPageContainer.text(currentPage + " от " + lastPage);
 
                 manageButtonsState();
                 pagingButtons.show();

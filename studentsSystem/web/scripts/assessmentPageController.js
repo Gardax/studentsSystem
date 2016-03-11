@@ -236,7 +236,7 @@ var assessmentPageController = (function() {
                     lastPage++;
                 }
 
-                assessmentCurrentPageContainer.text(currentPage);
+                assessmentCurrentPageContainer.text(currentPage + " от " + lastPage);
 
                 manageButtonsState();
                 pagingButtons.show();

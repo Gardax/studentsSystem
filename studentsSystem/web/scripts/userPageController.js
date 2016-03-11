@@ -90,7 +90,8 @@ var userPageController = (function(){
                 userTable.show();
                 pagingButtons.show();
                 userCurrentPageContainer.show();
-                userCurrentPageContainer.text(currentPage);
+
+                userCurrentPageContainer.text(currentPage + " от " + lastPage);
                 errorsContainer.text("");
 
                 var table = populateUsersTable(data);
