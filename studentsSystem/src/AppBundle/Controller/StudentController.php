@@ -258,7 +258,13 @@ class StudentController extends Controller
 
         $studentsData = $studentService->getStudentsData();
 
-        return new JsonResponse($studentsData);
+        $sData = [];
+
+        foreach($studentsData as $data){
+            $sData[] = $data['name'];
+        }
+
+        return new JsonResponse($sData);
 
     }
 }
