@@ -35,6 +35,9 @@ var assessmentPageService = (function(){
         httpRequester.deleteJSON(url, success, error, complete);
     }
 
+
+
+
     return {
         getAssessments : getAssessments,
         getAssessmentById : getAssessmentById,

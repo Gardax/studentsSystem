@@ -32,6 +32,11 @@ var studentsPageService = (function(){
 
         httpRequester.deleteJSON(url, success, error, complete);
     }
+    function getStudentsAutocomplete(success, error, complete){
+        var url = config.API_URL + "students/data";
+
+        httpRequester.getJSON(url, success, error, complete);
+    }
 
 
 
@@ -40,7 +45,8 @@ var studentsPageService = (function(){
         deleteStudent : deleteStudent,
         addStudent : addStudent,
         getStudentById : getStudentById,
-        updateStudent : updateStudent
+        updateStudent : updateStudent,
+        getStudentsAutocomplete : getStudentsAutocomplete
     };
 
 }());
