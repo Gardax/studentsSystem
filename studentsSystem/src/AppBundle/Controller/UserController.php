@@ -125,7 +125,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/userId/{id}")]
+     * @Route("/user/single/{id}")]
      * @Method({"GET"})
      *
      * @param Request $request
