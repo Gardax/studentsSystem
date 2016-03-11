@@ -113,9 +113,10 @@ class StudentService
      * @param $filters
      * @param $getFullInfo
      * @param bool $getCount
+     * @param bool $export
      * @return Student[]
      */
-    public function getStudents($page, $pageSize, $filters, $getFullInfo, $getCount=false, $export = false ){
+    public function getStudents($page, $pageSize, $filters, $getFullInfo, $getCount = false, $export = false ){
         $start = 0;
         $end = 0;
 
@@ -175,5 +176,19 @@ class StudentService
         $result = $this->studentManager->deleteStudent($student);
 
         return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStudentsData(){
+
+        $students = $this->studentManager->getStudentsData();
+
+        if(!$students){
+            throw new BadRequestHttpException("No students found");
+        }
+
+        return $students;
     }
 }

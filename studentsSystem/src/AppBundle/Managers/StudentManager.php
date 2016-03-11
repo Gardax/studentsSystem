@@ -104,6 +104,25 @@ class StudentManager
     }
 
     /**
+     * @return array
+     */
+    public function getStudentsData(){
+
+        $query = $this->entityManager->createQuery("
+              SELECT
+              CONCAT(CONCAT(s.firstName, ' '), s.lastName,
+              CONCAT(CONCAT(' ','('), s.facultyNumber,
+              CONCAT('', ')'), ''))
+              as name
+              FROM AppBundle:Student s");
+
+        $students = $query->getArrayResult();
+
+        return $students;
+
+    }
+
+    /**
      * @param Student $studentEntity
      * @return Student
      */

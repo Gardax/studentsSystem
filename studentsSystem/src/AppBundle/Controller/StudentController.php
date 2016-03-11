@@ -243,4 +243,22 @@ class StudentController extends Controller
         $success = $result ? self::SUCCESS : self::FAIL;
         return new JsonResponse(["success" => $success]);
     }
+
+    /**
+     * @Route("/students/data", name="studentsData")
+     * @Method("GET")
+     *
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getStudentsDataAction(Request $request){
+
+        $studentService = $this->get('student_service');
+
+        $studentsData = $studentService->getStudentsData();
+
+        return new JsonResponse($studentsData);
+
+    }
 }

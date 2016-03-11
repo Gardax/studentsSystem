@@ -126,7 +126,7 @@ class StudentAssessmentController extends Controller
 
     /**
      * @Route("/assessment/edit/{id}", name="updateAssessment")
-     * @Method("POST")
+     * @Method("PUT")
      * @Security("has_role('ROLE_TEACHER')")
      *
      * @param Request $request
