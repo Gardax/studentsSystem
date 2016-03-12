@@ -181,6 +181,7 @@ var uiController = (function(){
 
         coursePageController.initializeCoursePage(courseTable);
         coursePageController.populateCoursePage(1, [], []);
+
     }
 
     function loadSubjectTable(){

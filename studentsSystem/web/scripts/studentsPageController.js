@@ -14,7 +14,7 @@ var studentsPageController = (function(){
     var mainContainer;
     var studentFormHeader;
 
-    var studentAddUserName;
+    var $deleteButton;
     var studentAddPassword;
     var studentAddPasswordMatch;
     var studentAddEmail;
@@ -328,6 +328,8 @@ var studentsPageController = (function(){
     }
 
     function generateUsersTable(usersData){
+        $deleteButton = $(".delete");
+
         var table =
                 "<table border='1'>" +
                 "<thead>" +
@@ -343,8 +345,13 @@ var studentsPageController = (function(){
                 "<td>" + usersData.students[i].firstName + " " + usersData.students[i].lastName + "</td>" +
                 "<td>" + usersData.students[i].email + "</td>" +
                 "<td>" + usersData.students[i].facultyNumber + "</td>" +
-                "<td class='edit' data-id='" + usersData.students[i].id + "'></td>" +
-                "<td class='delete' data-id='" + usersData.students[i].id + "'></td>";
+                "<td class='edit' data-id='" + usersData.students[i].id + "'></td>" ;
+
+                if(loginService.getRole() == "Admin"){
+                    table += "<td class='delete' data-id='" + usersData.students[i].id + "'></td>";
+                }else if(loginService.getRole() == "Teacher"){
+                    $deleteButton.hide();
+                }
         }
         table += "</tbody></table>";
         return table;

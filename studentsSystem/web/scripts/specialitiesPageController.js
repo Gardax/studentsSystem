@@ -12,6 +12,7 @@ var specialitiesPageController = (function(){
     var errorsContainer;
     var mainContainer;
     var addNewSpeciality;
+    var $deleteButton;
 
     var $specialitiesSearchButton;
     var $pagingButtons;
@@ -220,6 +221,8 @@ var specialitiesPageController = (function(){
     }
 
     function generateUsersTable(usersData){
+        $deleteButton = $(".delete");
+
         var table = "<table border='1'>" +
             "<thead>" +
             "<th>#</th>" +
@@ -232,8 +235,13 @@ var specialitiesPageController = (function(){
                 "<td>" + usersData.specialities[i].id + "</td>" +
                 "<td>" + usersData.specialities[i].specialityLongName + "</td>" +
                 "<td>" + usersData.specialities[i].specialityShortName + "</td>" +
-                "<td class='edit' data-id='" + usersData.specialities[i].id + "'></td>" +
-                "<td class='delete' data-id='" + usersData.specialities[i].id + "'></td>";
+                "<td class='edit' data-id='" + usersData.specialities[i].id + "'></td>";
+
+            if(loginService.getRole() == "Admin"){
+                table += "<td class='delete' data-id='" + usersData.specialities[i].id + "'></td>";
+            }else if(loginService.getRole() == "Teacher"){
+                $deleteButton.hide();
+            }
         }
         table += "</tbody></table>";
         return table;

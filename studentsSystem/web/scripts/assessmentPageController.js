@@ -6,6 +6,7 @@ var assessmentPageController = (function() {
 
     //TODO: Hide the delete buttons from teachers
 
+    var $deleteButton;
     var errorsContainer;
     var assessmentStudentName;
     var assessmentDisciplineSelect;
@@ -289,6 +290,8 @@ var assessmentPageController = (function() {
         }
     }
     function generateAssessmentsTable(usersData) {
+        $deleteButton = $(".delete");
+
         var table = "<table border='1'>" +
             "<thead>" +
             "<tr>" +
@@ -317,8 +320,13 @@ var assessmentPageController = (function() {
                 table += "Слаб("
             }
             table += assesment.assessment + ")</td>" +
-                "<td class='edit' data-id='" + assesment.id + "'></td>" +
-                "<td class='delete' data-id='" + assesment.id + "'></td>";
+                "<td class='edit' data-id='" + assesment.id + "'></td>";
+
+            if(loginService.getRole() == "Admin"){
+                table += "<td class='delete' data-id='" + assesment.id + "'></td>";
+            }else if(loginService.getRole() == "Teacher"){
+                $deleteButton.hide();
+            }
         }
     table += "</tbody></table>";
     return table;
