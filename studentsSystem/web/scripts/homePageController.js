@@ -131,7 +131,7 @@ var homePageController = (function(){
                     lastPage++;
                 }
 
-                homeCurrentPageContainer.text(currentPage);
+                homeCurrentPageContainer.text(currentPage + " от " + lastPage);
 
                 manageButtonsState();
                 paging.show();

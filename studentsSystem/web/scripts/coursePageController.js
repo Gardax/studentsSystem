@@ -19,6 +19,7 @@ var coursePageController = (function(){
 
     var container;
     var mainContainer;
+    var $deleteButton;
 
     var courseFirstPageButton;
     var coursePreviousPageButton;
@@ -219,6 +220,7 @@ var coursePageController = (function(){
 
 
     function generateUsersTable(usersData){
+        $deleteButton = $(".delete");
         var table = "<table border='1'>"+
             "<thead>" +
             "<tr>" +
@@ -231,8 +233,13 @@ var coursePageController = (function(){
                 table += "<tr>" +
                 "<td>" + student.id + "</td>" +
                 "<td>" + student.name + "</td>" +
-                "<td class='edit' data-id='" + student.id + "'></td>" +
-                "<td class='delete' data-id='" + student.id + "'></td>";
+                "<td class='edit' data-id='" + student.id + "'></td>" ;
+                if(loginService.getRole() == "Admin"){
+                    table += "<td class='delete' data-id='" + student.id + "'></td>";
+                }else if(loginService.getRole() == "Teacher"){
+                    $deleteButton.hide();
+                }
+
             }
 
 

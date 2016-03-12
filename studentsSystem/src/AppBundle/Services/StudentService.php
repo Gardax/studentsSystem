@@ -159,13 +159,13 @@ class StudentService
 
     /**
      * @param $facultyNumber
-     * @return mixed
+     * @return Student
      */
     public function getStudentByFacultyNumber($facultyNumber){
 
-        $studentFacultyNumber = $this->studentManager->getStudentByFacultyNumber($facultyNumber);
+        $student = $this->studentManager->getStudentByFacultyNumber($facultyNumber);
 
-        return $studentFacultyNumber;
+        return $student;
     }
 
     /**

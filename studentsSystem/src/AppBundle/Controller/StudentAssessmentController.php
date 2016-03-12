@@ -43,8 +43,19 @@ class StudentAssessmentController extends Controller
         $studentAssessmentService = $this->get('student_assessment_service');
         $studentService = $this->get('student_service');
         $subjectService = $this->get('subject_service');
+        $studentData = $request->request->get('studentData');
 
-        $studentEntity= $studentService->getStudentById($request->request->get('studentId'));
+        if(!$studentData) {
+            throw new BadRequestHttpException('No student data passed.');
+        }
+
+        $facultyNumber = $this->extractFacultiNumber($studentData);
+
+        $studentEntity= $studentService->getStudentByFacultyNumber($facultyNumber);
+        if(!$studentEntity){
+            throw new BadRequestHttpException("Invalid student data !");
+        }
+
         $subjectEntity = $subjectService->getSubjectById($request->request->get('subjectId'));
 
         $studentAssessmentData = [
@@ -140,19 +151,25 @@ class StudentAssessmentController extends Controller
         $studentService = $this->get('student_service');
         $subjectService = $this->get('subject_service');
 
+        $studentData = $request->request->get('studentData');
+        if(!$studentData) {
+            throw new BadRequestHttpException('No student data passed.');
+        }
+
+        $facultyNumber = $this->extractFacultiNumber($studentData);
+
+        $studentEntity= $studentService->getStudentByFacultyNumber($facultyNumber);
+        if(!$studentEntity){
+            throw new BadRequestHttpException("Invalid student data !");
+        }
+
         $studentAssessmentData = [
             'workloadLectures' => $request->request->get('workloadLectures'),
             'workloadExercises' => $request->request->get('workloadExercises'),
             'assessment' => $request->request->get('assessment'),
         ];
 
-        $studentId = $request->request->get('studentId');
         $subjectId = $request->request->get('subjectId');
-
-        if(!$studentId){
-            throw new BadRequestHttpException('No student id.');
-        }
-        $studentEntity = $studentService->getStudentById($studentId);
 
         if(!$subjectId){
             throw new BadRequestHttpException('No subject id.');
@@ -177,7 +194,7 @@ class StudentAssessmentController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function getAssessmentByIdAction(Request $request, $id){
+    public function getUserById(Request $request, $id){
         $studentAssessmentService = $this->get('student_assessment_service');
 
         $studentAssessmentEntity = $studentAssessmentService->getStudentAssessmentById($id);
@@ -185,4 +202,16 @@ class StudentAssessmentController extends Controller
 
         return new JsonResponse($studentAssessmentModel);
     }
+
+    private function extractFacultiNumber($studentData){
+        $startPos = strpos($studentData,"(") + 1;
+        $endPos = strpos($studentData,")");
+        if($startPos == 0 || $endPos == -1){
+            throw new BadRequestHttpException("Invalid student data.");
+        }
+        $facultyNumber = substr($studentData,$startPos,$endPos-$startPos);
+
+        return $facultyNumber;
+    }
+
 }

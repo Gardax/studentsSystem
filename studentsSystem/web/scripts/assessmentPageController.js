@@ -4,6 +4,9 @@ var assessmentPageController = (function() {
     var currentOrder = [];
     var lastPage = 1;
 
+    //TODO: Hide the delete buttons from teachers
+
+    var $deleteButton;
     var errorsContainer;
     var assessmentStudentName;
     var assessmentDisciplineSelect;
@@ -14,6 +17,11 @@ var assessmentPageController = (function() {
     var addNewAssessment;
     var mainContainer;
     var currentEditAssessmentId;
+    var assessmentName;
+    var assessmentLecture;
+    var assessmentExercise;
+    var assessmentGrade;
+    var generateAssessmentSubjectsContainer;
 
     var assessmentFirstPageButton;
     var assessmentPreviousPageButton;
@@ -28,6 +36,7 @@ var assessmentPageController = (function() {
         mainContainer = $("#mainContainer");
         errorsContainer = $("#errorsContainer");
         addNewAssessment = $("#addNewAssessment");
+
         pagingButtons = $(".paging");
         assessmentCurrentPageContainer = $(".assessmentCurrentPage");
         assessmentTable = $("#assessmentTable");
@@ -95,8 +104,31 @@ var assessmentPageController = (function() {
     function loadAddEditForm(handler) {
         mainContainer.load("/pages/assessmentAdd.html", function() {
             addAssessmentButton = $("#addAssessmentButton");
+            assessmentName = $("#assessmentName");
+            assessmentLecture = $("#assessmentLecture");
+            assessmentExercise = $("#assessmentExercise");
+            assessmentGrade = $("#assessmentGrade");
+            generateAssessmentSubjectsContainer = $("#generateAssessmentSubjects");
 
-            //assessmentAddCourseNameInput = $("#courseAddCourseNameInput");
+            subjectsPageService.getAllSubjects(
+                function(data){
+                    var options = generateAssessmentSubjects(data);
+                    generateAssessmentSubjectsContainer.html(options);
+                },
+                function(error){
+                    errorsContainer.text(error.responseJSON.errorMessage);
+
+                }
+            );
+            studentsPageService.getStudentsAutocomplete(
+              function(data){
+                  assessmentName.autocomplete({
+                      source: data
+                  });
+              }
+            );
+
+
 
             handler();
         });
@@ -112,7 +144,13 @@ var assessmentPageController = (function() {
                     uiController.loadAssessmentPage();
                 },
                 function (error) {
-                    printErrors(error.responseJSON.errors);
+
+                    if(error.responseJSON.errors){
+                        printErrors(error.responseJSON.errors);
+                    }
+                    else{
+                        errorsContainer.text(error.responseJSON.errorMessage);
+                    }
                 }
             );
         });
@@ -120,7 +158,11 @@ var assessmentPageController = (function() {
 
     function getFormData(){
         return {
-            //'name': courseAddCourseNameInput.val()
+            'studentData': assessmentName.val(),
+            'subjectId' : generateAssessmentSubjectsContainer.val(),
+            'workloadLectures' : assessmentLecture.val(),
+            'workloadExercises' : assessmentExercise.val(),
+            'assessment' : assessmentGrade.val()
         };
     }
 
@@ -130,23 +172,35 @@ var assessmentPageController = (function() {
         addAssessmentButton.val("Редактирай");
 
         assessmentPageService.getAssessmentById(currentEditAssessmentId,function(data) {
-                assessmentName.val(data.name);
+                assessmentName.val(data.studentFirstName + " " + data.studentLastName + "(" + data.facultyNumber + ")");
+                assessmentLecture.val(data.lectureAttended);
+                assessmentExercise.val(data.exerciseAttended);
+                assessmentGrade.val(data.assessment);
+                generateAssessmentSubjectsContainer.val(data.subjectId);
 
                 addAssessmentButton.on("click",function(event){
+
                     event.preventDefault();
                     var data = getFormData();
-                    assessmentPageService.updateAssessment(currentEditCourseId, data, function(){
+                    assessmentPageService.updateAssessment(currentEditAssessmentId, data, function(){
 
-                            uiController.loadCoursePage();
+                            uiController.loadAssessmentPage();
                         },
                         function (error) {
-                            printErrors(error.responseJSON.errors);
+
+                            if(error.responseJSON.errors){
+                                printErrors(error.responseJSON.errors);
+                            }
+                            else{
+                                errorsContainer.text(error.responseJSON.errorMessage);
+                            }
                         }
                     );
 
                 });
             },
             function(error){
+
                 errorsContainer.text(error.responseJSON.errorMessage);
             }
         );
@@ -183,7 +237,7 @@ var assessmentPageController = (function() {
                     lastPage++;
                 }
 
-                assessmentCurrentPageContainer.text(currentPage);
+                assessmentCurrentPageContainer.text(currentPage + " от " + lastPage);
 
                 manageButtonsState();
                 pagingButtons.show();
@@ -201,6 +255,14 @@ var assessmentPageController = (function() {
                 assessmentCurrentPageContainer.hide();
             }
         );
+    }
+
+    function generateAssessmentSubjects(data){
+        var option = "";
+        for(var i = 0 ; i < data.subjects.length ; i++ ){
+            option += "<option value='"+data.subjects[i].id+"'>"+data.subjects[i].name +"</option>";
+        }
+        return option;
     }
 
     function generateAssessmentsOptions(data){
@@ -228,6 +290,8 @@ var assessmentPageController = (function() {
         }
     }
     function generateAssessmentsTable(usersData) {
+        $deleteButton = $(".delete");
+
         var table = "<table border='1'>" +
             "<thead>" +
             "<tr>" +
@@ -256,12 +320,26 @@ var assessmentPageController = (function() {
                 table += "Слаб("
             }
             table += assesment.assessment + ")</td>" +
-                "<td class='edit' data-id='" + assesment.id + "'></td>" +
-                "<td class='delete' data-id='" + assesment.id + "'></td>";
+                "<td class='edit' data-id='" + assesment.id + "'></td>";
+
+            if(loginService.getRole() == "Admin"){
+                table += "<td class='delete' data-id='" + assesment.id + "'></td>";
+            }else if(loginService.getRole() == "Teacher"){
+                $deleteButton.hide();
+            }
         }
     table += "</tbody></table>";
     return table;
-}
+    }
+
+    function printErrors(errors) {
+        for(var e in errors) {
+            if(errors.hasOwnProperty(e)) {
+                errorsContainer.append('<p>' + errors[e] + '</p>');
+            }
+        }
+    }
+
     return {
         loadAssessmentsPage: loadAssessmentsPage,
         initializeAssessmentsPage: initializeAssessmentsPage

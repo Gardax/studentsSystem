@@ -56,6 +56,11 @@ class StudentAssessmentModel
     /**
      * @var string
      */
+    public $facultyNumber;
+
+    /**
+     * @var string
+     */
     public $subjectName;
 
     /**
@@ -76,6 +81,7 @@ class StudentAssessmentModel
 //        $this->setLectureTotal($studentAssessment->getSubject()->getWorkloadLectures());
         $this->setStudentFirstName($studentAssessment->getStudent()->getFirstName());
         $this->setStudentLastName($studentAssessment->getStudent()->getLastName());
+        $this->setFacultyNumber($studentAssessment->getStudent()->getFacultyNumber());
         $this->setSubjectName($studentAssessment->getSubject()->getName());
         $this->setSubjectId($studentAssessment->getSubject()->getId());
     }
@@ -239,5 +245,22 @@ class StudentAssessmentModel
     {
         $this->assessment = $assessment;
     }
+
+    /**
+     * @return string
+     */
+    public function getFacultyNumber()
+    {
+        return $this->facultyNumber;
+    }
+
+    /**
+     * @param string $facultyNumber
+     */
+    public function setFacultyNumber($facultyNumber)
+    {
+        $this->facultyNumber = $facultyNumber;
+    }
+
 
 }

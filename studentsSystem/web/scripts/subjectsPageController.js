@@ -9,6 +9,7 @@ var disciplinesPageController = (function(){
 
     var subjectsSearch;
     var subjectsSearchButton;
+    var $deleteButton;
 
     var subjectsTable;
 
@@ -183,11 +184,12 @@ var disciplinesPageController = (function(){
                 currentOrder = order;
 
                 lastPage = parseInt(data.totalCount / data.itemsPerPage);
+
                 if(data.totalCount % data.itemsPerPage != 0) {
                     lastPage++;
                 }
 
-                subjectsCurrentPageContainer.text(currentPage);
+                subjectsCurrentPageContainer.text(currentPage + " от " + lastPage);
 
                 manageButtonsState();
                 pagingButtons.show();
@@ -230,6 +232,8 @@ var disciplinesPageController = (function(){
 
 
     function generateSubjectsTable(usersData){
+        $deleteButton = $(".delete");
+
         var table = "<table border='1'>" +
             "<thead>" +
             "<th>#</th>" +
@@ -244,8 +248,13 @@ var disciplinesPageController = (function(){
                     "<td>" + usersData.subjects[i].name + "</td>" +
                     "<td>" + usersData.subjects[i].workloadLectures + "</td>" +
                     "<td>" + usersData.subjects[i].workloadExercises + "</td>" +
-                    "<td class='edit' data-id='" + usersData.subjects[i].id + "'></td>" +
-                    "<td class='delete' data-id='" + usersData.subjects[i].id + "'></td>";
+                    "<td class='edit' data-id='" + usersData.subjects[i].id + "'></td>" ;
+
+                    if(loginService.getRole() == "Admin"){
+                        table += "<td class='delete' data-id='" + usersData.subjects[i].id + "'></td>";
+                    }else if(loginService.getRole() == "Teacher"){
+                        $deleteButton.hide();
+                    }
         }
         table += "</tbody></table>";
         return table;
