@@ -261,4 +261,14 @@ class UserService implements UserProviderInterface
 
         return $apiKey;
     }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function deleteUser(User $user){
+        $result = $this->userManager->deleteUser($user);
+
+        return $result;
+    }
 }

@@ -207,6 +207,18 @@ class UserManager
     }
 
     /**
+     * @param User $user
+     * @return bool
+     */
+    public function deleteUser(User $user){
+
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+
+        return true;
+    }
+
+    /**
      * Flushes all entities.
      */
     public function saveChanges(){

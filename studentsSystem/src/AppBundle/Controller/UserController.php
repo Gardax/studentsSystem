@@ -29,7 +29,9 @@ use AppBundle\Services\UserService;
  */
 class UserController extends Controller
 {
-    const PAGE_SIZE = 10;
+    const PAGE_SIZE = 5;
+    const SUCCESS = 1;
+    const FAIL = 0;
 
     /**
      * @Route("/user/add" , name="addUser")
@@ -139,6 +141,26 @@ class UserController extends Controller
         $userModel = new UserModel($userEntity);
 
         return new JsonResponse($userModel);
+    }
+
+    /**
+     * @Route("/user/delete/{id}", name="deleteUser")
+     * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function deleteUserAction(Request $request, $id) {
+
+        $userService = $this->get("user_service");
+
+        $user = $userService->getUserById($id);
+        $result = $userService->deleteUser($user);
+
+        $success = $result ? self::SUCCESS : self::FAIL;
+        return new JsonResponse(["success" => $success]);
     }
 
 }
