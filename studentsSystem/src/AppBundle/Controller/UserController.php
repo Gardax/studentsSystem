@@ -10,7 +10,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Exceptions\InvalidFormException;
+use AppBundle\Models\RoleModel;
 use AppBundle\Models\UserModel;
+use Assetic\Filter\JSqueezeFilter;
+use Doctrine\Tests\Common\DataFixtures\TestEntity\Role;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -153,7 +156,6 @@ class UserController extends Controller
      * @return JsonResponse
      */
     public function deleteUserAction(Request $request, $id) {
-
         $userService = $this->get("user_service");
 
         $user = $userService->getUserById($id);
@@ -161,6 +163,27 @@ class UserController extends Controller
 
         $success = $result ? self::SUCCESS : self::FAIL;
         return new JsonResponse(["success" => $success]);
+    }
+
+    /**
+     * @Route("/roles/all", name="getRoles")
+     * @Method("GET")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getUserRoles(Request $request) {
+        $userService = $this->get("user_service");
+
+        $roles = $userService->getRoles(true);
+
+        $rolesData = [];
+        foreach($roles as $role) {
+            $rolesData = new RoleModel($role);
+        }
+
+        return new JsonResponse($rolesData);
     }
 
 }

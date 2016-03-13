@@ -3,6 +3,7 @@
 namespace AppBundle\Managers;
 
 use AppBundle\Entity\User;
+use AppBundle\Services\UserService;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -198,10 +199,19 @@ class UserManager
     }
 
     /**
+     * @param boolean $withoutUserRole
      * @return \AppBundle\Entity\Role[]|array
      */
-    public function getRoles() {
-        $roles = $this->entityManager->getRepository("AppBundle:Role")->findAll();
+    public function getRoles($withoutUserRole) {
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select(array('r'))
+            ->from('AppBundle:Role', 'r');
+
+        if($withoutUserRole) {
+            $qb->where($qb->expr()->neq('r.role', UserService::ROLE_USER));
+        }
+
+        $roles = $qb->getQuery()->getResult();
 
         return $roles;
     }

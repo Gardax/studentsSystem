@@ -231,10 +231,11 @@ class UserService implements UserProviderInterface
     /**
      * Returns all roles.
      *
+     * @param boolean $withoutUserRole
      * @return \AppBundle\Entity\Role[]
      */
-    protected function getRoles() {
-        return $this->userManager->getRoles();
+    public function getRoles($withoutUserRole = false) {
+        return $this->userManager->getRoles($withoutUserRole);
     }
 
     public function refreshUser(UserInterface $user)

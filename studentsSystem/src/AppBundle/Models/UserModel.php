@@ -54,9 +54,9 @@ class UserModel
     public $apiKey;
 
     /**
-     * @var string
+     * @var RoleModel
      */
-    public $roleName;
+    public $role;
 
     /**
      * UserModel constructor.
@@ -71,7 +71,10 @@ class UserModel
         $this->setEmail($user->getEmail());
         $this->setPassword($user->getPassword());
         $this->setApiKey($user->getApiKey());
-        $this->setRoleName($this->determineTheBiggestRoleName($user));
+        $role = $this->determineTheBiggestRole($user);
+        if($role) {
+            $this->setRole(new RoleModel($role));
+        }
     }
 
     /**
@@ -187,38 +190,37 @@ class UserModel
     }
 
     /**
-     * @return string
+     * @return RoleModel
      */
-    public function getRoleName()
+    public function getRole()
     {
-        return $this->roleName;
+        return $this->role;
     }
 
     /**
-     * @param string $roleName
+     * @param RoleModel $role
      */
-    public function setRoleName($roleName)
+    public function setRole($role)
     {
-        $this->roleName = $roleName;
+        $this->role = $role;
     }
 
-    private function determineTheBiggestRoleName(User $user) {
-        $containsRoleAdmin = false;
-        $containsRoleTeacher = false;
+    /**
+     * @param User $user
+     * @return \AppBundle\Entity\Role|null
+     */
+    private function determineTheBiggestRole(User $user) {
+        $biggestRole = null;
         foreach($user->getRoles() as $role) {
             if($role->getRole() == UserService::ROLE_ADMIN) {
-                $containsRoleAdmin = true;
+                $biggestRole = $role;
                 break;
             }
             if($role->getRole() == UserService::ROLE_TEACHER) {
-                $containsRoleTeacher = true;
+                $biggestRole = $role;
             }
         }
 
-        //TODO: Extract the hardcoded string as constants!
-        if($containsRoleAdmin) return 'Admin';
-        if($containsRoleTeacher) return 'Teacher';
-
-        return 'Student';
+        return $biggestRole;
     }
 }

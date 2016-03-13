@@ -140,7 +140,7 @@ var userPageController = (function(){
                 "<td>"+usersData.users[i].id + "</td>" +
                 "<td>"+usersData.users[i].username + "</td>" +
                 "<td>"+usersData.users[i].email + "</td>" +
-                "<td>"+usersData.users[i].roleName + "</td>" +
+                "<td>"+usersData.users[i].role.roleName + "</td>" +
                 "<td class='edit'></td>" +
                 "<td class='delete'></td>";
         }
