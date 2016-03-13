@@ -8,10 +8,20 @@ var userPageController = (function(){
     var userCurrentPageContainer;
     var errorsContainer;
     var container;
+    var userAddUsername ;
+    var userAddFirstName ;
+    var userAddFamilyName;
+    var userAddPassword ;
+    var userAddPasswordMatch ;
+    var userAddEmail ;
 
     var userTable;
     var studentName;
     var studentEmail;
+    var currentEditUserId;
+    var addNewUser;
+    var mainContainer;
+    var addUserButton;
 
     var userFirstPageButton;
     var userPreviousPageButton;
@@ -24,7 +34,7 @@ var userPageController = (function(){
         studentName = $("#studentName");
         studentEmail = $("#studentEmail");
         userTable = $("#userTable");
-
+        mainContainer = $("#mainContainer");
         container = containerElement;
 
         userCurrentPageContainer = $(".userCurrentPage");
@@ -33,7 +43,7 @@ var userPageController = (function(){
 
         pagingButtons = $(".paging");
         userSearchButton = $("#userSearchButton");
-
+        addNewUser = $("#addNewUser");
         attachEvents();
     }
 
@@ -64,7 +74,110 @@ var userPageController = (function(){
             event.preventDefault();
             loadUserPage(1, [], getFilterValues());
         });
+        addNewUser.on("click",function(){
+            loadAddEditForm(addUserHandler);
+        });
 
+        userTable.on('click', function(e) {
+            var element = $(e.target);
+            var userId = element.attr('userId');
+            if(element.hasClass('edit')) {
+                currentEditUserId = userId;
+                loadAddEditForm(editUserHandler);
+            }
+            else if(element.hasClass('delete')) {
+                var response = confirm('Сигурен ли сте, че искате да изтриете този потребител?');
+                if(response) {
+                    userPageService.deleteUser(userId, function(){
+                            var pageToGo = (currentPage == lastPage) ? --currentPage : currentPage;
+                            if(pageToGo < 1) {
+                                pageToGo = 1;
+                            }
+                            populateCoursePage(pageToGo, currentOrder, currentFilters );
+                        },
+                        function(error){
+                            errorsContainer.text(error.responseJSON.errorMessage);
+                        }
+                    );
+                }
+            }
+        });
+
+    }
+
+    function loadAddEditForm(handler) {
+        mainContainer.load("/pages/userAdd.html", function() {
+            addUserButton = $("#addUserButton");
+            userAddUsername = $("#userAddUsername");
+            userAddFirstName = $("#userAddFirstName");
+            userAddFamilyName = $("#userAddFamilyName");
+            userAddPassword = $("#userAddPassword");
+            userAddPasswordMatch = $("#userAddPasswordMatch");
+            userAddEmail = $("#userAddEmail");
+
+
+            handler();
+        });
+    }
+
+    function addUserHandler() {
+        addUserButton.on("click", function (event) {
+            event.preventDefault();
+            errorsContainer.text('');
+
+            var data = getFormData();
+            userPageService.addUser(data, function () {
+                    uiController.loadUserPage();
+                },
+                function (error) {
+                    printErrors(error.responseJSON.errors);
+                }
+            );
+        });
+    }
+
+    function editUserHandler() {
+        var userFormHeader = $("#userFormHeader");
+        userFormHeader.text("Редактиране на потребител");
+        addUserButton.val("Редактирай");
+
+        userPageService.getUserById(currentEditUserId,function(data) {
+
+                userAddUsername.val(data.username);
+                userAddFirstName.val(data.firstName);
+                userAddFamilyName.val(data.lastName);
+                userAddEmail.val(data.email);
+
+                addUserButton.on("click",function(event){
+                    event.preventDefault();
+                    var data = getFormData();
+                    coursePageService.updateUser(currentEditUserId, data, function(){
+
+                            uiController.loadUserPage();
+                        },
+                        function (error) {
+                            printErrors(error.responseJSON.errors);
+                        }
+                    );
+
+                });
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+            }
+        );
+
+    }
+
+    function getFormData(){
+        return {
+            'username' : userAddUsername.val(),
+            'firstName' : userAddFirstName.val(),
+            'lastName' : userAddFamilyName.val(),
+            'password' : userAddPassword.val(),
+            'confirmPassword' : userAddPasswordMatch.val(),
+            'email' : userAddEmail.val()
+        };
     }
 
     function getFilterValues(){
@@ -146,6 +259,14 @@ var userPageController = (function(){
         }
         table += "</tbody></table>";
         return table;
+    }
+
+    function printErrors(errors) {
+        for(var e in errors) {
+            if(errors.hasOwnProperty(e)) {
+                errorsContainer.append('<p>' + errors[e] + '</p>');
+            }
+        }
     }
 
     return {

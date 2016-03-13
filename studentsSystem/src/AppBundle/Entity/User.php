@@ -22,7 +22,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=25, unique=true)
-     * @Assert\NotBlank(groups={"registration", "login"}, message="Username cannot be blank.")
+     * @Assert\NotBlank(groups={"registration", "login", "edit"}, message="Username cannot be blank.")
      * @Assert\Length(
      *     min=3,
      *     max=25,

@@ -60,12 +60,10 @@ class UserService implements UserProviderInterface
      * @throws ValidatorException
      */
     public function addUser($userData){
-
         $user = new User();
 
         $user->setUsername($userData['username']);
         $user->setUserFirstName($userData['firstName']);
-        $user->setUserLastName($userData['lastName']);
         $user->setUserLastName($userData['lastName']);
         $user->setEmail($userData['email']);
 
@@ -76,7 +74,7 @@ class UserService implements UserProviderInterface
         }
 
         $user->setSalt();
-        $password = $this->passwordEncoder->encodePassword($user, $user->getPassword());
+        $password = $this->passwordEncoder->encodePassword($user, $userData['password']);
         $user->setPassword($password);
 
         $user = $this->userManager->addUser($user);
@@ -85,10 +83,6 @@ class UserService implements UserProviderInterface
         $this->assignAppropriateRoles($user, $userData['roleId'], $roles);
 
         $this->setUserApiKey($user);
-
-        if(count($errors) > 0){
-            throw new ValidatorException($errors);
-        }
 
         return $user;
     }
@@ -271,5 +265,36 @@ class UserService implements UserProviderInterface
         $result = $this->userManager->deleteUser($user);
 
         return $result;
+    }
+
+    public function getRoleByName($role) {
+        $roleEntity = $this->userManager->getUserRole($role);
+
+        return $roleEntity;
+    }
+
+    public function updateUser(User $user, $userData) {
+        $user->setUsername($userData['username']);
+        $user->setUserFirstName($userData['firstName']);
+        $user->setUserLastName($userData['lastName']);
+
+        if($userData['password']){
+            $password = $this->passwordEncoder->encodePassword($user, $userData['password']);
+            $user->setPassword($password);
+        }
+        $user->setEmail($userData['email']);
+
+        $roles = $this->getRoles();
+        $this->assignAppropriateRoles($user, $userData['roleId'], $roles);
+
+        $errors = $this->validator->validate($user, null, array('registration'));
+
+        if(count($errors) > 0) {
+            throw new ValidatorException($errors);
+        }
+
+        $this->userManager->saveChanges();
+
+        return $user;
     }
 }

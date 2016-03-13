@@ -55,7 +55,6 @@ class UserController extends Controller
             'firstName' => $request->request->get('firstName'),
             'lastName' => $request->request->get('lastName'),
             'password' => $request->request->get('password'),
-            'confirmPassword' => $request->request->get('confirmPassword'),
             'email' => $request->request->get('email'),
             'roleId' => $request->request->get('roleId')
         ];
@@ -162,6 +161,7 @@ class UserController extends Controller
         $result = $userService->deleteUser($user);
 
         $success = $result ? self::SUCCESS : self::FAIL;
+
         return new JsonResponse(["success" => $success]);
     }
 
@@ -173,17 +173,55 @@ class UserController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function getUserRoles(Request $request) {
+    public function getUserRoles(Request $request)
+    {
         $userService = $this->get("user_service");
 
         $roles = $userService->getRoles(true);
 
         $rolesData = [];
-        foreach($roles as $role) {
+        foreach ($roles as $role) {
             $rolesData = new RoleModel($role);
         }
 
         return new JsonResponse($rolesData);
+    }
+
+     /**
+     * @Route("/user/edit/{id}", name="editUser")
+     * @Method("PUT")
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function editUserAction(Request $request,$id){
+
+        $userService = $this->get("user_service");
+
+        $user = $userService->getUserById($id);
+
+        $userData = [
+            'username' => $request->request->get('username'),
+            'firstName' => $request->request->get('firstName'),
+            'lastName' => $request->request->get('lastName'),
+            'password' => $request->request->get('password'),
+            'confirmPassword' => $request->request->get('confirmPassword'),
+            'email' => $request->request->get('email'),
+            'roleId' => $request->request->get('roleId')
+        ];
+
+        if($userData['password'] ){
+            if($userData['password'] != $userData['confirmPassword']){
+                throw new BadRequestHttpException("Паролите не съвпадат.");
+            }
+        }
+
+        $userEntity = $userService->updateUser($user, $userData);
+        $userModel = new UserModel($userEntity);
+
+        return new JsonResponse($userModel);
     }
 
 }

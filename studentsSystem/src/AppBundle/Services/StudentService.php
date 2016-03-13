@@ -73,7 +73,6 @@ class StudentService
         }
 
         $this->studentManager->addStudent($studentEntity);
-        $this->studentManager->saveChanges();
 
         return $studentEntity;
 

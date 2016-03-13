@@ -102,6 +102,8 @@ var uiController = (function(){
             //TODO: Extract this as constant.
             if(loginService.getRole() == "Admin") {
                 $users.show();
+            }else {
+                $users.hide();
             }
 
             $studentAssessment.show();

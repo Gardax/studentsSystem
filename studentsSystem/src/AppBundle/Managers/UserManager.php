@@ -163,32 +163,6 @@ class UserManager
     }
 
     /**
-     * @param $roleName
-     * @return \AppBundle\Entity\Role[]
-     */
-    public function getAdminRole($roleName) {
-        $role = $this->entityManager->getRepository("AppBundle:Role")->findOneBy([
-                'role' => $roleName
-            ]
-        );
-
-        return $role;
-    }
-
-    /**
-     * @param $roleName
-     * @return \AppBundle\Entity\Role[]
-     */
-    public function getTeacherRole($roleName) {
-        $role = $this->entityManager->getRepository("AppBundle:Role")->findOneBy([
-                'role' => $roleName
-            ]
-        );
-
-        return $role;
-    }
-
-    /**
      * @param $id
      * @return \AppBundle\Entity\Role|null|object
      */

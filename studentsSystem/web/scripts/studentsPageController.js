@@ -144,11 +144,34 @@ var studentsPageController = (function(){
     }
 
     function addStudentHandler() {
+        coursePageService.getAllCourses(
+            function(data){
+                var options = generateCourseOptions(data, true);
+                studentAddCourse.html(options);
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+            }
+        );
+
+        specialitiesPageService.getAllSpecialities(
+            function(data){
+                var options = generateSpecialitiesOptions(data, true);
+
+                studentAddGenerateSpeciality.html(options);
+            },
+            function(error){
+                errorsContainer.text(error.responseJSON.errorMessage);
+
+            }
+        );
+
         addStudentButton.on("click", function (event) {
             event.preventDefault();
             errorsContainer.text('');
 
             var data = getFormData();
+
             studentsPageService.addStudent(data, function () {
                     uiController.loadStudentPage();
                 },
@@ -278,6 +301,8 @@ var studentsPageController = (function(){
 
             }
         );
+
+
 
     }
 
