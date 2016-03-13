@@ -254,8 +254,9 @@ var userPageController = (function(){
                 "<td>"+usersData.users[i].username + "</td>" +
                 "<td>"+usersData.users[i].email + "</td>" +
                 "<td>"+usersData.users[i].role.roleName + "</td>" +
-                "<td class='edit'></td>" +
-                "<td class='delete'></td>";
+                "<td class='edit' data-id='" + usersData.users[i].id + "'></td>" ;
+                table += "<td class='delete' data-id='" + usersData.users[i].id + "'></td>";
+
         }
         table += "</tbody></table>";
         return table;
