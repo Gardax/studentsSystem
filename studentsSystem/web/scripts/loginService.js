@@ -4,7 +4,7 @@ var loginService = (function(){
         httpRequester.postJSON(url, formData, function (data) {
             saveApiKey(data.apiKey);
             localStorage.setItem('username', data.username);
-            localStorage.setItem('role', data.roleName);
+            localStorage.setItem('role', data.role.roleName);
             success(data);
         }, error, complete);
     }

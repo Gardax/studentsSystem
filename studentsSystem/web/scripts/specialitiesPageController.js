@@ -237,9 +237,9 @@ var specialitiesPageController = (function(){
                 "<td>" + usersData.specialities[i].specialityShortName + "</td>" +
                 "<td class='edit' data-id='" + usersData.specialities[i].id + "'></td>";
 
-            if(loginService.getRole() == "Admin"){
+            if(loginService.getRole() == "Администратор"){
                 table += "<td class='delete' data-id='" + usersData.specialities[i].id + "'></td>";
-            }else if(loginService.getRole() == "Teacher"){
+            }else if(loginService.getRole() != "Администратор"){
                 $deleteButton.hide();
             }
         }

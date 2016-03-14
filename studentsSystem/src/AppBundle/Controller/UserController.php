@@ -117,6 +117,7 @@ class UserController extends Controller
      * @return JsonResponse
      */
     public function authenticateAction(Request $request) {
+
         $username = $request->request->get('email');
         $password = $request->request->get('password');
 

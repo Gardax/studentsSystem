@@ -250,9 +250,9 @@ var disciplinesPageController = (function(){
                     "<td>" + usersData.subjects[i].workloadExercises + "</td>" +
                     "<td class='edit' data-id='" + usersData.subjects[i].id + "'></td>" ;
 
-                    if(loginService.getRole() == "Admin"){
+                    if(loginService.getRole() == "Администратор"){
                         table += "<td class='delete' data-id='" + usersData.subjects[i].id + "'></td>";
-                    }else if(loginService.getRole() == "Teacher"){
+                    }else if(loginService.getRole() != "Администратор"){
                         $deleteButton.hide();
                     }
         }

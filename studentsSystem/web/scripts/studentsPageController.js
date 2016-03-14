@@ -372,9 +372,9 @@ var studentsPageController = (function(){
                 "<td>" + usersData.students[i].facultyNumber + "</td>" +
                 "<td class='edit' data-id='" + usersData.students[i].id + "'></td>" ;
 
-                if(loginService.getRole() == "Admin"){
+                if(loginService.getRole() == "Администратор"){
                     table += "<td class='delete' data-id='" + usersData.students[i].id + "'></td>";
-                }else if(loginService.getRole() == "Teacher"){
+                }else if(loginService.getRole() != "Администратор"){
                     $deleteButton.hide();
                 }
         }

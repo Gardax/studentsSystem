@@ -234,9 +234,9 @@ var coursePageController = (function(){
                 "<td>" + student.id + "</td>" +
                 "<td>" + student.name + "</td>" +
                 "<td class='edit' data-id='" + student.id + "'></td>" ;
-                if(loginService.getRole() == "Admin"){
+                if(loginService.getRole() == "Администратор"){
                     table += "<td class='delete' data-id='" + student.id + "'></td>";
-                }else if(loginService.getRole() == "Teacher"){
+                }else if(loginService.getRole() != "Администратор"){
                     $deleteButton.hide();
                 }
 

@@ -99,8 +99,8 @@ var uiController = (function(){
             $specialitiesButton.show();
             $subjectsButton.show();
             $students.show();
-            //TODO: Extract this as constant.
-            if(loginService.getRole() == "Admin") {
+
+            if(loginService.getRole() == "Администратор") {
                 $users.show();
             }else {
                 $users.hide();

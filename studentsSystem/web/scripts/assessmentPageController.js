@@ -322,9 +322,9 @@ var assessmentPageController = (function() {
             table += assesment.assessment + ")</td>" +
                 "<td class='edit' data-id='" + assesment.id + "'></td>";
 
-            if(loginService.getRole() == "Admin"){
+            if(loginService.getRole() == "Администратор"){
                 table += "<td class='delete' data-id='" + assesment.id + "'></td>";
-            }else if(loginService.getRole() == "Teacher"){
+            }else if(loginService.getRole() != "Администратор"){
                 $deleteButton.hide();
             }
         }
