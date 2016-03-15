@@ -181,11 +181,16 @@ class UserManager
         $qb->select(array('r'))
             ->from('AppBundle:Role', 'r');
 
+        $parameters = [];
         if($withoutUserRole) {
-            $qb->where($qb->expr()->neq('r.role', UserService::ROLE_USER));
+            $qb->where($qb->expr()->neq('r.role', ':roleUser'));
+            $parameters['roleUser'] = UserService::ROLE_USER;
         }
 
-        $roles = $qb->getQuery()->getResult();
+        $query = $qb->getQuery();
+        $query->setParameters($parameters);
+
+        $roles = $query->getResult();
 
         return $roles;
     }
