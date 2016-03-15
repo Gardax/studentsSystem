@@ -14,6 +14,7 @@ var userPageController = (function(){
     var userAddPassword ;
     var userAddPasswordMatch ;
     var userAddEmail ;
+    var userAddRole;
 
     var userTable;
     var studentName;
@@ -36,6 +37,7 @@ var userPageController = (function(){
         userTable = $("#userTable");
         mainContainer = $("#mainContainer");
         container = containerElement;
+        userAddRole = $("#userAddRole");
 
         userCurrentPageContainer = $(".userCurrentPage");
         errorsContainer = $("#errorsContainer");
@@ -93,7 +95,7 @@ var userPageController = (function(){
                             if(pageToGo < 1) {
                                 pageToGo = 1;
                             }
-                            populateCoursePage(pageToGo, currentOrder, currentFilters );
+                            loadUserPage(pageToGo, currentOrder, currentFilters );
                         },
                         function(error){
                             errorsContainer.text(error.responseJSON.errorMessage);
@@ -136,6 +138,14 @@ var userPageController = (function(){
         });
     }
 
+    function generateUserRolesOptions(data, withoutZeroOption){
+        var userRolesOptions = (!withoutZeroOption ? "<option value='0'>Всички</option>" : "");
+        for(var i = 0; i < data.user.role.length; i++){
+            userRolesOptions += "<option value='" + data.specialities[i].id + "'>" + data.specialities[i].specialityLongName + "</option>";
+        }
+        return specialitiesOptions;
+    }
+
     function editUserHandler() {
         var userFormHeader = $("#userFormHeader");
         userFormHeader.text("Редактиране на потребител");
@@ -144,14 +154,25 @@ var userPageController = (function(){
         userPageService.getUserById(currentEditUserId,function(data) {
 
                 userAddUsername.val(data.username);
-                userAddFirstName.val(data.firstName);
-                userAddFamilyName.val(data.lastName);
+                userAddFirstName.val(data.userFirstName);
+                userAddFamilyName.val(data.userLastName);
                 userAddEmail.val(data.email);
+
+                userPageService.getRole(
+                    function(data){
+                        var options = generateUserRolesOptions(data, true);
+                        userAddRole.html(options);
+                    },
+                    function(error){
+                        errorsContainer.text(error.responseJSON.errorMessage);
+                    }
+                );
+            debugger;
 
                 addUserButton.on("click",function(event){
                     event.preventDefault();
                     var data = getFormData();
-                    coursePageService.updateUser(currentEditUserId, data, function(){
+                    userPageService.updateUser(currentEditUserId, data, function(){
 
                             uiController.loadUserPage();
                         },
@@ -254,8 +275,8 @@ var userPageController = (function(){
                 "<td>"+usersData.users[i].username + "</td>" +
                 "<td>"+usersData.users[i].email + "</td>" +
                 "<td>"+usersData.users[i].role.roleName + "</td>" +
-                "<td class='edit' data-id='" + usersData.users[i].id + "'></td>" ;
-                table += "<td class='delete' data-id='" + usersData.users[i].id + "'></td>";
+                "<td class='edit' userId='" + usersData.users[i].id + "'></td>" ;
+                table += "<td class='delete' userId='" + usersData.users[i].id + "'></td>";
 
         }
         table += "</tbody></table>";
@@ -269,6 +290,7 @@ var userPageController = (function(){
             }
         }
     }
+
 
     return {
         loadUserPage: loadUserPage,

@@ -37,12 +37,18 @@ var userPageService = (function(){
         httpRequester.deleteJSON(url, success, error, complete);
     }
 
+    function getRole( success, error, complete) {
+        var url = config.API_URL + "roles/all";
+
+        httpRequester.getJSON(url, success, error, complete);
+    }
     return {
         getAllUsers : getAllUsers,
         getUserById : getUserById,
         addUser : addUser,
         updateUser : updateUser,
-        deleteUser : deleteUser
+        deleteUser : deleteUser,
+        getRole : getRole
     };
 
 }());

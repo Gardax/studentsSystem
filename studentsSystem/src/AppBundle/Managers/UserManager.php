@@ -178,7 +178,7 @@ class UserManager
      */
     public function getRoles($withoutUserRole) {
         $qb = $this->entityManager->createQueryBuilder();
-        $qb->select(array('r'))
+        $qb->select('r')
             ->from('AppBundle:Role', 'r');
 
         if($withoutUserRole) {
