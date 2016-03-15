@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new UIBundle\UIBundle(),
             new ExportBundle\ExportBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

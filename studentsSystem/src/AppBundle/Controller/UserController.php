@@ -182,7 +182,7 @@ class UserController extends Controller
 
         $rolesData = [];
         foreach ($roles as $role) {
-            $rolesData = new RoleModel($role);
+            $rolesData[] = new RoleModel($role);
         }
 
         return new JsonResponse($rolesData);
