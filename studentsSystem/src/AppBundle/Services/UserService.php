@@ -184,8 +184,10 @@ class UserService implements UserProviderInterface
                 $userRole = $currentRole;
             }
         }
+        $user->removeRole();
 
         $user->addRole($userRole);
+
         if($roleId == $teacher->getId()) {
             $user->addRole($teacher);
         }
@@ -274,15 +276,28 @@ class UserService implements UserProviderInterface
     }
 
     public function updateUser(User $user, $userData) {
-        $user->setUsername($userData['username']);
-        $user->setUserFirstName($userData['firstName']);
-        $user->setUserLastName($userData['lastName']);
 
-        if($userData['password']){
+        if($userData['username'] != $user->getUsername()){
+            $user->setUsername($userData['username']);
+        }
+
+        if($userData['firstName'] != $user->getUserFirstName()){
+            $user->setUserFirstName($userData['firstName']);
+        }
+
+        if($userData['lastName'] != $user->getUserLastName()){
+            $user->setUserLastName($userData['lastName']);
+        }
+
+        if($userData['password'] != ""){
             $password = $this->passwordEncoder->encodePassword($user, $userData['password']);
             $user->setPassword($password);
         }
-        $user->setEmail($userData['email']);
+
+        if($userData['email'] != $user->getEmail()){
+            $user->setEmail($userData['email']);
+        }
+
 
         $roles = $this->getRoles();
         $this->assignAppropriateRoles($user, $userData['roleId'], $roles);

@@ -105,6 +105,7 @@ var userPageController = (function(){
             }
         });
 
+
     }
 
     function loadAddEditForm(handler) {
@@ -116,6 +117,17 @@ var userPageController = (function(){
             userAddPassword = $("#userAddPassword");
             userAddPasswordMatch = $("#userAddPasswordMatch");
             userAddEmail = $("#userAddEmail");
+            userAddRole = $("#userAddRole");
+
+            userPageService.getRole(
+                function(data){
+                    var options = generateUserRolesOptions(data, true);
+                    userAddRole.html(options);
+                },
+                function(error){
+                    errorsContainer.text(error.responseJSON.errorMessage);
+                }
+            );
 
 
             handler();
@@ -128,8 +140,9 @@ var userPageController = (function(){
             errorsContainer.text('');
 
             var data = getFormData();
+
             userPageService.addUser(data, function () {
-                    uiController.loadUserPage();
+                    uiController.loadUsersPage();
                 },
                 function (error) {
                     printErrors(error.responseJSON.errors);
@@ -140,10 +153,10 @@ var userPageController = (function(){
 
     function generateUserRolesOptions(data, withoutZeroOption){
         var userRolesOptions = (!withoutZeroOption ? "<option value='0'>Всички</option>" : "");
-        for(var i = 0; i < data.user.role.length; i++){
-            userRolesOptions += "<option value='" + data.specialities[i].id + "'>" + data.specialities[i].specialityLongName + "</option>";
+        for(var i = 0; i < data.length; i++){
+            userRolesOptions += "<option value='" + data[i].id + "'>" + data[i].roleName + "</option>";
         }
-        return specialitiesOptions;
+        return userRolesOptions;
     }
 
     function editUserHandler() {
@@ -157,6 +170,9 @@ var userPageController = (function(){
                 userAddFirstName.val(data.userFirstName);
                 userAddFamilyName.val(data.userLastName);
                 userAddEmail.val(data.email);
+                userAddRole.val(data.role.id);
+
+
 
                 userPageService.getRole(
                     function(data){
@@ -167,21 +183,23 @@ var userPageController = (function(){
                         errorsContainer.text(error.responseJSON.errorMessage);
                     }
                 );
-            debugger;
+
 
                 addUserButton.on("click",function(event){
                     event.preventDefault();
-                    var data = getFormData();
-                    userPageService.updateUser(currentEditUserId, data, function(){
 
-                            uiController.loadUserPage();
+                    var data = getFormData();
+
+                    userPageService.updateUser(currentEditUserId, data, function(){
+                            uiController.loadUsersPage();
+
                         },
                         function (error) {
                             printErrors(error.responseJSON.errors);
                         }
                     );
-
                 });
+
             },
             function(error){
                 errorsContainer.text(error.responseJSON.errorMessage);
@@ -197,7 +215,8 @@ var userPageController = (function(){
             'lastName' : userAddFamilyName.val(),
             'password' : userAddPassword.val(),
             'confirmPassword' : userAddPasswordMatch.val(),
-            'email' : userAddEmail.val()
+            'email' : userAddEmail.val(),
+            'roleId' : userAddRole.val()
         };
     }
 
@@ -275,8 +294,8 @@ var userPageController = (function(){
                 "<td>"+usersData.users[i].username + "</td>" +
                 "<td>"+usersData.users[i].email + "</td>" +
                 "<td>"+usersData.users[i].role.roleName + "</td>" +
-                "<td class='edit' userId='" + usersData.users[i].id + "'></td>" ;
-                table += "<td class='delete' userId='" + usersData.users[i].id + "'></td>";
+                "<td class='edit' userId='" + usersData.users[i].id + "'> </td>" +
+                "<td class='delete' userId='" + usersData.users[i].id + "'> </td>";
 
         }
         table += "</tbody></table>";

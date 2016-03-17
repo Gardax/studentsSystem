@@ -55,6 +55,7 @@ class UserController extends Controller
             'firstName' => $request->request->get('firstName'),
             'lastName' => $request->request->get('lastName'),
             'password' => $request->request->get('password'),
+            'confirmPassword' => $request->request->get('confirmPassword'),
             'email' => $request->request->get('email'),
             'roleId' => $request->request->get('roleId')
         ];
@@ -197,7 +198,7 @@ class UserController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function editUserAction(Request $request,$id){
+    public function updateUserAction(Request $request,$id){
 
         $userService = $this->get("user_service");
 

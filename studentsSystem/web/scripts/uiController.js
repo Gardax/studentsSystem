@@ -158,6 +158,12 @@ var uiController = (function(){
         userPageController.loadUserPage(1, [], []);
 
     }
+    function loadUsersPage(){
+        $mainContainer.load("/pages/user.html",function (){
+            userTable();
+        })
+    }
+
 
     function loadStudentsTable(){
         var studentsCoursesSelect = $("#studentCourse");
@@ -219,6 +225,7 @@ var uiController = (function(){
         loadSpecialitiesPage: loadSpecialityPage,
         loadSubjectsPage: loadSubjectsPage,
         loadStudentPage: loadStudentPage,
-        loadAssessmentPage: loadAssessmentPage
+        loadAssessmentPage: loadAssessmentPage,
+        loadUsersPage : loadUsersPage
     };
 }());
