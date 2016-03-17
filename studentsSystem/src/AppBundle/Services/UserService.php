@@ -184,7 +184,7 @@ class UserService implements UserProviderInterface
                 $userRole = $currentRole;
             }
         }
-        $user->removeRole();
+        $user->removeRoles();
 
         $user->addRole($userRole);
 
