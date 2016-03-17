@@ -4,8 +4,6 @@ var assessmentPageController = (function() {
     var currentOrder = [];
     var lastPage = 1;
 
-    //TODO: Hide the delete buttons from teachers
-
     var $deleteButton;
     var errorsContainer;
     var assessmentStudentName;
@@ -22,6 +20,7 @@ var assessmentPageController = (function() {
     var assessmentExercise;
     var assessmentGrade;
     var generateAssessmentSubjectsContainer;
+    var reject;
 
     var assessmentFirstPageButton;
     var assessmentPreviousPageButton;
@@ -170,6 +169,13 @@ var assessmentPageController = (function() {
         var assessmentFormHeader = $("#assessmentFormHeader");
         assessmentFormHeader.text("Редактиране на оценка");
         addAssessmentButton.val("Редактирай");
+
+        reject = $("#reject");
+
+        reject.on("click",function(event){
+            event.preventDefault();
+            uiController.loadAssessmentPage();
+        });
 
         assessmentPageService.getAssessmentById(currentEditAssessmentId,function(data) {
                 assessmentName.val(data.studentFirstName + " " + data.studentLastName + "(" + data.facultyNumber + ")");

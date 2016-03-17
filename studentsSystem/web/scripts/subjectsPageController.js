@@ -12,6 +12,7 @@ var disciplinesPageController = (function(){
     var $deleteButton;
 
     var subjectsTable;
+    var reject;
 
     var mainContainer;
     var container;
@@ -135,6 +136,12 @@ var disciplinesPageController = (function(){
         var subjectFormHeader = $("#subjectFormHeader");
         subjectFormHeader.text("Редактиране на дисциплина");
         addSubjectButton.val("Редактирай");
+        reject = $("#reject");
+
+        reject.on("click",function(event){
+            event.preventDefault();
+            uiController.loadSubjectsPage();
+        });
 
         subjectsPageService.getSubjectById(currentEditSubjectId,
             function(data) {

@@ -15,7 +15,7 @@ var studentsPageController = (function(){
     var studentFormHeader;
 
     var $deleteButton;
-    var studentAddPassword;
+    var reject;
     var studentAddPasswordMatch;
     var studentAddEmail;
     var studentAddFirstName;
@@ -186,6 +186,12 @@ var studentsPageController = (function(){
         var studentFormHeader = $("#studentFormHeader");
         studentFormHeader.text("Редактиране на студент");
         addStudentButton.val("Редактирай");
+        reject = $("#reject");
+
+        reject.on("click",function(event){
+            event.preventDefault();
+            uiController.loadStudentPage();
+        });
 
         studentsPageService.getStudentById(currentEditStudentId,function(data) {
                 studentAddFirstName.val(data.firstName);
