@@ -16,6 +16,9 @@ var studentsPageController = (function(){
 
     var $deleteButton;
     var reject;
+    var results;
+    var from = 0;
+    var to = 0 ;
     var studentAddPasswordMatch;
     var studentAddEmail;
     var studentAddFirstName;
@@ -51,7 +54,7 @@ var studentsPageController = (function(){
         studentSpecialities = $("#studentSpecialities");
         addStudentButton = $("#addStudentButton");
         studentFormHeader = $("#studentFormHeader");
-
+        results = $(".results");
         container = containerElement;
         coursesContainer = coursesElement;
         specialitiesContainer = specialitiesElement;
@@ -324,6 +327,23 @@ var studentsPageController = (function(){
                 }
 
                 studentCurrentPageContainer.text(currentPage + " от " + lastPage);
+
+                if(currentPage == 1){
+                    from = 1;
+                }else{
+                    from = (currentPage-1)* data.itemsPerPage+1;
+                }
+
+                if(data.totalCount < data.itemsPerPage){
+                    to = data.totalCount;
+                }else {
+                    to = currentPage * data.itemsPerPage;
+                }
+
+                if(to > data.totalCount){
+                    to = data.totalCount;
+                }
+                results.text("Резултати " +from +  " - " + to  + " от " + data.totalCount);
 
                 manageButtonsState();
                 studentsTable.show();

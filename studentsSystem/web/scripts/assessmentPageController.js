@@ -21,6 +21,9 @@ var assessmentPageController = (function() {
     var assessmentGrade;
     var generateAssessmentSubjectsContainer;
     var reject;
+    var results;
+    var from = 0;
+    var to = 0;
 
     var assessmentFirstPageButton;
     var assessmentPreviousPageButton;
@@ -35,6 +38,7 @@ var assessmentPageController = (function() {
         mainContainer = $("#mainContainer");
         errorsContainer = $("#errorsContainer");
         addNewAssessment = $("#addNewAssessment");
+        results = $(".results");
 
         pagingButtons = $(".paging");
         assessmentCurrentPageContainer = $(".assessmentCurrentPage");
@@ -52,19 +56,19 @@ var assessmentPageController = (function() {
         assessmentSearchButton = $("#assessmentSearchButton");
 
         assessmentPreviousPageButton.on("click", function () {
-            loadPage(currentPage - 1, currentOrder, currentFilters);
+            loadAssessmentsPage(currentPage - 1, currentOrder, currentFilters);
         });
 
         assessmentNextPageButton.on("click", function () {
-            loadPage(currentPage + 1, currentOrder, currentFilters);
+            loadAssessmentsPage(currentPage + 1, currentOrder, currentFilters);
         });
 
         assessmentFirstPageButton.on("click", function () {
-            loadPage(1, currentOrder, currentFilters);
+            loadAssessmentsPage(1, currentOrder, currentFilters);
         });
 
         assessmentLastPageButton.on("click", function () {
-            loadPage(lastPage, currentOrder, currentFilters);
+            loadAssessmentsPage(lastPage, currentOrder, currentFilters);
         });
         assessmentSearchButton.on("click", function(event){
             event.preventDefault();
@@ -244,6 +248,23 @@ var assessmentPageController = (function() {
                 }
 
                 assessmentCurrentPageContainer.text(currentPage + " от " + lastPage);
+
+                if(currentPage == 1){
+                    from = 1;
+                }else{
+                    from = (currentPage-1)* data.itemsPerPage+1;
+                }
+
+                if(data.totalCount < data.itemsPerPage){
+                    to = data.totalCount;
+                }else {
+                    to = currentPage * data.itemsPerPage;
+                }
+
+                if(to > data.totalCount){
+                    to = data.totalCount;
+                }
+                results.text("Резултати " +from +  " - " + to  + " от " + data.totalCount);
 
                 manageButtonsState();
                 pagingButtons.show();

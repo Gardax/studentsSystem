@@ -13,6 +13,9 @@ var disciplinesPageController = (function(){
 
     var subjectsTable;
     var reject;
+    var results;
+    var from = 0;
+    var to = 0;
 
     var mainContainer;
     var container;
@@ -43,6 +46,7 @@ var disciplinesPageController = (function(){
         pagingButtons = $(".paging");
         subjectsTable = $("#subjectsTable");
         addNewSubjectButton = $("#addNewSubject");
+        results = $(".results");
 
         errorsContainer.text("");
         attachEvents();
@@ -197,6 +201,23 @@ var disciplinesPageController = (function(){
                 }
 
                 subjectsCurrentPageContainer.text(currentPage + " от " + lastPage);
+
+                if(currentPage == 1){
+                    from = 1;
+                }else{
+                    from = (currentPage-1)* data.itemsPerPage+1;
+                }
+
+                if(data.totalCount < data.itemsPerPage){
+                    to = data.totalCount;
+                }else {
+                    to = currentPage * data.itemsPerPage;
+                }
+
+                if(to > data.totalCount){
+                    to = data.totalCount;
+                }
+                results.text("Резултати " +from +  " - " + to  + " от " + data.totalCount);
 
                 manageButtonsState();
                 pagingButtons.show();

@@ -16,6 +16,9 @@ var userPageController = (function(){
     var userAddEmail ;
     var userAddRole;
     var reject;
+    var results;
+    var from = 0;
+    var to = 0;
 
     var userTable;
     var studentName;
@@ -39,7 +42,7 @@ var userPageController = (function(){
         mainContainer = $("#mainContainer");
         container = containerElement;
         userAddRole = $("#userAddRole");
-
+        results = $(".results");
         userCurrentPageContainer = $(".userCurrentPage");
         errorsContainer = $("#errorsContainer");
         errorsContainer.text("");
@@ -252,6 +255,24 @@ var userPageController = (function(){
                 userCurrentPageContainer.show();
 
                 userCurrentPageContainer.text(currentPage + " от " + lastPage);
+
+                if(currentPage == 1){
+                    from = 1;
+                }else{
+                    from = (currentPage-1)* data.itemsPerPage+1;
+                }
+
+                if(data.totalCount < data.itemsPerPage){
+                    to = data.totalCount;
+                }else {
+                    to = currentPage * data.itemsPerPage;
+                }
+
+                if(to > data.totalCount){
+                    to = data.totalCount;
+                }
+                results.text("Резултати " +from +  " - " + to  + " от " + data.totalCount);
+
                 errorsContainer.text("");
 
                 var table = populateUsersTable(data);
