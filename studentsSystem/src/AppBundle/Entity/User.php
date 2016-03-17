@@ -251,7 +251,7 @@ class User implements UserInterface, \Serializable
     /**
      * @return $this
      */
-    public function removeRole(){
+    public function removeRoles(){
         $this->roles = [];
 
     }
