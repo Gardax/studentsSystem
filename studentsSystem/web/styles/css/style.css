@@ -30,7 +30,7 @@ nav ul li:hover{
     color: white;
 }
 nav ul:nth-child(2) {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 5%;
     list-style: none;
