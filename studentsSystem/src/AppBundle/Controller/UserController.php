@@ -32,7 +32,7 @@ use AppBundle\Services\UserService;
  */
 class UserController extends Controller
 {
-    const PAGE_SIZE = 2;
+    const PAGE_SIZE = 5;
     const SUCCESS = 1;
     const FAIL = 0;
 

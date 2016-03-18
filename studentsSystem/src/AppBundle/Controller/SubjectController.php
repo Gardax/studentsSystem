@@ -27,7 +27,7 @@ use AppBundle\Services\StudentService;
 class SubjectController extends Controller
 {
 
-    const PAGE_SIZE = 4;
+    const PAGE_SIZE = 10;
     const SUCCESS = 1;
     const FAIL = 0;
 

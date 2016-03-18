@@ -52,7 +52,9 @@
 
                             {% set found = false %}
                             {% for studentAssessment in student.studentAssessments %}
+
                                 {% if studentAssessment.subject.id == subject.id %}
+
                                     <td>{{ studentAssessment.workloadLectures }} ({{ subject.workloadLectures }})</td>
                                     <td>{{ studentAssessment.workloadExercises }} ({{ subject.workloadExercises }})</td>
                                     <td>{{ studentAssessment.assessment }}</td>
@@ -61,6 +63,7 @@
                                     {% set countGrades = countGrades + 1 %}
                                     {% set lecturesAttended = lecturesAttended + studentAssessment.workloadLectures %}
                                     {% set exercisesAttended = exercisesAttended + studentAssessment.workloadExercises %}
+
                                 {% endif %}
                             {% endfor %}
                             {% if found == false %}

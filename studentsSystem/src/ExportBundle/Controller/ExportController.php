@@ -244,6 +244,7 @@ class ExportController extends Controller
                     'Assessment'
                 );
                 fputcsv($handle, $data, ';');
+
                 foreach ($assessments as $assessment) {
                     $data = array(
                         $assessment->getId(),
@@ -252,7 +253,7 @@ class ExportController extends Controller
                         $assessment->getSubject()->getName(),
                         $assessment->getAssessment()
                     );
-                    fputcsv($handle, $data, ';');
+                    fputcsv($handle, $data, ',');
                 }
 
                 fclose($handle);
@@ -265,5 +266,153 @@ class ExportController extends Controller
 
         return $response;
     }
+    /**
+    * @Route("/csv/homepage")
+    */
+    public function homepageCSVAction()
+    {
+        $assessmentService = $this->get('student_assessment_service');
+        $studentService = $this->get('student_service');
+        $subjectService = $this->get('subject_service');
 
+        $assessments = $assessmentService->getStudentAssessments(1, 3, [], false, true);
+        $students = $studentService->getStudents(0, 0, [], false, false, true);
+        $subjects = $subjectService->getSubjects(1,3);
+
+        $response = new StreamedResponse();
+
+        $response->setCallback(
+            function () use ($assessments, $students, $subjects, $subjectService) {
+
+
+                $handle = fopen('php://output', 'r+');
+                //line 1
+                $data = array(
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    'Предмети(Хорариум и оценки)',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+
+                );
+
+                fputcsv($handle, $data, ';');
+
+                // line 2
+
+                $data = array(
+                    '',
+                    '',
+                    '',
+                );
+                foreach($subjects as $subject){
+
+                    $data[]='';
+                    $data[]= $subject->getName();
+                    $data[]='';
+
+                }
+                $data[]='';
+                $data[] = 'Общо';
+                fputcsv($handle, $data, ';');
+
+                //line 3
+
+                $data = array(
+                    '#',
+                    'Име Фамилия',
+                    'Курс',
+                );
+
+                foreach($subjects as $subject){
+
+                    $data[] = 'Лекции';
+                    $data[] = 'Упражнения';
+                    $data[] = 'Оценка';
+
+                }
+                $data[] = 'Ср. успех';
+                $data[] = 'Лекции';
+                $data[] = 'Упражнения';
+
+
+                fputcsv($handle, $data, ';');
+
+                //line 4
+                $data = array();
+
+                foreach($students as $student){
+
+                    $totalGrades = 0 ;
+                    $countGrades = 0 ;
+                    $lecturesAttended = 0 ;
+                    $exercisesAttended = 0 ;
+                    $lecturesTotal = 0 ;
+                    $exercisesTotal = 0 ;
+
+
+
+                    $data[] = $student->getId();
+                    $data[] = $student->getFirstName()." ".$student->getLastName()."(".$student->getFacultyNumber().")";
+                    $data[] = $student->getCourse()->getName()." ".$student->getSpeciality()->getSpecialityShortName()." (".$student->getEducationForm().")";
+
+                    foreach($subjects as $subject){
+
+                        $lecturesTotal = $lecturesTotal + $subject->getWorkloadLectures();
+                        $exercisesTotal = $exercisesTotal + $subject->getWorkLoadExercises();
+
+                        $found = false;
+                        foreach($assessments as $assessment){
+
+                           if($assessment->getSubject()->getId() == $subject->getId()){
+                               $found = true;
+                               $data[] = $assessment->getWorkloadLectures()."(".$subject->getWorkloadLectures().")";
+                               $data[] = $assessment->getWorkloadExercises()."(".$subject->getWorkloadExercises().")";
+                               $data[] = $assessment->getAssessment();
+
+
+
+                               $totalGrades = $totalGrades + $assessment->getAssessment();
+                               $countGrades = $countGrades + 1;
+                               $lecturesAttended = $lecturesAttended + $assessment->getWorkloadLectures();
+                               $exercisesAttended = $exercisesAttended + $assessment->getWorkloadExercises();
+                           }
+
+                        }
+                        if($found == false){
+                            $data[] = $subject->getWorkloadLectures();
+                            $data[] = $subject->getWorkLoadExercises();
+                        }
+                    }
+                    if($countGrades != 0){
+                        $data[] = $totalGrades / $countGrades;
+                    }else{
+                        $data[] = '-';
+                    }
+                    $data[] = $lecturesAttended."(".$lecturesTotal.")";
+                    $data[] = $exercisesAttended."(".$exercisesTotal.")";
+
+                    fputcsv($handle, $data, ';');
+                    unset($data);
+
+                }
+
+
+                fclose($handle);
+            }
+        );
+        $response->headers->set('Content-Type', 'application/force-download');
+        $response->headers->set('Content-Disposition', 'attachment; filename="homepage.csv"');
+        return $response;
+    }
 }
