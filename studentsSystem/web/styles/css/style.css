@@ -74,6 +74,10 @@ table{
     min-width: 20%;
 }
 
+#userTable {
+    overflow: auto;
+}
+
 #addNewCourse, #addNewSpeciality, #addNewSubject, #addNewStudent, #addNewAssessment{
     margin-left: 35%;
 }
