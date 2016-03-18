@@ -130,9 +130,6 @@ var studentsPageController = (function(){
     function loadAddEditForm(handler) {
         mainContainer.load("/pages/studentAdd.html", function() {
             addStudentButton = $("#addStudentButton");
-            //studentAddUserName = $("#studentAddUserName");
-            //studentAddPassword = $("#studentAddPassword");
-            //studentAddPasswordMatch = $("#studentAddPasswordMatch");
             studentAddEmail = $("#studentAddEmail");
             studentAddFirstName = $("#studentAddFirstName");
             studentAddFamilyName = $("#studentAddFamilyName");
@@ -141,6 +138,11 @@ var studentsPageController = (function(){
             studentAddGenerateFormOfEducation = $("#studentAddGenerateFormOfEducation");
             studentAddCourse = $("#studentAddCourse");
 
+            reject = $("#reject");
+            reject.on("click",function(event){
+                event.preventDefault();
+                uiController.loadStudentPage();
+            });
 
             handler();
         });
@@ -189,12 +191,6 @@ var studentsPageController = (function(){
         var studentFormHeader = $("#studentFormHeader");
         studentFormHeader.text("Редактиране на студент");
         addStudentButton.val("Редактирай");
-        reject = $("#reject");
-
-        reject.on("click",function(event){
-            event.preventDefault();
-            uiController.loadStudentPage();
-        });
 
         studentsPageService.getStudentById(currentEditStudentId,function(data) {
                 studentAddFirstName.val(data.firstName);

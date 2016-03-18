@@ -26,7 +26,6 @@ var loginService = (function(){
     }
 
     function logout() {
-        //TODO: Send request to the back end
         localStorage.removeItem('apiKey');
         localStorage.removeItem('role');
         localStorage.removeItem('username');

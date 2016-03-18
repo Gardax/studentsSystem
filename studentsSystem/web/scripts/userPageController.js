@@ -133,6 +133,12 @@ var userPageController = (function(){
                 }
             );
 
+            reject = $("#reject");
+            reject.on("click",function(event){
+                event.preventDefault();
+                uiController.loadUsersPage();
+            });
+
 
             handler();
         });
@@ -167,12 +173,6 @@ var userPageController = (function(){
         var userFormHeader = $("#userFormHeader");
         userFormHeader.text("Редактиране на потребител");
         addUserButton.val("Редактирай");
-        reject = $("#reject");
-
-        reject.on("click",function(event){
-            event.preventDefault();
-            uiController.loadUsersPage();
-        });
 
         userPageService.getUserById(currentEditUserId,function(data) {
 

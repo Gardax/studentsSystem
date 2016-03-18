@@ -131,7 +131,12 @@ var assessmentPageController = (function() {
               }
             );
 
+            reject = $("#reject");
 
+            reject.on("click",function(event){
+                event.preventDefault();
+                uiController.loadAssessmentPage();
+            });
 
             handler();
         });
@@ -173,13 +178,6 @@ var assessmentPageController = (function() {
         var assessmentFormHeader = $("#assessmentFormHeader");
         assessmentFormHeader.text("Редактиране на оценка");
         addAssessmentButton.val("Редактирай");
-
-        reject = $("#reject");
-
-        reject.on("click",function(event){
-            event.preventDefault();
-            uiController.loadAssessmentPage();
-        });
 
         assessmentPageService.getAssessmentById(currentEditAssessmentId,function(data) {
                 assessmentName.val(data.studentFirstName + " " + data.studentLastName + "(" + data.facultyNumber + ")");

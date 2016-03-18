@@ -111,6 +111,13 @@ var coursePageController = (function(){
             addCourseButton = $("#addCourseButton");
             courseAddCourseNameInput = $("#courseAddCourseNameInput");
 
+            reject = $("#reject");
+
+            reject.on("click",function(event){
+                event.preventDefault();
+                uiController.loadCoursePage();
+            });
+
             handler();
         });
     }
@@ -135,13 +142,6 @@ var coursePageController = (function(){
         var courseFormHeader = $("#courseFormHeader");
         courseFormHeader.text("Редактиране на курс");
         addCourseButton.val("Редактирай");
-
-        reject = $("#reject");
-
-        reject.on("click",function(event){
-            event.preventDefault();
-            uiController.loadCoursePage();
-        });
 
         coursePageService.getCourseById(currentEditCourseId,function(data) {
                 courseAddCourseNameInput.val(data.name);

@@ -111,6 +111,12 @@ var specialitiesPageController = (function(){
             specialityAddSpecialityNameInput = $("#specialitiesAddFullName");
             specialitiesAddShortName = $("#specialitiesAddShortName");
 
+            reject = $("#reject");
+            reject.on("click",function(event){
+                event.preventDefault();
+                uiController.loadSpecialitiesPage();
+            });
+
             handler();
         });
     }
@@ -134,12 +140,6 @@ var specialitiesPageController = (function(){
         var specialityFormHeader = $("#specialityFormHeader");
         specialityFormHeader.text("Редактиране на специалност");
         addSpecialityButton.val("Редактирай");
-        reject = $("#reject");
-
-        reject.on("click",function(event){
-            event.preventDefault();
-            uiController.loadSpecialitiesPage();
-        });
 
         specialitiesPageService.getSpecialityById(currentEditSpecialityId, function(data) {
                 specialityAddSpecialityNameInput.val(data.specialityLongName);
