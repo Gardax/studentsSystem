@@ -275,14 +275,14 @@ class ExportController extends Controller
         $studentService = $this->get('student_service');
         $subjectService = $this->get('subject_service');
 
-        $assessments = $assessmentService->getStudentAssessments(1, 3, [], false, true);
+        //$assessments = $assessmentService->getStudentAssessments(1, 3, [], false, true);
         $students = $studentService->getStudents(0, 0, [], false, false, true);
         $subjects = $subjectService->getSubjects(1,3);
 
         $response = new StreamedResponse();
 
         $response->setCallback(
-            function () use ($assessments, $students, $subjects, $subjectService) {
+            function () use ($students, $subjects, $subjectService) {
 
 
                 $handle = fopen('php://output', 'r+');
@@ -324,10 +324,10 @@ class ExportController extends Controller
                 }
                 $data[]='';
                 $data[] = 'Общо';
+                $data[]='';
                 fputcsv($handle, $data, ';');
 
                 //line 3
-
                 $data = array(
                     '#',
                     'Име Фамилия',
@@ -372,6 +372,7 @@ class ExportController extends Controller
                         $exercisesTotal = $exercisesTotal + $subject->getWorkLoadExercises();
 
                         $found = false;
+                        $assessments = $student->getStudentAssessments();
                         foreach($assessments as $assessment){
 
                            if($assessment->getSubject()->getId() == $subject->getId()){
@@ -390,8 +391,9 @@ class ExportController extends Controller
 
                         }
                         if($found == false){
-                            $data[] = $subject->getWorkloadLectures();
-                            $data[] = $subject->getWorkLoadExercises();
+                            $data[] = '0 (' . $subject->getWorkloadLectures() . ')';
+                            $data[] = '0 (' . $subject->getWorkLoadExercises() . ')';
+                            $data[] = '-';
                         }
                     }
                     if($countGrades != 0){
